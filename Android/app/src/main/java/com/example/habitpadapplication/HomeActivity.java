@@ -40,6 +40,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.example.habitpadapplication.Adapters.TipViewAdpater;
 import com.example.habitpadapplication.Chart.FoodChart;
+import com.example.habitpadapplication.Chart.ObeseLevelChart;
 import com.example.habitpadapplication.Chart.WaterChart;
 import com.example.habitpadapplication.Chart.WorkoutChart;
 import com.example.habitpadapplication.Dialogs.OtherSizeDialog;
@@ -83,7 +84,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     private LinearLayout foodCardBreakfastBtn, foodCardLunchBtn, foodCardDinnerBtn, foodCardSnackBtn;
     private Button diaryBtn;
-    private ImageButton foodChartBtn,workoutAddBtn,workoutChartBtn,waterAddBtn,waterChartBtn, reminderBtn;
+    private ImageButton foodChartBtn,workoutAddBtn,workoutChartBtn,waterAddBtn,waterChartBtn, reminderBtn, obeseLevelChartBtn;
 
 
     private ProgressBar summaryCardCaloriesBar;
@@ -106,13 +107,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private BroadcastReceiver updateUIReciver;
     private Context context;
     private String userID, username;
-
-
-
-    private RecyclerView recyclerView;
-    private RecyclerView.LayoutManager manager;
-    private List<Tip> tips;
-
 
 
     @Override
@@ -173,6 +167,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
 
         summaryCardObesity = findViewById(R.id.home_classification_level_card);
+        obeseLevelChartBtn = findViewById(R.id.home_classification_chart_button);
 
 
         reminderBtn = findViewById(R.id.reminderButton);
@@ -358,6 +353,16 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
+        obeseLevelChartBtn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                UserSendToObeseLevelChartPage();
+
+            }
+        });
+
 
     }
 
@@ -447,9 +452,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 && !TextUtils.isEmpty(strFamilySuffered)&& !TextUtils.isEmpty(strUserSmoked)
                 && !TextUtils.isEmpty(strUserAlcohol)){
 
-            strGender = strUserGender == "Male" ? 0 : 1;
+            strGender = strUserGender == "Female" ? 1 : 0;
 
-            strFamily = strFamilySuffered == "Yes" ? 1 : 0;
+            strFamily = strFamilySuffered == "No" ? 0 : 1;
 
             strSmoked = strUserSmoked == "No" ? 0 : 1;
 
@@ -729,6 +734,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         Intent getWaterChartIntent = new Intent(this, WaterChart.class);
         getWaterChartIntent.putExtra("intentUserID", userID);
         startActivity(getWaterChartIntent);
+    }
+
+    private void UserSendToObeseLevelChartPage()
+    {
+        Intent getObeseLevelChartIntent = new Intent(this, ObeseLevelChart.class);
+        getObeseLevelChartIntent.putExtra("intentUserID", userID);
+        startActivity(getObeseLevelChartIntent);
     }
 
 
@@ -1204,6 +1216,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
                             summaryCardObesity.setText(data);
 
+                            AddObeseLevel(userID,data, DateHandler.getCurrentTime(),DateHandler.getCurrentFormedDate());
+
 
                         } catch (JSONException e) {
                             Toast.makeText(HomeActivity.this,"Save Error!" + e.toString(),Toast.LENGTH_LONG).show();
@@ -1231,6 +1245,51 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 params.put("FAF", String.valueOf(strActivity));
                 params.put("CALC", String.valueOf(strAlcohol));
                 Log.i("tagstr", "["+params+"]");
+
+                return params;
+            }
+        };
+
+        VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
+
+    }
+
+    private void AddObeseLevel(final String intentUserID,final String level, final String time, final String date) {
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.ADD_USER_OBESE_LEVEL_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            Log.i("tagconvertstr", "["+response+"]");
+                            JSONObject jsonObject = new JSONObject(response);
+
+                            String success = jsonObject.getString("success");
+                            String message = jsonObject.getString("message");
+
+                            if (success.equals("1")) {
+                                Toast.makeText(HomeActivity.this,message,Toast.LENGTH_SHORT).show();
+                            }
+
+                        } catch (JSONException e) {
+                            Toast.makeText(HomeActivity.this,"Save Error!" + e.toString(),Toast.LENGTH_LONG).show();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(HomeActivity.this,error.toString(),Toast.LENGTH_LONG).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("userID", intentUserID);
+                params.put("obeseLevel",level);
+                params.put("addObeseTime", time);
+                params.put("addObeseDate", date);
 
                 return params;
             }

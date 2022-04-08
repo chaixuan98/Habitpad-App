@@ -66,5 +66,9 @@ public class Urls {
 
     public static final String GET_USER_RANKING_LIST_URL = ROOT_URL+"get_user_ranking_list.php";
 
+    public static final String ADD_USER_OBESE_LEVEL_URL = ROOT_URL+"add_obese_level.php";
+    public static final String GET_OBESE_LEVEL_DAY_GRAPH_URL = ROOT_URL+"get_obese_level_byday.php";
+
+
 
 }

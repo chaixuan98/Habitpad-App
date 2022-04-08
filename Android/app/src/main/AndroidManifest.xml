@@ -29,6 +29,9 @@
         android:theme="@style/Theme.HabitpadApplication"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".Chart.ObeseLevelChart"
+            android:exported="true" />
+        <activity
             android:name=".BottomNavigationActivity"
             android:exported="true" />
         <activity
