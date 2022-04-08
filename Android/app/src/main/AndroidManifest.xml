@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.habitpadapplication">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" /> <!-- <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/> -->
+    <!-- <uses-permission android:name="com.android.alarm.permission.SET_ALARM" /> -->
+    <!-- <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> -->
+    <!-- <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> -->
+    <!-- <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" /> -->
+    <!-- <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" /> -->
+    <!-- <uses-permission android:name="android.permission.FOREGROUND_SERVICE" /> -->
+    <!-- <uses-permission android:name="android.permission.WAKE_LOCK" /> -->
+    <queries>
+        <package android:name="com.sec.android.app.shealth" />
+    </queries>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.HabitpadApplication"
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name=".BottomNavigationActivity"
+            android:exported="true" />
+        <activity
+            android:name=".PrivacyPolicyActivity"
+            android:exported="true" />
+        <activity
+            android:name=".LeaderboardActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ViewTipActivity"
+            android:exported="true" />
+        <activity
+            android:name=".GamificationActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Settings.WorkoutReminderActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Settings.FoodReminderActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ReminderActivity"
+            android:exported="true" />
+        <activity
+            android:name=".StepActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Chart.FoodChart"
+            android:exported="true" />
+        <activity
+            android:name=".AddWorkoutActivity"
+            android:exported="true" />
+        <activity
+            android:name=".DiaryActivity"
+            android:exported="true" />
+        <activity
+            android:name=".AddFoodActivity"
+            android:exported="true" />
+        <activity
+            android:name=".FoodListActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Chart.WorkoutChart"
+            android:exported="true" />
+        <activity
+            android:name=".TrackExerciseActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Settings.UserSettingsActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Settings.WaterReminderActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Dialogs.congratulationDialog"
+            android:exported="true" />
+        <activity
+            android:name=".Dialogs.OtherSizeDialog"
+            android:exported="true" />
+        <activity
+            android:name=".Chart.WaterChart"
+            android:exported="true" />
+        <activity
+            android:name=".WaterMainActivity"
+            android:exported="true" />
+        <activity
+            android:name=".SignUp4ndClass"
+            android:exported="true" />
+        <activity
+            android:name=".SignUp3rdClass"
+            android:exported="true" />
+        <activity
+            android:name=".DoctorLoginActivity"
+            android:exported="true" />
+        <activity
+            android:name=".AdminLoginActivity"
+            android:exported="true" />
+        <activity
+            android:name=".UserOptionActivity"
+            android:exported="true" />
+        <activity
+            android:name=".EditTipActivity"
+            android:exported="true" />
+        <activity
+            android:name=".AddTipsActivity"
+            android:exported="true" />
+        <activity
+            android:name=".AdminTipsActivity"
+            android:exported="true" />
+        <activity
+            android:name=".SignUp2ndClass"
+            android:exported="true" />
+        <activity
+            android:name=".HomeActivity"
+            android:exported="true" />
+        <activity
+            android:name=".SignUp"
+            android:exported="true" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="true" />
+        <activity
+            android:name=".SplashActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+        <meta-data
+            android:name="com.samsung.android.health.permission.read"
+            android:value="com.samsung.health.step_count" />
+
+        <receiver android:name=".Notifications.NotificationReciever" />
+        <receiver android:name=".BroadcastReceivers.StopNotificationBroadcastReceiver" />
+    </application>
+
+</manifest>

@@ -1,0 +1,22 @@
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:preference="http://schemas.android.com/apk/res-auto">
+
+
+    <PreferenceCategory
+        android:title="Get reminder to track your workout">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="key_workout_notif_enable"
+            android:icon="@drawable/icon_notification"
+            android:title="Notification" />
+    </PreferenceCategory>
+    <Preference
+        android:key="key_workout_from_time"
+        android:defaultValue="8:0"
+        android:icon="@drawable/clock_from_icon"
+        android:title="Workout time"
+        android:enabled="false"/>
+
+
+</PreferenceScreen>

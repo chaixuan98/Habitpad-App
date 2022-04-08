@@ -1,0 +1,69 @@
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:preference="http://schemas.android.com/apk/res-auto">
+
+
+    <PreferenceCategory
+        android:title="Get reminder to track your meals">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="key_food_notif_enable"
+            android:icon="@drawable/ic_baseline_breakfast_dining_24"
+            android:title="Breakfast Notification" />
+
+        <Preference
+            android:key="key_food_from_time"
+            android:defaultValue="8:0"
+            android:icon="@drawable/ic_baseline_access_time_filled_24"
+            android:title="Breakfast time"
+            android:enabled="false"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory>
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="key_food_lunch_notif_enable"
+            android:icon="@drawable/ic_baseline_lunch_dining_24"
+            android:title="Lunch Notification" />
+
+        <Preference
+            android:key="key_food_lunch_from_time"
+            android:defaultValue="8:0"
+            android:icon="@drawable/ic_baseline_access_time_filled_24_green"
+            android:title="Lunch time"
+            android:enabled="false"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory>
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="key_food_dinner_notif_enable"
+            android:icon="@drawable/ic_baseline_dinner_dining_24"
+            android:title="Dinner Notification" />
+
+        <Preference
+            android:key="key_food_dinner_from_time"
+            android:defaultValue="8:0"
+            android:icon="@drawable/ic_baseline_access_time_filled_24_blue"
+            android:title="Dinner time"
+            android:enabled="false"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory>
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="key_food_snack_notif_enable"
+            android:icon="@drawable/ic_baseline_tapas_24"
+            android:title="Snack Notification" />
+
+        <Preference
+            android:key="key_food_snack_from_time"
+            android:defaultValue="8:0"
+            android:icon="@drawable/ic_baseline_access_time_filled_24_purple"
+            android:title="Snack time"
+            android:enabled="false"/>
+    </PreferenceCategory>
+
+
+
+</PreferenceScreen>

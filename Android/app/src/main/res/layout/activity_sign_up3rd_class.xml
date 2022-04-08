@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#87cefa"
+    android:padding="25dp"
+    android:orientation="vertical"
+    tools:context=".SignUp3rdClass">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/signup_back_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="40dp"
+            android:minHeight="40dp"
+            android:onClick="backSignupPage"
+            android:padding="5dp"
+            android:src="@drawable/ic_baseline_arrow_back_24"
+            android:transitionName="transition_back_arrow_btn" />
+
+
+        <TextView
+            android:id="@+id/active_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="How active are you?"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:gravity="center"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="Based on your lifestyle, we can asses your daily calorie requirements."
+            android:textColor="@color/darkgrey"
+            android:textSize="15sp"
+            android:gravity="center"/>
+
+
+
+    <LinearLayout
+        android:id="@+id/lifestyle_option"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="20dp">
+
+        <Button
+            android:id="@+id/noactive_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="@color/blue"
+            android:text="Little or No Active"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            app:icon="@drawable/ic_baseline_chair_alt_24"
+            app:iconSize="7mm"
+            app:iconTint="@color/white">
+
+        </Button>
+
+        <Button
+            android:id="@+id/lightly_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/noactive_btn"
+            android:layout_marginTop="20dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/blue"
+            android:text="Lightly Active"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            app:icon="@drawable/ic_baseline_boy_24"
+            app:iconSize="7mm"
+            app:iconTint="@color/white">
+
+        </Button>
+
+        <Button
+            android:id="@+id/moderately_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/noactive_btn"
+            android:layout_marginTop="20dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/blue"
+            android:text="Moderately Active"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            app:icon="@drawable/ic_baseline_directions_walk_24"
+            app:iconSize="7mm"
+            app:iconTint="@color/white">
+
+        </Button>
+
+        <Button
+            android:id="@+id/active_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lightly_btn"
+            android:layout_marginTop="20dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/blue"
+            android:text="Active"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            app:icon="@drawable/ic_baseline_directions_run_24"
+            app:iconSize="7mm"
+            app:iconTint="@color/white">
+        </Button>
+
+    </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/nextbtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/confirmpasswordlayout"
+            android:text="NEXT"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            app:backgroundTint="@color/black"
+            android:textColor="@color/white"
+            android:onClick="callNextSignupScreen"
+            android:elevation="5dp"
+            android:transitionName="transition_next_btn"/>
+
+        <TextView
+            android:id="@+id/signin_textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:minHeight="48dp"
+            android:padding="10dp"
+            android:text="Already have an account? Login Here"
+            android:textColor="@color/black"
+            android:transitionName="transition_login_text" />
+
+    </LinearLayout>
+
+</ScrollView>

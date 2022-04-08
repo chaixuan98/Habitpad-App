@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">HabitpadApplication</string>
+
+    <!-- Machine IP Address -->
+    <string name="machine_ip_address">10.213.37.32</string>
+    <!-- Strings used for fragments for navigation -->
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+
+    <!-- settings-->
+    <string name="action_settings">Settings</string>
+
+    <string name="notice">Notice</string>
+    <string name="msg_perm_acquired">All permissions should be acquired</string>
+    <string name="msg_conn_not_available">Connection with Samsung Health is not available</string>
+    <string name="msg_req_install">Please install Samsung Health</string>
+    <string name="msg_req_upgrade">Please upgrade Samsung Health</string>
+    <string name="msg_req_enable">Please enable Samsung Health</string>
+    <string name="msg_req_agree">Please agree to Samsung Health policy</string>
+    <string name="msg_req_available">Please make Samsung Health available</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>
