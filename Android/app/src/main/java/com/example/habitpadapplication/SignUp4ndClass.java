@@ -97,7 +97,7 @@ public class SignUp4ndClass extends AppCompatActivity {
                     case R.id.alcohol_sometime:
                         alcohol = findViewById(checkedId);
 
-                    case R.id.alcohol_frequetly:
+                    case R.id.alcohol_frequently:
                         alcohol = findViewById(checkedId);
                 }
             }

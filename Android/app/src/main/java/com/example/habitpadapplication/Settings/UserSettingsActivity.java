@@ -44,7 +44,7 @@ public class UserSettingsActivity extends AppCompatActivity  {
 
     private Spinner genderSpinner, alcoholSpinner, lifestyleSpinner, smokedSpinner, familySufferedSpinner,medicalSpinner ;
     private static final String[] genders = {" ", "Male", "Female"};
-    private static final String[] alcohol = {" ", "No", "Sometimes", "Frequetly"};
+    private static final String[] alcohol = {" ", "No", "Sometimes", "Frequently"};
     private static final String[] lifestyles = {" ", "No Active", "Lightly Active", "Moderately Active", "Very Active"};
     private static final String[] smoked = {" ", "Yes", "No"};
     private static final String[] familySuffered = {" ", "Yes", "No"};

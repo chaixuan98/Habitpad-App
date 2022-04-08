@@ -196,49 +196,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         strUserAlcohol = usersDetails.get(SessionManager.KEY_ALCOHOL);
         strUserSmoked = usersDetails.get(SessionManager.KEY_SMOKED);
 
-        if (strUserGender == "Male"){
-            strGender = 0;
-        }
-        if (strUserGender == "Female"){
-            strGender = 1;
-        }
 
-        if (strFamilySuffered == "No"){
-            strFamily = 0;
-        }
-        if (strFamilySuffered == "Yes"){
-            strFamily = 1;
-        }
-
-        if (strUserSmoked == "No"){
-            strSmoked = 0;
-        }
-        if (strUserSmoked == "Yes"){
-            strSmoked = 1;
-        }
-
-        if (strUserActivityLevel == "No Active"){
-            strActivity = 0;
-        }
-        if (strUserActivityLevel == "Lightly Active"){
-            strActivity = 1;
-        }
-        if (strUserActivityLevel == "Moderately Active"){
-            strActivity = 2;
-        }
-        if (strUserActivityLevel == "Active"){
-            strActivity = 3;
-        }
-
-        if (strUserAlcohol == "No"){
-            strAlcohol = 0;
-        }
-        if (strUserAlcohol == "Sometimes"){
-            strAlcohol = 1;
-        }
-        if (strUserAlcohol == "Frequently"){
-            strAlcohol = 2;
-        }
 
         textView.setText(username+" "+userID );
 
@@ -477,60 +435,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-//    private void SetUserData() {
-//
-//        if (!TextUtils.isEmpty(strUserCurrentWeight) && (!TextUtils.isEmpty(strUserHeight))
-//                && !TextUtils.isEmpty(strUserActivityLevel) && !TextUtils.isEmpty(strUserGender)
-//                && !TextUtils.isEmpty(strFamilySuffered)&& !TextUtils.isEmpty(strUserSmoked)
-//                && !TextUtils.isEmpty(strUserAlcohol)){
-//
-//            if (strUserGender == "Male"){
-//                strGender = "0";
-//            }
-//            if (strUserGender == "Female"){
-//                strGender = "1";
-//            }
-//
-//            if (strFamilySuffered == "No"){
-//                strFamily = "0";
-//            }
-//            if (strFamilySuffered == "Yes"){
-//                strFamily = "1";
-//            }
-//
-//            if (strUserSmoked == "No"){
-//                strSmoked = "0";
-//            }
-//            if (strUserSmoked == "Yes"){
-//                strSmoked = "1";
-//            }
-//
-//            if (strUserActivityLevel == "No Active"){
-//                strActivity = "0";
-//            }
-//            if (strUserActivityLevel == "Lightly Active"){
-//                strActivity = "1";
-//            }
-//            if (strUserActivityLevel == "Moderately Active"){
-//                strActivity = "2";
-//            }
-//            if (strUserActivityLevel == "Active"){
-//                strActivity = "3";
-//            }
-//
-//            if (strUserAlcohol == "No"){
-//                strAlcohol = "0";
-//            }
-//            if (strUserAlcohol == "Sometime"){
-//                strAlcohol = "1";
-//            }
-//            if (strUserAlcohol == "Frequently"){
-//                strAlcohol = "2";
-//            }
-//
-//        }
-//
-//    }
+
 
     /* setting user details */
     private void SetUserDataToHomePage() {
@@ -541,6 +446,39 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 && !TextUtils.isEmpty(strUserActivityLevel) && !TextUtils.isEmpty(strUserGender)
                 && !TextUtils.isEmpty(strFamilySuffered)&& !TextUtils.isEmpty(strUserSmoked)
                 && !TextUtils.isEmpty(strUserAlcohol)){
+
+            strGender = strUserGender == "Male" ? 0 : 1;
+
+            strFamily = strFamilySuffered == "Yes" ? 1 : 0;
+
+            strSmoked = strUserSmoked == "No" ? 0 : 1;
+
+            switch (strUserActivityLevel) {
+                case "No Active":
+                    strActivity = 0;
+                    break;
+                case "Lightly Active":
+                    strActivity = 1;
+                    break;
+                case "Moderately Active":
+                    strActivity = 2;
+                    break;
+                case "Active":
+                    strActivity = 3;
+                    break;
+            }
+
+            switch (strUserAlcohol) {
+                case "No":
+                    strAlcohol = 0;
+                    break;
+                case "Sometimes":
+                    strAlcohol = 1;
+                    break;
+                case "Frequently":
+                    strAlcohol = 2;
+                    break;
+            }
 
 
             strUserTDEE = fc.TDEE(strUserAge, strUserCurrentWeight, strUserHeight, strUserGender, strUserActivityLevel);
@@ -664,7 +602,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
             }
 
-           // ObeseClassification();
+            ObeseClassification();
             strUserFoodCalories = "0";
             strUserWorkout = "0";
             strUserWaterIntake = "0";
@@ -796,7 +734,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     private void  updateView(){
         DisplayUserFoodCount(userID,DateHandler.getCurrentFormedDate());
-        ObeseClassification();
+        //ObeseClassification();
     }
 
     private void registerUIBroadcastReceiver() {
@@ -1292,7 +1230,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 params.put("CH2O", String.valueOf(strWater));
                 params.put("FAF", String.valueOf(strActivity));
                 params.put("CALC", String.valueOf(strAlcohol));
-                
+                Log.i("tagstr", "["+params+"]");
+
                 return params;
             }
         };
@@ -1300,7 +1239,5 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
 
     }
-
-
 
 }

@@ -100,10 +100,10 @@
                     android:buttonTint="@color/black"/>
 
                 <RadioButton
-                    android:id="@+id/alcohol_frequetly"
+                    android:id="@+id/alcohol_frequently"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Frequetly"
+                    android:text="Frequently"
                     android:buttonTint="@color/black"/>
             </RadioGroup>
 
