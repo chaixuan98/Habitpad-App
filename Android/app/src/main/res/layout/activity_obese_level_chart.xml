@@ -27,6 +27,20 @@
                 android:layout_height="wrap_content"
                 android:gravity="top"></TabWidget>
 
+            <TextView
+                android:id="@+id/textViewLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:layout_gravity="bottom"
+                android:textSize="13sp"
+                android:layout_marginTop="5dp"
+                android:paddingLeft="10dp"
+                android:lineSpacingMultiplier="1"
+                android:text="0 - Insufficient_Weight   1 - Normal_Weight   2 - Overweight_Level_I\n\n3 - Overweight_Level_II   4 - Obesity_Type_I  5 - Obesity_Type_II\n\n6 - Obesity_Type_III"
+                android:textColor="@color/black" />
+
+
             <FrameLayout
                 android:id="@android:id/tabcontent"
                 android:layout_width="match_parent"
@@ -44,7 +58,7 @@
 
                     <TextView
                         android:layout_width="354dp"
-                        android:layout_height="73dp"
+                        android:layout_height="50dp"
                         android:id="@+id/textView"
                         android:layout_gravity="center_horizontal"
                         android:textStyle="bold"
@@ -57,7 +71,10 @@
                         android:id="@+id/day_chart"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
+
                 </LinearLayout>
+
+
 
                 <LinearLayout
                     android:id="@+id/linearLayout2"
@@ -140,7 +157,11 @@
                         android:layout_height="match_parent" />
 
                 </LinearLayout>
+
             </FrameLayout>
+
         </LinearLayout>
+
     </TabHost>
+
 </RelativeLayout>
