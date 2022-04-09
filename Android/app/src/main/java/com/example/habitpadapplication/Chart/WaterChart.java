@@ -452,11 +452,11 @@ public class WaterChart extends AppCompatActivity {
 
                                     JSONObject object = jsonArray.getJSONObject(i);
 
-                                    int totalYearWater = object.getInt("totalYearWater");
+                                    int drunkWater = object.getInt("drunkWater");
                                     String waterDateTime = object.getString("waterDateTime").trim();
 
                                     xYear.add(waterDateTime);
-                                    yYear.add(new Entry((totalYearWater),i));
+                                    yYear.add(new Entry((drunkWater),i));
 
                                 }
                                 LineDataSet set1 = new LineDataSet(yYear, "The consumed water in ml");

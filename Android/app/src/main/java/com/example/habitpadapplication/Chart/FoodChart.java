@@ -248,7 +248,7 @@ public class FoodChart extends AppCompatActivity {
                                 LineData data = new LineData(xDay, set1);
                                 dayLineChart.setData(data);
                                 dayLineChart.setDescription("");
-                                dayLineChart.animateXY(2000, 2000);
+                                dayLineChart.animateXY(500, 500);
                                 dayLineChart.invalidate();
 
 
@@ -317,7 +317,7 @@ public class FoodChart extends AppCompatActivity {
                                 LineData data = new LineData(xWeek, set1);
                                 weekLineChart.setData(data);
                                 weekLineChart.setDescription("");
-                                weekLineChart.animateXY(2000, 2000);
+                                weekLineChart.animateXY(500, 500);
                                 weekLineChart.invalidate();
 
 
@@ -386,7 +386,7 @@ public class FoodChart extends AppCompatActivity {
                                 LineData data = new LineData(xMonth, set1);
                                 monthLineChart.setData(data);
                                 monthLineChart.setDescription("");
-                                monthLineChart.animateXY(2000, 2000);
+                                monthLineChart.animateXY(500, 500);
                                 monthLineChart.invalidate();
 
 
@@ -439,11 +439,11 @@ public class FoodChart extends AppCompatActivity {
 
                                     JSONObject object = jsonArray.getJSONObject(i);
 
-                                    int totalYearFoodCal = object.getInt("totalYearFoodCal");
+                                    int totalCalories = object.getInt("totalCalories");
                                     String MonthName = object.getString("MonthName").trim();
 
                                     xYear.add(MonthName);
-                                    yYear.add(new Entry((totalYearFoodCal),i));
+                                    yYear.add(new Entry((totalCalories),i));
 
                                 }
                                 LineDataSet set1 = new LineDataSet(yYear, "The calories consumed in kcal");
@@ -455,7 +455,7 @@ public class FoodChart extends AppCompatActivity {
                                 LineData data = new LineData(xYear, set1);
                                 yearLineChart.setData(data);
                                 yearLineChart.setDescription("");
-                                yearLineChart.animateXY(2000, 2000);
+                                yearLineChart.animateXY(500, 500);
                                 yearLineChart.invalidate();
 
 

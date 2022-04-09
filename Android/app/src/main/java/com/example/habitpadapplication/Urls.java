@@ -70,6 +70,7 @@ public class Urls {
     public static final String GET_OBESE_LEVEL_DAY_GRAPH_URL = ROOT_URL+"get_obese_level_byday.php";
     public static final String GET_OBESE_LEVEL_WEEK_GRAPH_URL = ROOT_URL+"get_obese_level_byweek.php";
     public static final String GET_OBESE_LEVEL_MONTH_GRAPH_URL = ROOT_URL+"get_obese_level_bymonth.php";
+    public static final String GET_OBESE_LEVEL_YEAR_GRAPH_URL = ROOT_URL+"get_obese_level_byyear.php";
 
 
 

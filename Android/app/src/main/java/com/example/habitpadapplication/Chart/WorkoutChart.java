@@ -440,11 +440,11 @@ public class WorkoutChart extends AppCompatActivity {
 
                                     JSONObject object = jsonArray.getJSONObject(i);
 
-                                    int totalYearWorkoutCal = object.getInt("totalYearWorkoutCal");
+                                    int workoutDateCal = object.getInt("workoutDateCal");
                                     String MonthName = object.getString("MonthName").trim();
 
                                     xYear.add(MonthName);
-                                    yYear.add(new Entry((totalYearWorkoutCal),i));
+                                    yYear.add(new Entry((workoutDateCal),i));
 
                                 }
                                 LineDataSet set1 = new LineDataSet(yYear, "The calories burnt in kcal");

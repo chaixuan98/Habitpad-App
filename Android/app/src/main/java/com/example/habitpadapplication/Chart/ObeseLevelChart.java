@@ -164,7 +164,7 @@ public class ObeseLevelChart extends AppCompatActivity {
         yearLineChart.getAxisLeft().setDrawLimitLinesBehindData(false);
         yearLineChart.getAxisLeft().setDrawAxisLine(false);
         yearLineChart.getAxisLeft().setDrawGridLines(false);
-        //getFYear(intentUserID);
+        getOYear(intentUserID);
 
 
 
@@ -467,6 +467,101 @@ public class ObeseLevelChart extends AppCompatActivity {
                                 monthLineChart.setDescription("");
                                 monthLineChart.animateXY(500, 500);
                                 monthLineChart.invalidate();
+
+
+                            }
+
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(ObeseLevelChart.this, error.toString(), Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> params = new HashMap<>();
+                params.put("userID",userID);
+
+                return params;
+            }
+        };
+        VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
+    }
+
+    private void getOYear(final String userID){
+
+        xYear = new ArrayList<String>();
+        yYear = new ArrayList<Entry>();
+        // Initializing Request queue
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.GET_OBESE_LEVEL_YEAR_GRAPH_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+
+                            Log.i("tagconvertstr", "["+response+"]");
+
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray jsonArray = jsonObject.getJSONArray("obeseyear");
+                            String success = jsonObject.getString("success");
+
+                            if(success.equals("1")) {
+
+                                for (int i = 0; i < jsonArray.length(); i++) {
+
+                                    JSONObject object = jsonArray.getJSONObject(i);
+
+                                    String obeseLevel = object.getString("obeseLevel");
+                                    String addObeseDate = object.getString("addObeseDate").trim();
+
+                                    switch (obeseLevel) {
+                                        case "Insufficient_Weight":
+                                            level = 0;
+                                            break;
+                                        case "Normal_Weight":
+                                            level = 1;
+                                            break;
+                                        case "Overweight_Level_I":
+                                            level = 2;
+                                            break;
+                                        case "Overweight_Level_II":
+                                            level = 3;
+                                            break;
+                                        case "Obesity_Type_I":
+                                            level = 4;
+                                            break;
+                                        case "Obesity_Type_II":
+                                            level = 5;
+                                            break;
+                                        case "Obesity_Type_III":
+                                            level = 6;
+                                            break;
+
+                                    }
+
+
+                                    xYear.add(addObeseDate);
+                                    yYear.add(new Entry((level),i));
+
+                                }
+                                LineDataSet set1 = new LineDataSet(yYear, "Obesity Level" );
+                                set1.setLineWidth(1.5f);
+                                set1.setCircleRadius(4f);
+                                set1.setDrawFilled(true);
+                                set1.setDrawValues(false);
+
+                                LineData data = new LineData(xYear, set1);
+                                yearLineChart.setData(data);
+                                yearLineChart.setDescription("");
+                                yearLineChart.animateXY(500, 500);
+                                yearLineChart.invalidate();
 
 
                             }

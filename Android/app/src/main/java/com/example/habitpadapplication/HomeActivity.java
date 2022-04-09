@@ -215,6 +215,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                         return true;
 
                     case R.id.bottom_tip:
+                        AddUserTask(userID, 4, DateHandler.getCurrentFormedDate());
                         startActivity(new Intent(getApplicationContext(), ViewTipActivity.class));
                         overridePendingTransition(0,0);
                         return true;
@@ -225,9 +226,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 //                        return true;
 
                     case R.id.bottom_profile:
-//                        startActivity(new Intent(getApplicationContext(),HomeActivity.class));
-//                        overridePendingTransition(0,0);
-//                        return true;
+                        startActivity(new Intent(getApplicationContext(),UserSettingsActivity.class));
+                        overridePendingTransition(0,0);
+                        return true;
 
                 }
                 return false;
