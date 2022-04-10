@@ -62,6 +62,9 @@ public class EditTipActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        setTitle("Edit Tip");
         setContentView(R.layout.activity_edit_tip);
 
 
@@ -137,10 +140,8 @@ public class EditTipActivity extends AppCompatActivity {
         SimpleDateFormat sdf = new SimpleDateFormat("dd MMM YYYY, h:mm a");
         final String tipDateTime = sdf.format(new Date());
 
-        // Initializing Request queue
-        mRequestQueue = Volley.newRequestQueue(EditTipActivity.this);
 
-        mStringRequest = new StringRequest(Request.Method.POST, getBaseUrl(), new Response.Listener<String>()  {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.EDIT_TIP_URL, new Response.Listener<String>()  {
                     @Override
                     public void onResponse(String response) {
 
@@ -184,16 +185,19 @@ public class EditTipActivity extends AppCompatActivity {
 
         };
 
-        mStringRequest.setShouldCache(false);
-        mRequestQueue.add(mStringRequest);
+        VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
 
     }
 
-    private String getBaseUrl (){
-        return "http://"+getResources().getString(R.string.machine_ip_address)+"/android/edit_tip.php";
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
-    public void tipbackPage(View view) {
-        startActivity(new Intent(EditTipActivity.this,AdminTipsActivity.class));
+    public void onBackPressed() {
+        Intent intent = new Intent(EditTipActivity.this, AdminTipsActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

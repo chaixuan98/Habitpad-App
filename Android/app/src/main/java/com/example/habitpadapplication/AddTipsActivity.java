@@ -53,9 +53,6 @@ public class AddTipsActivity extends AppCompatActivity {
     private Bitmap bitmap;
     String encodeImageString;
 
-    // Volley variables
-    private StringRequest mStringRequest;
-    private RequestQueue mRequestQueue;
 
 
     @Override

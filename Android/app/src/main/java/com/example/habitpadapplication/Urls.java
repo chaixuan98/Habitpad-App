@@ -10,6 +10,7 @@ public class Urls {
 
     public static final String GET_TIP_URL = ROOT_URL+"get_tip.php";
     public static final String ADD_TIP_URL = ROOT_URL+"tip_upload.php";
+    public static final String EDIT_TIP_URL = ROOT_URL+"edit_tip.php";
     public static final String DELETE_TIP_URL = ROOT_URL+"delete_tip.php";
 
 
