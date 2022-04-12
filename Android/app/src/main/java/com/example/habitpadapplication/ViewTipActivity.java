@@ -18,6 +18,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.example.habitpadapplication.Adapters.TipViewAdpater;
 import com.example.habitpadapplication.Model.Tip;
+import com.example.habitpadapplication.Settings.UserSettingsActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.json.JSONArray;
@@ -73,9 +74,9 @@ public class ViewTipActivity extends AppCompatActivity {
 //                        return true;
 
                     case R.id.bottom_profile:
-//                        startActivity(new Intent(getApplicationContext(),HomeActivity.class));
-//                        overridePendingTransition(0,0);
-//                        return true;
+                        startActivity(new Intent(getApplicationContext(), UserSettingsActivity.class));
+                        overridePendingTransition(0,0);
+                        return true;
 
                 }
                 return false;
