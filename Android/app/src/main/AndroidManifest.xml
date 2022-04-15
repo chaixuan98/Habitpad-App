@@ -29,6 +29,12 @@
         android:theme="@style/Theme.HabitpadApplication"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".DoctorMainActivity"
+            android:exported="true" />
+        <activity
+            android:name=".DoctorSignUpActivity"
+            android:exported="true" />
+        <activity
             android:name=".Chart.ObeseLevelChart"
             android:exported="true" />
         <activity

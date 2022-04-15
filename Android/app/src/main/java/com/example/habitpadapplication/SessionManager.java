@@ -21,6 +21,7 @@ public class SessionManager {
     private static final String IS_LOGIN = "IsLoggedIn";
 
     public  static  final String KEY_USERID = "userID";
+    public  static  final String KEY_USERPHOTO = "userPhoto";
     public  static  final String KEY_USERNAME = "username";
     public  static  final String KEY_EMAIL = "email";
     public  static  final String KEY_PHONE = "phone";
@@ -43,10 +44,11 @@ public class SessionManager {
         editor = sharedPreferences.edit();
     }
 
-    public void  createLoginSession(String userID,String username, String email, String phone, String password, String gender, String age, String weight, String height,String familySuffered,String lifestyle, String bmi ,String smoked,String alcohol, String medical){
+    public void  createLoginSession(String userID,String userPhoto, String username, String email, String phone, String password, String gender, String age, String weight, String height,String familySuffered,String lifestyle, String bmi ,String smoked,String alcohol, String medical){
 
         editor.putBoolean(IS_LOGIN, true);
         editor.putString(KEY_USERID ,userID);
+        editor.putString(KEY_USERPHOTO ,userPhoto);
         editor.putString(KEY_USERNAME ,username);
         editor.putString(KEY_EMAIL ,email);
         editor.putString(KEY_PHONE ,phone);
@@ -67,6 +69,7 @@ public class SessionManager {
     public HashMap<String,String>getUsersDetailFromSession(){
         HashMap<String,String> userData = new HashMap<String,String>();
         userData.put(KEY_USERID, sharedPreferences.getString(KEY_USERID,null));
+        userData.put(KEY_USERPHOTO, sharedPreferences.getString(KEY_USERPHOTO,null));
         userData.put(KEY_USERNAME, sharedPreferences.getString(KEY_USERNAME,null));
         userData.put(KEY_EMAIL, sharedPreferences.getString(KEY_EMAIL,null));
         userData.put(KEY_PHONE, sharedPreferences.getString(KEY_PHONE,null));

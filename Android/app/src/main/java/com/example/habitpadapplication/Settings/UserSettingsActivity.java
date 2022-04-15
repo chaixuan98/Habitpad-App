@@ -1,17 +1,29 @@
 package com.example.habitpadapplication.Settings;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,6 +34,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
+import com.bumptech.glide.Glide;
 import com.example.habitpadapplication.HomeActivity;
 
 import com.example.habitpadapplication.R;
@@ -32,13 +45,19 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import org.apache.commons.beanutils.converters.ByteArrayConverter;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class UserSettingsActivity extends AppCompatActivity  {
 
@@ -52,12 +71,15 @@ public class UserSettingsActivity extends AppCompatActivity  {
 
     private TextInputLayout mUsername,mEmail,mPhone,mAge;
     private TextInputEditText mWeight,mHeight;
-    private TextView mGender,mAlcohol, mBmi, mLifestyle, mSmoked,mFamilySuffered, mMedical;
+    private TextView mGender,mAlcohol, mBmi, mLifestyle, mSmoked,mFamilySuffered, mMedical, changeProfileTV;
     private MaterialButton editUserBtn;
+    private Bitmap bitmap;
+    private CircleImageView profileImage;
+    String encodeImageString;
 
 
     SessionManager sessionManager;
-    String userID, password;
+    String userID, password, userPhoto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +94,7 @@ public class UserSettingsActivity extends AppCompatActivity  {
         HashMap<String, String> usersDetails = sessionManager.getUsersDetailFromSession();
 
         userID = usersDetails.get(SessionManager.KEY_USERID);
+        userPhoto = usersDetails.get(SessionManager.KEY_USERPHOTO);
         password = usersDetails.get(SessionManager.KEY_PASSWORD);
 
         mUsername = findViewById(R.id.usernamelayout);
@@ -88,7 +111,25 @@ public class UserSettingsActivity extends AppCompatActivity  {
         mAlcohol = findViewById(R.id.useralcohol);
         mMedical = findViewById(R.id.usermedical);
 
+        changeProfileTV = findViewById(R.id.change_profile_tv);
+        profileImage = findViewById(R.id.profile_image);
+
         editUserBtn = findViewById(R.id.editUserButton);
+
+        getUserDetails();
+
+        //checking the permission
+        //if the permission is not given we will open setting to add permission
+        //else app will not open
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                    Uri.parse("package:" + getPackageName()));
+            finish();
+            startActivity(intent);
+            return;
+        }
 
 
         TextWatcher textWatcher = new TextWatcher(){
@@ -256,6 +297,7 @@ public class UserSettingsActivity extends AppCompatActivity  {
             public void onClick(View v) {
 
                 editUserDetails(userID,
+                        userPhoto,
                         mUsername.getEditText().getText().toString(),
                         mEmail.getEditText().getText().toString(),
                         mPhone.getEditText().getText().toString(),
@@ -273,6 +315,15 @@ public class UserSettingsActivity extends AppCompatActivity  {
 
             }
         });
+
+        changeProfileTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(i, 100);
+            }
+        });
+
     }
 
     @Override
@@ -336,6 +387,7 @@ public class UserSettingsActivity extends AppCompatActivity  {
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject object = jsonArray.getJSONObject(i);
 
+                            String userPhoto = object.getString("userPhoto").trim();
                             String username = object.getString("username").trim();
                             String email = object.getString("email").trim();
                             String phone = object.getString("phone").trim();
@@ -350,6 +402,10 @@ public class UserSettingsActivity extends AppCompatActivity  {
                             String smoked = object.getString("smoked").trim();
                             String alcohol = object.getString("alcohol").trim();
                             String medical = object.getString("medical").trim();
+
+                            Glide.with(getApplicationContext()).asBitmap().load(userPhoto)
+                                    .fitCenter()
+                                    .dontAnimate().into(profileImage);
 
                             mUsername.getEditText().setText(username);
                             mEmail.getEditText().setText(email);
@@ -401,6 +457,7 @@ public class UserSettingsActivity extends AppCompatActivity  {
     }
 
     private void editUserDetails(final String userID,
+                                 final String userPhoto,
                                  final String username,
                                  final String email,
                                  final String phone,
@@ -434,7 +491,8 @@ public class UserSettingsActivity extends AppCompatActivity  {
 
                     if (success.equals("1")) {
                         Toast.makeText(getApplicationContext(),message,Toast.LENGTH_SHORT).show();
-                        sessionManager.createLoginSession(userID,username,email,phone,password,gender,age,weight,height,familySuffered,lifestyle,bmi,smoked,alcohol,medical);
+                        sessionManager.createLoginSession(userID,userPhoto,username,email,phone,password,gender,age,weight,height,familySuffered,lifestyle,bmi,smoked,alcohol,medical);
+
                     }
 
                     if (success.equals("0")) {
@@ -488,8 +546,93 @@ public class UserSettingsActivity extends AppCompatActivity  {
     @Override
     protected void onResume(){
         super.onResume();
-        getUserDetails();
+        //getUserDetails();
 
+    }
+
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 100 && resultCode == RESULT_OK && data != null) {
+
+            //getting the image Uri
+            Uri imageUri = data.getData();
+            try {
+                //getting bitmap object from uri
+                //Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                InputStream inputStream=getContentResolver().openInputStream(imageUri);
+                bitmap= BitmapFactory.decodeStream(inputStream);
+                profileImage.setImageBitmap(bitmap);
+                encodeBitmapImage(bitmap);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            uploadProfilePic(userID);
+
+        }
+    }
+
+    private void encodeBitmapImage(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream=new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG,100,byteArrayOutputStream);
+        byte[] bytesofimage=byteArrayOutputStream.toByteArray();
+        encodeImageString=android.util.Base64.encodeToString(bytesofimage, Base64.DEFAULT);
+    }
+
+    private void uploadProfilePic(final String userID) {
+
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Uploading...");
+        progressDialog.show();
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.UPLOAD_USER_PROFILE_PIC_URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                progressDialog.dismiss();
+
+                try {
+                    Log.i("tagconvertstr", "["+response+"]");
+                    JSONObject jsonObject = new JSONObject(response);
+
+                    String success = jsonObject.getString("success");
+                    String message = jsonObject.getString("message");
+
+                    if (success.equals("1")) {
+
+                        Toast.makeText(UserSettingsActivity.this,message,Toast.LENGTH_SHORT).show();
+
+                    }
+
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    progressDialog.dismiss();
+                    Toast.makeText(UserSettingsActivity.this, "Read error" + e.toString(), Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                progressDialog.dismiss();
+                Toast.makeText(UserSettingsActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> params = new HashMap<>();
+                params.put("userID", userID);
+                params.put("userPhoto",encodeImageString);
+                return params;
+            }
+        };
+
+        VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
     }
 
 }

@@ -38,6 +38,7 @@ import com.android.volley.Response;
 import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.bumptech.glide.Glide;
 import com.example.habitpadapplication.Adapters.TipViewAdpater;
 import com.example.habitpadapplication.Chart.FoodChart;
 import com.example.habitpadapplication.Chart.ObeseLevelChart;
@@ -66,6 +67,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     // Variable declarations
@@ -78,7 +81,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     private String urlClassify = "https://obese-classify.herokuapp.com/predict";
 
-    private ImageView profileView;
+    private CircleImageView profileView;
 
     private TextView foodCardConsumedCalories,workoutCardBurnedCalories,waterCardIntake,waterCardNeed ;
 
@@ -106,12 +109,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     private BroadcastReceiver updateUIReciver;
     private Context context;
-    private String userID, username;
+    private String userID, username, userPhoto;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //setTitle("Home");
         setContentView(R.layout.activity_home);
 
         context=getApplicationContext();
@@ -181,6 +185,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         fragmentPrefs = new FragmentPrefs(context);
 
         userID = usersDetails.get(SessionManager.KEY_USERID);
+        userPhoto = usersDetails.get(SessionManager.KEY_USERPHOTO);
         username = usersDetails.get(SessionManager.KEY_USERNAME);
         strUserGender = usersDetails.get(SessionManager.KEY_GENDER);
         strUserAge = usersDetails.get(SessionManager.KEY_AGE);
@@ -194,6 +199,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
 
         textView.setText(username+" "+userID );
+
 
         //checkAppFirstTimeRun();
 
@@ -616,49 +622,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         }
 
-//    private void UserClassificationPage() {
-//        if(ContextCompat.checkSelfPermission(HomeActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED){
-//            ActivityCompat.requestPermissions(HomeActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},0);
-//
-//        }else{
-//
-//            try{
-//                String baseDir = android.os.Environment.getExternalStorageDirectory().getAbsolutePath();
-//                String fileName = "AnalysisData.csv";
-//                String filePath = baseDir + File.separator + fileName;
-//                File f = new File(filePath);
-//                CSVWriter writer;
-//
-//                double height2 = Double.parseDouble(strUserHeight)/100;
-//
-//                // File exist
-//                if(f.exists()&&!f.isDirectory())
-//                {
-//
-//                    writer = new CSVWriter(new FileWriter(filePath, true));
-//                }
-//                else
-//                {
-//                    writer = new CSVWriter(new FileWriter(filePath));
-//                }
-//
-//                String[] header = { "Gender", "Age", "Weight", "Height", "Family Suffered", "Activity Level", "Smoked", "Alcohol", "WaterIntake", "FoodCalories", "Workout Calories" };
-//                writer.writeNext(header);
-//
-//                String[] data = new String[]{strUserGender, strUserAge, strUserCurrentWeight, String.valueOf(height2), strFamilySuffered, strUserActivityLevel, strUserSmoked, strUserAlcohol, strUserWaterIntake, strUserFoodCalories, strUserWorkout };
-//
-//                writer.writeNext(data);
-//
-//                writer.close();
-//                Toast.makeText(HomeActivity.this,"Csv created sucessfully "+ filePath,Toast.LENGTH_LONG).show();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//
-//        }
-//
-//
-//    }
+
     private void UserSendToGamificationPage()
     {
         Intent gamificationIntent = new Intent(this, GamificationActivity.class);
@@ -746,6 +710,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
 
     private void  updateView(){
+        DisplayUserProfilePic(userID);
         DisplayUserFoodCount(userID,DateHandler.getCurrentFormedDate());
         //ObeseClassification();
     }
@@ -763,7 +728,59 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
+    private void DisplayUserProfilePic(final String intentUserID){
 
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.GET_USER_PROFILE_PIC_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            Log.i("tagconvertstr", "["+response+"]");
+                            //JSONArray array = new JSONArray(response);
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray jsonArray = jsonObject.getJSONArray("profilepic");
+                            String success = jsonObject.getString("success");
+
+                            if(success.equals("1")) {
+
+                                for (int i = 0; i < jsonArray.length(); i++) {
+
+                                    JSONObject object = jsonArray.getJSONObject(i);
+
+                                    String profilePic= object.getString("userPhoto");
+
+                                    Glide.with(HomeActivity.this).asBitmap().load(profilePic)
+                                            .fitCenter()
+                                            .dontAnimate().into(profileView);
+
+                                }
+                            }
+
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(HomeActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> params = new HashMap<>();
+                params.put("userID",intentUserID);
+                return params;
+            }
+        };
+
+        VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
+
+
+
+    }
     private void DisplayUserFoodCount(final String intentUserID, final String date){
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.GET_USER_FOOD_COUNT_URL,

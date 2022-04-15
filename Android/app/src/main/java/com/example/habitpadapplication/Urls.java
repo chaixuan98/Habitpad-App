@@ -7,6 +7,8 @@ public class Urls {
     public static final String SIGN_IN_URL = ROOT_URL+"sign_in.php";
     public static final String READ_USER_DETAILS_URL = ROOT_URL+"read_detail.php";
     public static final String UPDATE_USER_DETAILS_URL = ROOT_URL+"edit_detail.php";
+    public static final String UPLOAD_USER_PROFILE_PIC_URL = ROOT_URL+"upload_profile_pic.php";
+    public static final String GET_USER_PROFILE_PIC_URL = ROOT_URL+"get_profile_pic.php";
 
     public static final String GET_TIP_URL = ROOT_URL+"get_tip.php";
     public static final String ADD_TIP_URL = ROOT_URL+"tip_upload.php";
@@ -72,6 +74,11 @@ public class Urls {
     public static final String GET_OBESE_LEVEL_WEEK_GRAPH_URL = ROOT_URL+"get_obese_level_byweek.php";
     public static final String GET_OBESE_LEVEL_MONTH_GRAPH_URL = ROOT_URL+"get_obese_level_bymonth.php";
     public static final String GET_OBESE_LEVEL_YEAR_GRAPH_URL = ROOT_URL+"get_obese_level_byyear.php";
+
+    public static final String DOCTOR_SIGN_UP_URL = ROOT_URL+"doctor_sign_up.php";
+    public static final String DOCTOR_SIGN_IN_URL = ROOT_URL+"doctor_sign_in.php";
+    public static final String UPLOAD_DOCTOR_PROFILE_PIC_URL = ROOT_URL+"upload_doctor_pic.php";
+    public static final String GET_DOCTOR_PROFILE_PIC_URL = ROOT_URL+"get_doctor_pic.php";
 
 
 

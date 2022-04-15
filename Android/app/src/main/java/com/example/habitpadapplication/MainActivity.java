@@ -102,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
                             JSONObject object = jsonArray.getJSONObject(i);
 
                             String userID = object.getString("userID").trim();
+                            String userPhoto = object.getString("userPhoto").trim();
                             String username = object.getString("username").trim();
                             String email = object.getString("email").trim();
                             String phone = object.getString("phone").trim();
@@ -118,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
                             String medical = object.getString("medical").trim();
 
                             SessionManager sessionManager = new SessionManager(MainActivity.this);
-                            sessionManager.createLoginSession(userID,username,email,phone,password,gender,birthday,weight,height,familySuffered,lifestyle,bmi,smoked,alcohol,medical);
+                            sessionManager.createLoginSession(userID,userPhoto,username,email,phone,password,gender,birthday,weight,height,familySuffered,lifestyle,bmi,smoked,alcohol,medical);
 
                             Toast.makeText(MainActivity.this,"Success Login!! \n Welcome ",Toast.LENGTH_SHORT).show();
                             // Start activity dashboard

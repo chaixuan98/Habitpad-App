@@ -46,18 +46,7 @@ public class EditTipActivity extends AppCompatActivity {
     private Bitmap bitmap;
     String encodeImageString;
 
-//    private RecyclerView recyclerView;
-//    private RecyclerView.LayoutManager manager;
-//    private RecyclerView.Adapter mAdapter;
-//    private List<Tip> tips;
-//
-//    Tip tip;
 
-
-
-    // Volley Variables
-    private RequestQueue mRequestQueue;
-    private StringRequest mStringRequest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
