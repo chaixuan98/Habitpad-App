@@ -2,7 +2,7 @@ package com.example.habitpadapplication;
 
 public class Urls {
 
-    public static final String ROOT_URL = "http://192.168.1.107/android/";
+    public static final String ROOT_URL = "http://192.168.1.105/android/";
     public static final String SIGN_UP_URL = ROOT_URL+"sign_up.php";
     public static final String SIGN_IN_URL = ROOT_URL+"sign_in.php";
     public static final String READ_USER_DETAILS_URL = ROOT_URL+"read_detail.php";
@@ -79,7 +79,10 @@ public class Urls {
     public static final String DOCTOR_SIGN_IN_URL = ROOT_URL+"doctor_sign_in.php";
     public static final String UPLOAD_DOCTOR_PROFILE_PIC_URL = ROOT_URL+"upload_doctor_pic.php";
     public static final String GET_DOCTOR_PROFILE_PIC_URL = ROOT_URL+"get_doctor_pic.php";
-
+    public static final String GET_DOCTOR_DETAILS_URL = ROOT_URL+"get_doctor_detail.php";
+    public static final String UPDATE_DOCTOR_DETAILS_URL = ROOT_URL+"edit_doctor_detail.php";
+    public static final String ADD_DOCTOR_SLOT_URL = ROOT_URL+"add_doctor_slot.php";
+    public static final String GET_DOCTOR_LIST_URL = ROOT_URL+"get_doctor_list.php";
 
 
 }

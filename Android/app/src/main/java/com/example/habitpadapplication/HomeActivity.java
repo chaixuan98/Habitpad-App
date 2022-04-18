@@ -227,9 +227,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                         return true;
 
                     case R.id.bottom_appointment:
-//                        startActivity(new Intent(getApplicationContext(),HomeActivity.class));
-//                        overridePendingTransition(0,0);
-//                        return true;
+                        startActivity(new Intent(getApplicationContext(),DoctorListActivity.class));
+                        overridePendingTransition(0,0);
+                        return true;
 
                     case R.id.bottom_profile:
                         startActivity(new Intent(getApplicationContext(),UserSettingsActivity.class));
@@ -406,6 +406,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(new Intent(this,ReminderActivity.class));
                 break;
 
+            case R.id.nav_appointment:
+                startActivity(new Intent(this,DoctorListActivity.class));
+                break;
+
             case R.id.nav_privacy:
                 startActivity(new Intent(this,PrivacyPolicyActivity.class));
                 break;
@@ -413,6 +417,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_setting:
                 startActivity(new Intent(this,UserSettingsActivity.class));
                 break;
+
 
             case R.id.nav_logout:
                 sessionManager.logoutUserFromSession();
@@ -781,6 +786,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
 
     }
+
     private void DisplayUserFoodCount(final String intentUserID, final String date){
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.GET_USER_FOOD_COUNT_URL,

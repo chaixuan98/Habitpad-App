@@ -1,12 +1,9 @@
 package com.example.habitpadapplication;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,11 +30,11 @@ public class DoctorLoginActivity extends AppCompatActivity {
     private MaterialButton dSignIn;
     private TextView dSignUp;
 
-    SharedPreferences sharedPreferences;
-
-    public static final String DfileName = "doctorLogin";
-    public static final String DEmail = "doctorEmail";
-    public static final String DPassword = "doctorPassword";
+//    SharedPreferences sharedPreferences;
+//
+//    public static final String DfileName = "doctorLogin";
+//    public static final String DEmail = "doctorEmail";
+//    public static final String DPassword = "doctorPassword";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,14 +50,14 @@ public class DoctorLoginActivity extends AppCompatActivity {
         dSignIn = findViewById(R.id.doctor_signinbtn);
         dSignUp = findViewById(R.id.doctor_signup_tv);
 
-        sharedPreferences = getSharedPreferences(DfileName, Context.MODE_PRIVATE);
-        if(sharedPreferences.contains(DEmail)){
-            Toast.makeText(DoctorLoginActivity.this,"Doctor login successfully",Toast.LENGTH_SHORT).show();
-            // Finish
-            finish();
-            // Start activity dashboard
-            startActivity(new Intent(DoctorLoginActivity.this,DoctorMainActivity.class));
-        }
+//        sharedPreferences = getSharedPreferences(DfileName, Context.MODE_PRIVATE);
+//        if(sharedPreferences.contains(DEmail)){
+//            Toast.makeText(DoctorLoginActivity.this,"Doctor login successfully",Toast.LENGTH_SHORT).show();
+//            // Finish
+//            finish();
+//            // Start activity dashboard
+//            startActivity(new Intent(DoctorLoginActivity.this,DoctorMainActivity.class));
+//        }
 
         dSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,17 +75,6 @@ public class DoctorLoginActivity extends AppCompatActivity {
             }
 
             signIn(dEmail.getEditText().getText().toString(), dPassword.getEditText().getText().toString());
-
-//            if (dEmail.getEditText().getText().toString().equals("doctor@doctor.com") &&  dPassword.getEditText().getText().toString().equals("doctor456")) {
-//
-//                SharedPreferences.Editor editor = sharedPreferences.edit();
-//                editor.putString(DEmail,dEmail.getEditText().getText().toString());
-//                editor.putString(DPassword,dPassword.getEditText().getText().toString());
-//                editor.commit();
-//
-//            }
-
-
 
         });
 
@@ -113,7 +99,6 @@ public class DoctorLoginActivity extends AppCompatActivity {
                             JSONObject object = jsonArray.getJSONObject(i);
 
                             String doctorID = object.getString("doctorID").trim();
-                            String doctorPhoto = object.getString("doctorPhoto").trim();
                             String doctorName = object.getString("doctorName").trim();
                             String doctorPassword = object.getString("doctorPassword").trim();
                             String doctorEmail = object.getString("doctorEmail").trim();
@@ -122,8 +107,8 @@ public class DoctorLoginActivity extends AppCompatActivity {
                             String doctorExp = object.getString("doctorExp").trim();
                             String doctorHospital = object.getString("doctorHospital").trim();
 
-//                            SessionManager sessionManager = new SessionManager(MainActivity.this);
-//                            sessionManager.createLoginSession(userID,userPhoto,username,email,phone,password,gender,birthday,weight,height,familySuffered,lifestyle,bmi,smoked,alcohol,medical);
+                            DoctorSessionManager doctorSessionManager = new DoctorSessionManager(DoctorLoginActivity.this);
+                            doctorSessionManager.createDoctorLoginSession(doctorID,doctorName,doctorPassword,doctorEmail,doctorPhone,doctorEducation,doctorExp,doctorHospital);
 
                             Toast.makeText(DoctorLoginActivity.this,message,Toast.LENGTH_SHORT).show();
                             // Start activity dashboard

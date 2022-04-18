@@ -7,6 +7,8 @@
         <entry key="..\:/Users/user/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/drawable/button_style_04.xml" value="0.2203125" />
         <entry key="..\:/Users/user/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/drawable/card_style_01.xml" value="0.2203125" />
         <entry key="..\:/Users/user/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/drawable/drink_icon_backgorund.xml" value="0.2203125" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/drawable/ic_more.xml" value="0.2203125" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/drawable/ic_timer.xml" value="0.2203125" />
         <entry key="..\:/Users/user/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/drawable/main_page_backgound.xml" value="0.2203125" />
         <entry key="..\:/Users/user/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/drawable/progressbar_styles_01.xml" value="0.2203125" />
         <entry key="..\:/Users/user/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/drawable/rectangle_outline.xml" value="0.2203125" />
@@ -18,21 +20,26 @@
         <entry key="..\:/Users/user/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/activity_add_workout.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/user/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/activity_admin_login.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/user/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/activity_admin_tips.xml" value="0.2033514492753623" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/activity_book_appointment.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/user/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/activity_bottom_navigation.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/user/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/activity_chart.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/user/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/activity_congratulation_dialog.xml" value="0.20364583333333333" />
         <entry key="..\:/Users/user/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/activity_date_log.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/user/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/activity_diary.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/activity_doctor_appointments.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/activity_doctor_list.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/user/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/activity_doctor_login.xml" value="0.20416666666666666" />
-        <entry key="..\:/Users/user/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/activity_doctor_main.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/activity_doctor_main.xml" value="0.16" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/activity_doctor_schedule.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/user/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/activity_doctor_sign_up.xml" value="0.18" />
         <entry key="..\:/Users/user/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/activity_doctor_sign_up2nd.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/activity_doctor_update_profile.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/user/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/activity_exercise.xml" value="0.2033514492753623" />
         <entry key="..\:/Users/user/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/activity_food_chart.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/user/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/activity_food_list.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/user/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/activity_food_reminder.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/user/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/activity_gamification.xml" value="0.25" />
-        <entry key="..\:/Users/user/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/activity_home.xml" value="0.24515322076297685" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/activity_home.xml" value="0.21" />
         <entry key="..\:/Users/user/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/activity_leaderboard.xml" value="0.19947916666666668" />
         <entry key="..\:/Users/user/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/activity_main.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/user/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/activity_obese_level_chart.xml" value="0.20416666666666666" />
@@ -58,10 +65,13 @@
         <entry key="..\:/Users/user/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/custom_workout_dialog.xml" value="0.22" />
         <entry key="..\:/Users/user/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/date_log_raw.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/user/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/divider.xml" value="0.1" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/doctor_raw.xml" value="0.25" />
         <entry key="..\:/Users/user/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/food_raw.xml" value="0.33" />
         <entry key="..\:/Users/user/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/food_reminder_fragment.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/user/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/fragment_task.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/user/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/leaderboard_raw.xml" value="0.19947916666666668" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/main_nav_drawer.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/main_toolbar.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/user/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/nav_header_main.xml" value="0.1" />
         <entry key="..\:/Users/user/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/number_of_servings_edit_layout.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/user/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/reminder_raw.xml" value="0.20416666666666666" />

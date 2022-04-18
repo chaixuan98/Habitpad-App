@@ -29,6 +29,21 @@
         android:theme="@style/Theme.HabitpadApplication"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".DoctorListActivity"
+            android:exported="true" />
+        <activity
+            android:name=".BookAppointment"
+            android:exported="true" />
+        <activity
+            android:name=".DoctorUpdateProfile"
+            android:exported="true" />
+        <activity
+            android:name=".DoctorAppointments"
+            android:exported="true" />
+        <activity
+            android:name=".DoctorSchedule"
+            android:exported="true" />
+        <activity
             android:name=".DoctorMainActivity"
             android:exported="true" />
         <activity

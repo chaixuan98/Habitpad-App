@@ -541,17 +541,12 @@ public class UserSettingsActivity extends AppCompatActivity  {
     }
 
 
-
-
-    @Override
-    protected void onResume(){
-        super.onResume();
-        //getUserDetails();
-
-    }
-
-
-
+//    @Override
+//    protected void onResume(){
+//        super.onResume();
+//        //getUserDetails();
+//
+//    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
