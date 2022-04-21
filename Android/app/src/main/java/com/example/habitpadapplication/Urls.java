@@ -2,7 +2,7 @@ package com.example.habitpadapplication;
 
 public class Urls {
 
-    public static final String ROOT_URL = "http://192.168.1.105/android/";
+    public static final String ROOT_URL = "http://192.168.0.133/android/";
     public static final String SIGN_UP_URL = ROOT_URL+"sign_up.php";
     public static final String SIGN_IN_URL = ROOT_URL+"sign_in.php";
     public static final String READ_USER_DETAILS_URL = ROOT_URL+"read_detail.php";
