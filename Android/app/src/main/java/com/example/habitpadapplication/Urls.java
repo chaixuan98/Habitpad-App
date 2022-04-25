@@ -55,15 +55,15 @@ public class Urls {
     public static final String DELETE_FOOD_LOG_URL = ROOT_URL+"delete_food_log.php";
 
 
-    public static final String GET_USER_BREAKFAST_COUNT_URL = ROOT_URL+"get_user_breakfast_count.php";
-    public static final String GET_USER_LUNCH_COUNT_URL = ROOT_URL+"get_user_lunch_count.php";
-    public static final String GET_USER_DINNER_COUNT_URL = ROOT_URL+"get_user_dinner_count.php";
-    public static final String GET_USER_SNACK_COUNT_URL = ROOT_URL+"get_user_snack_count.php";
+//    public static final String GET_USER_BREAKFAST_COUNT_URL = ROOT_URL+"get_user_breakfast_count.php";
+//    public static final String GET_USER_LUNCH_COUNT_URL = ROOT_URL+"get_user_lunch_count.php";
+//    public static final String GET_USER_DINNER_COUNT_URL = ROOT_URL+"get_user_dinner_count.php";
+//    public static final String GET_USER_SNACK_COUNT_URL = ROOT_URL+"get_user_snack_count.php";
 
 
     public static final String GET_TASK_LIST_URL = ROOT_URL+"get_task_list.php";
     public static final String ADD_USER_TASK_DETAIL_URL = ROOT_URL+"add_task_detail.php";
-    public static final String GET_USER_TOTAL_TASK_POINT_DAILY_URL = ROOT_URL+"get_user_total_task_point_daily.php";
+//    public static final String GET_USER_TOTAL_TASK_POINT_DAILY_URL = ROOT_URL+"get_user_total_task_point_daily.php";
     public static final String GET_USER_TOTAL_POINT_URL = ROOT_URL+"get_user_total_point.php";
     public static final String GET_USER_RANK_URL = ROOT_URL+"get_user_rank.php";
 
@@ -83,6 +83,8 @@ public class Urls {
     public static final String UPDATE_DOCTOR_DETAILS_URL = ROOT_URL+"edit_doctor_detail.php";
     public static final String ADD_DOCTOR_SLOT_URL = ROOT_URL+"add_doctor_slot.php";
     public static final String GET_DOCTOR_LIST_URL = ROOT_URL+"get_doctor_list.php";
+    public static final String GET_DOCTOR_SLOT_URL = ROOT_URL+"get_doctor_slot.php";
+    public static final String UPDATE_DOCTOR_SLOT_URL = ROOT_URL+"update_slot_available.php";
 
 
 }

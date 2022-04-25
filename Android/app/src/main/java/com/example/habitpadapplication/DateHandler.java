@@ -9,11 +9,13 @@ public class DateHandler {
     public static String getCurrentDate(){
         return  new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss").format(new Date());
     }
+
     public static String getCurrentTime() {
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "HH:mm a", Locale.getDefault());
         return dateFormat.format(new Date());
     }
+
     public static String getDateFormat(String date)  {
         System.out.println(date);
         SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
@@ -27,8 +29,25 @@ public class DateHandler {
         fmt = new SimpleDateFormat("yyyy-MM-dd");
         return fmt.format(d);
     }
+
     public static String getCurrentFormedDate(){
         return  new SimpleDateFormat( "yyyy-MM-dd").format(new Date());
+    }
+
+    public static String dateFormat1(String date) {
+        System.out.println(" time string: "+date);
+        SimpleDateFormat fmt = new SimpleDateFormat("dd-MM-yyyy");
+        Date d = null;
+        try {
+            d = fmt.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        fmt = new SimpleDateFormat("yyyy-MM-dd");
+        System.out.println(" time: "+fmt.format(d));
+        return fmt.format(d);
+
     }
 
     public static String timeFormat(String date) {

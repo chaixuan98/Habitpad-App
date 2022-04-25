@@ -3,12 +3,17 @@ package com.example.habitpadapplication;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -36,9 +41,16 @@ public class DoctorSchedule extends AppCompatActivity {
     private TextView timer1, timer2;
     private MaterialButton btn;
     private String doctorID;
+    private EditText appDate;
+    private DatePickerDialog.OnDateSetListener setListener;
 
     int t1Hr, t1Min, t2Hr, t2Min;
     SimpleDateFormat sdf;
+
+    Calendar calendar = Calendar.getInstance();
+    final int year = calendar.get(Calendar.YEAR);
+    final int month = calendar.get(Calendar.MONTH);
+    final int day = calendar.get(Calendar.DAY_OF_MONTH);
 
 
     @Override
@@ -52,9 +64,50 @@ public class DoctorSchedule extends AppCompatActivity {
         timer1 = findViewById(R.id.timer1);
         timer2 = findViewById(R.id.timer2);
         btn = findViewById(R.id.confirm_btn);
+        appDate = findViewById(R.id.app_date);
 
         Intent intent = getIntent();
         doctorID = intent.getExtras().getString("doctorID");
+
+        appDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerDialog datePickerDialog = new DatePickerDialog(DoctorSchedule.this,
+                        android.R.style.Theme_Holo_Light_Dialog_MinWidth,setListener,
+                        year, month, day);
+                datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                datePickerDialog.show();
+            }
+        });
+
+        setListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int day) {
+
+                month = month + 1;
+                String date = day + "-" + month + "-" + year;
+                appDate.setText(DateHandler.dateFormat1(date));
+
+            }
+        };
+
+        appDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerDialog datePickerDialog = new DatePickerDialog(DoctorSchedule.this, new DatePickerDialog.OnDateSetListener() {
+
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int day) {
+
+                        month = month + 1;
+                        String date = day + "-" + month + "-" + year;
+                        appDate.setText(DateHandler.dateFormat1(date));
+
+                    }
+                },year,month,day);
+                datePickerDialog.show();
+            }
+        });
 
 
         timer1.setOnClickListener(new View.OnClickListener() {
@@ -133,7 +186,7 @@ public class DoctorSchedule extends AppCompatActivity {
                     for(String slot: results) {
 //                        ref.child(slot).setValue("Available");
                           Toast.makeText(getApplicationContext(), slot, Toast.LENGTH_SHORT).show();
-                          AddDoctorSlot(doctorID, slot, "Available");
+                          AddDoctorSlot(doctorID,appDate.getText().toString().trim(), slot, "Available");
 //                        Toast.makeText(getApplicationContext(), "Updated", Toast.LENGTH_SHORT).show();
 //                        MainActivity.redirectActivity(DoctorSchedule.this, MainActivity.class);
                           finish();
@@ -178,7 +231,7 @@ public class DoctorSchedule extends AppCompatActivity {
         return (min);
     }
 
-    private void AddDoctorSlot(String doctorID, String slotTime, String slotAvailable) {
+    private void AddDoctorSlot(String doctorID, String slotDate, String slotTime, String slotAvailable) {
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.ADD_DOCTOR_SLOT_URL,
                 new Response.Listener<String>() {
@@ -212,6 +265,7 @@ public class DoctorSchedule extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 params.put("doctorID", doctorID);
+                params.put("slotDate",slotDate);
                 params.put("slotTime",slotTime);
                 params.put("slotAvailable", slotAvailable);
 
