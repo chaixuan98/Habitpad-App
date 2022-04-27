@@ -6,11 +6,22 @@
         <entry key="..\:/Users/chaix/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/drawable/rectangle_fill_black.xml" value="0.24" />
         <entry key="..\:/Users/chaix/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/drawable/rectangle_fill_white.xml" value="0.24" />
         <entry key="..\:/Users/chaix/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/drawable/rectangle_fill_yellow.xml" value="0.1245" />
+        <entry key="..\:/Users/chaix/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/activity_appointment.xml" value="0.25" />
         <entry key="..\:/Users/chaix/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/activity_book_appointment.xml" value="0.25" />
+        <entry key="..\:/Users/chaix/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/activity_doctor_appointments.xml" value="0.25" />
+        <entry key="..\:/Users/chaix/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/activity_doctor_list.xml" value="0.25" />
+        <entry key="..\:/Users/chaix/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/activity_doctor_main.xml" value="0.25" />
         <entry key="..\:/Users/chaix/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/activity_doctor_schedule.xml" value="0.25" />
+        <entry key="..\:/Users/chaix/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/activity_reminder.xml" value="0.25" />
         <entry key="..\:/Users/chaix/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/activity_sign_up2nd_class.xml" value="0.25" />
+        <entry key="..\:/Users/chaix/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/activity_user_active_appointments.xml" value="0.25" />
+        <entry key="..\:/Users/chaix/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/activity_view_user_profile.xml" value="0.2359375" />
+        <entry key="..\:/Users/chaix/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/appointment_raw.xml" value="0.25" />
+        <entry key="..\:/Users/chaix/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/doctor_appointment_raw.xml" value="0.25" />
+        <entry key="..\:/Users/chaix/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/reminder_raw.xml" value="0.25" />
         <entry key="..\:/Users/chaix/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/slot_design.xml" value="0.25" />
         <entry key="..\:/Users/chaix/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/slot_header.xml" value="0.25" />
+        <entry key="..\:/Users/chaix/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/user_appointment_raw.xml" value="0.25" />
         <entry key="..\:/Users/user/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/drawable/button_style_01.xml" value="0.2203125" />
         <entry key="..\:/Users/user/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/drawable/button_style_04.xml" value="0.2203125" />
         <entry key="..\:/Users/user/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/drawable/card_style_01.xml" value="0.2203125" />

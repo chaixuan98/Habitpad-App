@@ -23,7 +23,6 @@ public class ReminderActivity extends AppCompatActivity {
 
     private String[] Title = {"Food Reminder", "Workout Reminder", "Water Intake Reminder"};
 
-
     private ListView reminderList;
 
 

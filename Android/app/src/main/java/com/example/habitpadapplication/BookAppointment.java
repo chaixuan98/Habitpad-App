@@ -52,7 +52,7 @@ public class BookAppointment extends AppCompatActivity {
     private TextInputEditText drRemark;
     private MaterialButton drBtn;
     private EditText bookDate;
-    private String intentDrID, strDrImg, strDrName, strDrExp, strDrDegree, strDrPlace, strDrPhone, strDrEmail;
+    private String intentUserID, intentDrID, strDrImg, strDrName, strDrExp, strDrDegree, strDrPlace, strDrPhone, strDrEmail;
 
     private RecyclerView slotCards;
     ArrayList<String> slotTimes = new ArrayList<>();
@@ -89,7 +89,7 @@ public class BookAppointment extends AppCompatActivity {
         bookDate = findViewById(R.id.book_date);
         noSlotTV = findViewById(R.id.noslot_tv);
 
-
+        intentUserID = getIntent().getExtras().getString("intentUserID");
         intentDrID = getIntent().getExtras().getString("dr_app_ID");
         strDrImg = getIntent().getExtras().getString("dr_app_img");
         strDrName = getIntent().getExtras().getString("dr_app_name");
@@ -154,8 +154,6 @@ public class BookAppointment extends AppCompatActivity {
     }
 
     private void getDoctorsSlot(final String date) {
-
-        // Initializing Request queue
 
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading...");
@@ -268,24 +266,21 @@ public class BookAppointment extends AppCompatActivity {
         drBtn.setOnClickListener(v -> {
             String sItem = adapter.getSelected();
             if (sItem != null) {
-//                Intent intent = new Intent(getApplicationContext(), ActiveAppointments.class);
-//
-//                //Toast.makeText(this, sItem, Toast.LENGTH_SHORT).show();
-//
-//                intent.putExtra("slot", sItem);
-//                intent.putExtra("msg", drRemark.getText().toString());
-//                intent.putExtra("dr_name", strDrName);
-//
-//
-//                startActivity(intent);
-//                finish();
+                UpdateSlot(sItem,"Reserved");
+                AddAppointment(bookDate.getText().toString().trim(),sItem, drRemark.getText().toString().trim());
+                Intent intent = new Intent(getApplicationContext(), UserActiveAppointments.class);
+
+                intent.putExtra("intentUserID", intentUserID);
+
+                startActivity(intent);
+                finish();
             }
             else
                 Toast.makeText(this, "Please select a Slot", Toast.LENGTH_SHORT).show();
         });
     }
 
-    private void UpdateSlot(String slotAvailable) {
+    private void UpdateSlot(final String sItem,final String slotAvailable) {
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.UPDATE_DOCTOR_SLOT_URL,
                 new Response.Listener<String>() {
@@ -318,8 +313,59 @@ public class BookAppointment extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                //params.put("slotID", slotID);
+                params.put("doctorID", intentDrID);
+                params.put("slotDate", bookDate.getText().toString().trim());
+                params.put("slotTime", sItem);
                 params.put("slotAvailable", slotAvailable);
+
+
+
+                return params;
+            }
+        };
+
+        VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(stringRequest);
+
+    }
+
+    private void AddAppointment(final String date, final String time, final String remark) {
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.ADD_USER_APPOINTMENT_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            Log.i("tagconvertstr", "["+response+"]");
+                            JSONObject jsonObject = new JSONObject(response);
+
+                            String success = jsonObject.getString("success");
+                            String message = jsonObject.getString("message");
+
+                            if (success.equals("1")) {
+                                Toast.makeText(getApplicationContext(),message,Toast.LENGTH_SHORT).show();
+
+                            }
+
+                        } catch (JSONException e) {
+                            Toast.makeText(getApplicationContext(),"Save Error!" + e.toString(),Toast.LENGTH_LONG).show();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(),error.toString(),Toast.LENGTH_LONG).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("userID", intentUserID);
+                params.put("doctorID", intentDrID);
+                params.put("appointmentDate", date);
+                params.put("appointmentTime", time);
+                params.put("appointmentRemark", remark);
 
 
 

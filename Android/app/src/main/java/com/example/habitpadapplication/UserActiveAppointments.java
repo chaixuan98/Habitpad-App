@@ -16,9 +16,9 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.example.habitpadapplication.Adapters.DoctorAppointmentAdapter;
+import com.example.habitpadapplication.Adapters.DoctorAdapter;
 import com.example.habitpadapplication.Adapters.UserAppointmetAdapter;
-import com.example.habitpadapplication.Model.DoctorAppointment;
+import com.example.habitpadapplication.Model.Doctor;
 import com.example.habitpadapplication.Model.UserAppointment;
 
 import org.json.JSONArray;
@@ -29,53 +29,56 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DoctorAppointments extends AppCompatActivity {
+public class UserActiveAppointments extends AppCompatActivity {
 
-    private RecyclerView doctorAppointmentRecyclerView;
+
+    private RecyclerView activeAppointmentRecyclerView;
     private RecyclerView.LayoutManager manager;
-    private DoctorAppointmentAdapter doctorAppointmentAdapter;
-    private List<DoctorAppointment> doctorAppointments;
+    private UserAppointmetAdapter userAppAdapter;
+    private List<UserAppointment> userAppointments;
 
     private Context context;
-    private String doctorID;
+    private String intentUserID;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        setTitle("My Appointment");
-        setContentView(R.layout.activity_doctor_appointments);
+        setTitle("Active Appointment");
+        setContentView(R.layout.activity_user_active_appointments);
 
-        doctorAppointmentRecyclerView = findViewById(R.id.doctor_appointments_rv);
+        activeAppointmentRecyclerView = findViewById(R.id.user_appointments_rv);
 
-        doctorID = getIntent().getExtras().getString("doctorID");
+        intentUserID = getIntent().getExtras().getString("intentUserID");
 
-        manager = new LinearLayoutManager(DoctorAppointments.this);
-        doctorAppointmentRecyclerView.setLayoutManager(manager);
-        doctorAppointmentRecyclerView.setHasFixedSize(true);
-        doctorAppointments = new ArrayList<>();
-        doctorAppointmentAdapter = new DoctorAppointmentAdapter(DoctorAppointments.this, doctorAppointments);
+        manager = new LinearLayoutManager(UserActiveAppointments.this);
+        activeAppointmentRecyclerView.setLayoutManager(manager);
+        activeAppointmentRecyclerView.setHasFixedSize(true);
+        userAppointments = new ArrayList<>();
+        userAppAdapter = new UserAppointmetAdapter(UserActiveAppointments.this, userAppointments);
 
-        getDoctorAppointment();
+        getUserAppointment();
     }
 
-    private void getDoctorAppointment() {
+    private void getUserAppointment() {
+        // Initializing Request queue
 
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading...");
         progressDialog.show();
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.GET_DOCTOR_APPOINTMENT_URL,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.GET_USER_APPOINTMENT_URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         progressDialog.dismiss();
                         try {
                             Log.i("tagconvertstr", "["+response+"]");
-
+                            //JSONArray array = new JSONArray(response);
                             JSONObject jsonObject = new JSONObject(response);
-                            JSONArray jsonArray = jsonObject.getJSONArray("doctorapp");
+                            JSONArray jsonArray = jsonObject.getJSONArray("userapp");
 
                             String success = jsonObject.getString("success");
 
@@ -86,16 +89,16 @@ public class DoctorAppointments extends AppCompatActivity {
                                     JSONObject object = jsonArray.getJSONObject(i);
 
                                     String appointmentID = object.getString("appointmentID").trim();
-                                    String userID = object.getString("userID").trim();
-                                    String userPhoto = object.getString("userPhoto").trim();
-                                    String username = object.getString("username").trim();
+                                    String doctorID = object.getString("doctorID").trim();
+                                    String doctorPhoto = object.getString("doctorPhoto").trim();
+                                    String doctorName = object.getString("doctorName").trim();
                                     String appointmentDate = object.getString("appointmentDate").trim();
                                     String appointmentTime = object.getString("appointmentTime").trim();
                                     String appointmentRemark = object.getString("appointmentRemark").trim();
 
 
-                                    DoctorAppointment doctorAppointment = new DoctorAppointment(appointmentID,userID,userPhoto, username, appointmentDate, appointmentTime, appointmentRemark);
-                                    doctorAppointments.add(doctorAppointment);
+                                    UserAppointment userAppointment = new UserAppointment(appointmentID,doctorID,doctorPhoto, doctorName, appointmentDate, appointmentTime, appointmentRemark);
+                                    userAppointments.add(userAppointment);
                                 }
                             }
 
@@ -104,25 +107,26 @@ public class DoctorAppointments extends AppCompatActivity {
                             e.printStackTrace();
                         }
 
-                        doctorAppointmentRecyclerView.setAdapter(doctorAppointmentAdapter);
+                        activeAppointmentRecyclerView.setAdapter(userAppAdapter);
 
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 progressDialog.dismiss();
-                Toast.makeText(DoctorAppointments.this, error.toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(UserActiveAppointments.this, error.toString(), Toast.LENGTH_LONG).show();
             }
         }){
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put("doctorID", doctorID);
+                params.put("userID", intentUserID);
                 return params;
             }
         };
 
         VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(stringRequest);
+
     }
 
     @Override
@@ -132,7 +136,8 @@ public class DoctorAppointments extends AppCompatActivity {
     }
 
     public void onBackPressed() {
-        Intent intent = new Intent(DoctorAppointments.this, DoctorMainActivity.class);
+        Intent intent = new Intent(UserActiveAppointments.this, AppointmentActivity.class);
+        intent.putExtra("intentUserID", intentUserID);
         startActivity(intent);
         finish();
     }

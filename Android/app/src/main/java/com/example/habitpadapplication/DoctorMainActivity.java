@@ -85,7 +85,7 @@ public class DoctorMainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DoctorMainActivity.this, DoctorAppointments.class);
-                intent.putExtra("doctorName", doctorName);
+                intent.putExtra("doctorID", doctorID);
                 startActivity(intent);
             }
         });

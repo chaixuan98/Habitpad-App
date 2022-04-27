@@ -4,12 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".DoctorAppointments">
+    tools:context=".UserActiveAppointments">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="My Appointments"
+        android:text="Active Appointments"
         android:layout_marginTop="15dp"
         android:paddingStart="15sp"
         android:paddingEnd="15sp"
@@ -27,7 +27,7 @@
         android:background="#c0c0c0" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/doctor_appointments_rv"
+        android:id="@+id/user_appointments_rv"
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

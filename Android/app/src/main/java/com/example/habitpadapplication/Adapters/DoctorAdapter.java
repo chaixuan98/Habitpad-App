@@ -26,7 +26,7 @@ public class DoctorAdapter extends RecyclerView.Adapter<DoctorAdapter.MyViewHold
 
     private Context mContext;
     private List<Doctor> doctors = new ArrayList<>();
-
+    private String intentUserID;
 
 
     public DoctorAdapter (Context context, List<Doctor> doctors){
@@ -63,6 +63,9 @@ public class DoctorAdapter extends RecyclerView.Adapter<DoctorAdapter.MyViewHold
     @NonNull
     @Override
     public DoctorAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        Intent intent = ((Activity) mContext).getIntent();
+        intentUserID = intent.getExtras().getString("intentUserID");
+
         View view = LayoutInflater.from(mContext).inflate(R.layout.doctor_raw,parent,false);
         return new DoctorAdapter.MyViewHolder(view);
     }
@@ -87,6 +90,7 @@ public class DoctorAdapter extends RecyclerView.Adapter<DoctorAdapter.MyViewHold
 
         holder.dBtn.setOnClickListener(v -> {
             Intent intent = new Intent(mContext.getApplicationContext(), BookAppointment.class);
+            intent.putExtra("intentUserID", intentUserID);
             intent.putExtra("dr_app_ID", doctor.getDrID());
             intent.putExtra("dr_app_img", doctor.getImg());
             intent.putExtra("dr_app_name", doctor.getDr_name());

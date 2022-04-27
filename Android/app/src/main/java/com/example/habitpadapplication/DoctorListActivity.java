@@ -37,6 +37,7 @@ public class DoctorListActivity extends AppCompatActivity {
     private Context context;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +45,7 @@ public class DoctorListActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         setTitle("Doctor List");
         setContentView(R.layout.activity_doctor_list);
+
 
         doctorRecyclerView = findViewById(R.id.drCards);
 

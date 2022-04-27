@@ -85,6 +85,13 @@ public class Urls {
     public static final String GET_DOCTOR_LIST_URL = ROOT_URL+"get_doctor_list.php";
     public static final String GET_DOCTOR_SLOT_URL = ROOT_URL+"get_doctor_slot.php";
     public static final String UPDATE_DOCTOR_SLOT_URL = ROOT_URL+"update_slot_available.php";
+    public static final String GET_DOCTOR_APPOINTMENT_URL = ROOT_URL+"get_doctor_appointment.php";
+
+    public static final String ADD_USER_APPOINTMENT_URL = ROOT_URL+"add_user_appointment.php";
+    public static final String GET_USER_APPOINTMENT_URL = ROOT_URL+"get_user_appointment.php";
+    public static final String DELETE_USER_APPOINTMENT_URL = ROOT_URL+"delete_appointment.php";
+
+
 
 
 }

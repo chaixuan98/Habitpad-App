@@ -141,7 +141,7 @@ public class BookAppointmentAdapter extends SectionedRecyclerViewAdapter<BookApp
             String sItem = itemList.get(sectionList.get(selectedSection)).get(selectedItem);
             if (docTimings.contains(sItem)) {
                 selectedItem = -1;
-                UpdateSlot(dr_ID,sItem,"Reserved");
+//                UpdateSlot(dr_ID,sItem,"Reserved");
 //                ref.child(sItem).setValue("Reserved");
                 notifyDataSetChanged();
                 return sItem;
@@ -149,55 +149,5 @@ public class BookAppointmentAdapter extends SectionedRecyclerViewAdapter<BookApp
         }
         return null;
     }
-
-    private void UpdateSlot(final String dr_ID, final String sItem,final String slotAvailable) {
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.UPDATE_DOCTOR_SLOT_URL,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            Log.i("tagconvertstr", "["+response+"]");
-                            JSONObject jsonObject = new JSONObject(response);
-
-                            String success = jsonObject.getString("success");
-                            String message = jsonObject.getString("message");
-
-                            if (success.equals("1")) {
-                                Toast.makeText(activity.getApplicationContext(),message,Toast.LENGTH_SHORT).show();
-
-                            }
-
-                        } catch (JSONException e) {
-                            Toast.makeText(activity.getApplicationContext(),"Save Error!" + e.toString(),Toast.LENGTH_LONG).show();
-                        }
-
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(activity.getApplicationContext(),error.toString(),Toast.LENGTH_LONG).show();
-                    }
-                }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                params.put("doctorID", dr_ID);
-                params.put("slotTime", sItem);
-                params.put("slotAvailable", slotAvailable);
-
-
-
-                return params;
-            }
-        };
-
-        VolleySingleton.getInstance(activity.getApplicationContext()).addToRequestQueue(stringRequest);
-
-    }
-
-
-
 
 }

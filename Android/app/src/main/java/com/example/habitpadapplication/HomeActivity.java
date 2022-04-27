@@ -227,7 +227,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                         return true;
 
                     case R.id.bottom_appointment:
-                        startActivity(new Intent(getApplicationContext(),DoctorListActivity.class));
+                        Intent appointmentIntent = new Intent(getApplicationContext(), AppointmentActivity.class);
+                        appointmentIntent.putExtra("intentUserID", userID);
+                        startActivity(appointmentIntent);
                         overridePendingTransition(0,0);
                         return true;
 
@@ -407,7 +409,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.nav_appointment:
-                startActivity(new Intent(this,DoctorListActivity.class));
+                Intent appointmentIntent = new Intent(this, AppointmentActivity.class);
+                appointmentIntent.putExtra("intentUserID", userID);
+                startActivity(appointmentIntent);
+
                 break;
 
             case R.id.nav_privacy:

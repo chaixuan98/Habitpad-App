@@ -29,6 +29,15 @@
         android:theme="@style/Theme.HabitpadApplication"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ViewUserProfile"
+            android:exported="false" />
+        <activity
+            android:name=".UserActiveAppointments"
+            android:exported="false" />
+        <activity
+            android:name=".AppointmentActivity"
+            android:exported="false" />
+        <activity
             android:name=".ActiveAppointments"
             android:exported="false" />
         <activity
