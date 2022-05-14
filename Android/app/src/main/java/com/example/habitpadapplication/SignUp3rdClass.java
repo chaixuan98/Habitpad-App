@@ -124,11 +124,13 @@ public class SignUp3rdClass extends AppCompatActivity implements View.OnClickLis
         String password = getIntent().getStringExtra("password");
         String gender = getIntent().getStringExtra("gender");
         String age = getIntent().getStringExtra("age");
+        String startWeight = getIntent().getStringExtra("startWeight");
         String weight = getIntent().getStringExtra("weight");
         String height = getIntent().getStringExtra("height");
+        String goalWeight = getIntent().getStringExtra("goalWeight");
+        String weeklyGoalWeight = getIntent().getStringExtra("weeklyGoalWeight");
+        String goalStartDate = getIntent().getStringExtra("goalStartDate");
         String bmi = getIntent().getStringExtra("bmi");
-        String familySuffered = getIntent().getStringExtra("familySuffered");
-
 
         intent.putExtra("username", username);
         intent.putExtra("email", email);
@@ -136,10 +138,13 @@ public class SignUp3rdClass extends AppCompatActivity implements View.OnClickLis
         intent.putExtra("password", password);
         intent.putExtra("gender", gender);
         intent.putExtra("age", age);
+        intent.putExtra("startWeight", startWeight);
         intent.putExtra("weight", weight);
         intent.putExtra("height", height);
+        intent.putExtra("goalWeight", goalWeight);
+        intent.putExtra("weeklyGoalWeight", weeklyGoalWeight);
+        intent.putExtra("goalStartDate", goalStartDate);
         intent.putExtra("bmi", bmi);
-        intent.putExtra("familySuffered", familySuffered);
         intent.putExtra("lifestyle", lifestyle);
 
 

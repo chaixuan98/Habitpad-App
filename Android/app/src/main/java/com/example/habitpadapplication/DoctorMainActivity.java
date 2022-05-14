@@ -1,6 +1,5 @@
 package com.example.habitpadapplication;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.view.GravityCompat;
@@ -24,6 +23,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
+import com.example.habitpadapplication.Dialogs.OtherSizeDialog;
+import com.example.habitpadapplication.Dialogs.TermConditionDialog;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -72,6 +73,8 @@ public class DoctorMainActivity extends AppCompatActivity {
 
         DisplayDoctorProfilePic(doctorID);
 
+        checkAppFirstTimeRun();
+
         my_schedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,6 +92,21 @@ public class DoctorMainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    private void termDialog(){
+        TermConditionDialog termConditionDialog = new TermConditionDialog(this);
+        termConditionDialog.show();
+    }
+
+    private void checkAppFirstTimeRun() {
+
+        if (doctorSessionManager.getFirstTimeRunPrefs()) {
+            termDialog();
+            doctorSessionManager.setFirstTimeRunPrefs(false);
+
+        }
+
     }
 
     public void ClickMenu(View view) {

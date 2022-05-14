@@ -26,6 +26,7 @@ public class FormulaCalculations
         if(gender.equals("Female"))
         {
             bmr =  (10 * weight2) + (6.25 * height2) - (5 * age2) - 161;
+
             if(activitylevel.equals("No Active"))
             {
                 tdee = bmr * 1.2;
@@ -163,6 +164,45 @@ public class FormulaCalculations
 
         return result;
     }
+
+    /* calculate food goal calories */
+    public String FoodCaloriesGoal(String tdee)
+    {
+        String result;
+
+        double tdee2 = Double.parseDouble(tdee);
+
+        double foodGoal;
+
+        foodGoal = tdee2 * 0.8;
+
+        NumberFormat nf = DecimalFormat.getInstance();
+        nf.setMaximumFractionDigits(0);
+        result = nf.format(foodGoal);
+        result = result.replace(",", "");
+
+        return result;
+    }
+
+    /* calculate workout goal calories */
+    public String WorkoutCaloriesGoal(String tdee)
+    {
+        String result;
+
+        double tdee2 = Double.parseDouble(tdee);
+
+        double workoutGoal;
+
+        workoutGoal = tdee2 * 0.2;
+
+        NumberFormat nf = DecimalFormat.getInstance();
+        nf.setMaximumFractionDigits(0);
+        result = nf.format(workoutGoal);
+        result = result.replace(",", "");
+
+        return result;
+    }
+
 
     /* calculate water need */
     public String WaterNeed(String weight)

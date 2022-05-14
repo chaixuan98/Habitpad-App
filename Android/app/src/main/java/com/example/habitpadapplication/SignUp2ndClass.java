@@ -4,19 +4,26 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ActivityOptions;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.Notification;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Message;
 import android.provider.CalendarContract;
+import android.text.TextUtils;
 import android.util.Pair;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.NumberPicker;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -36,23 +43,19 @@ public class SignUp2ndClass extends AppCompatActivity {
 
     private ImageView backBtn;
     private MaterialButton next;
-    private TextView  loginText, age, bmi_tv;
+    private TextView  loginText;
     private RadioGroup rgGender;
     private RadioButton gender;
-    private EditText birth;
-    private TextInputLayout weight,height;
+    private EditText birth,userWeeklyGoalWeight;
+    private TextInputLayout weight,height,goalWeightLayout;
     private DatePickerDialog.OnDateSetListener setListener;
 
-    private RadioGroup rgFamilySuffered;
-    private RadioButton familySuffered;
-
-    private String calculation, ageS;
+    private String calculation, ageS, weeklyGoalWeight;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_sign_up2nd_class);
 
         rgGender = findViewById(R.id.radioGroupGender);
@@ -63,9 +66,8 @@ public class SignUp2ndClass extends AppCompatActivity {
 
         weight = findViewById(R.id.weightlayout);
         height = findViewById(R.id.heightlayout);
-       //bmi_tv = findViewById(R.id.userBMI);
-
-        rgFamilySuffered = findViewById(R.id.radioGroupFamily);
+        goalWeightLayout = findViewById(R.id.goalweightlayout);
+        userWeeklyGoalWeight = findViewById(R.id.weekly_goal_weight);
 
 
         Calendar calendar = Calendar.getInstance();
@@ -81,8 +83,6 @@ public class SignUp2ndClass extends AppCompatActivity {
 
             }
         });
-
-
 
 
         birth.setOnClickListener(new View.OnClickListener() {
@@ -153,8 +153,6 @@ public class SignUp2ndClass extends AppCompatActivity {
             }
         });
 
-
-
         rgGender.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -171,24 +169,97 @@ public class SignUp2ndClass extends AppCompatActivity {
             }
         });
 
-        rgFamilySuffered.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        userWeeklyGoalWeight.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId){
-                    case R.id.family_Yes:
-                        familySuffered = findViewById(checkedId);
-
-                    case R.id.family_No:
-                        familySuffered = findViewById(checkedId);
-                }
+            public void onClick(View v)
+            {
+                OpenWeeklyGoalDialog();
             }
         });
 
+
     }
+
+    private void OpenWeeklyGoalDialog()
+    {
+        final Dialog weightdialog = new Dialog(SignUp2ndClass.this);
+        weightdialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        weightdialog.setContentView(R.layout.weekly_number_picker_dialog);
+        weightdialog.setTitle("Weekly goal weight");
+        weightdialog.show();
+        Window weightWindow = weightdialog.getWindow();
+        weightWindow.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+        final NumberPicker weeklyWeightNumberPicker= (NumberPicker) weightdialog.findViewById(R.id.weekly_weight_numberPicker);
+        TextView weeklyGoalTV = weightdialog.findViewById(R.id.weekly_goal_weight_tv);
+        final int weeklyWeightNumberPickerValue;
+        final String[] weeklyWeightValue;
+
+
+        weeklyWeightValue= getResources().getStringArray(R.array.weekly_goal_weight);
+        weeklyWeightNumberPicker.setMaxValue(2);
+        weeklyWeightNumberPicker.setMinValue(0);
+        weeklyWeightNumberPicker.setWrapSelectorWheel(false);
+        weeklyWeightNumberPicker.setDisplayedValues(weeklyWeightValue);
+        weeklyGoalTV.setText(String.format("Weekly Goal Weight: %s",weeklyWeightNumberPicker.getValue()));
+//        weeklyGoalWeight = String.valueOf(weeklyWeightNumberPicker.getValue());
+//        userWeeklyGoalWeight.setText(weeklyGoalWeight);
+
+        weeklyWeightNumberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker numberPicker, int i, int i1) {
+                weeklyGoalTV.setText(String.format("Weekly Goal Weight: %s",weeklyWeightValue[i1]));
+                userWeeklyGoalWeight.setText(weeklyWeightValue[i1]);
+            }
+        });
+
+
+        //setButton.setOnClickListener(this);
+        //numberPicker.setOnClickListener(this);
+
+        //final EditText editCurrentWeight = (EditText) weightdialog.findViewById(R.id.weight_edit_dialog_inputcurrentweight);
+        //final TextView errormsg = (TextView) weightdialog.findViewById(R.id.weight_edit_dialog_error_msg);
+        //errormsg.setVisibility(View.GONE);
+
+
+
+        /* cancel button click action */
+        Button cancelbtn = (Button)weightdialog.findViewById(R.id.weekly_weight_cancel_button);
+        cancelbtn.setEnabled(true);
+        cancelbtn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                weightdialog.cancel();
+            }
+        });
+
+
+        /* ok button click action */
+        Button confirmBtn = (Button)weightdialog.findViewById(R.id.weekly_weight_confirm_button);
+        confirmBtn.setEnabled(true);
+        confirmBtn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+
+                //weeklyGoalWeight = String.valueOf(weeklyWeightNumberPicker.getValue());
+                //userWeeklyGoalWeight.setText(weeklyGoalWeight);
+                weightdialog.cancel();
+            }
+        });
+
+
+    }
+
+
 
     public void callNextSignupScreen(View view) {
 
-        if(!validateGender() | !validateBirthday() | !validateWeight() | !validateHeight()){
+        if(!validateGender() | !validateBirthday() | !validateWeight() | !validateHeight() |!validateGoalWeight()){
             return;
         }
 
@@ -207,9 +278,13 @@ public class SignUp2ndClass extends AppCompatActivity {
         intent.putExtra("password", password);
         intent.putExtra("gender", gender.getText().toString().trim());
         intent.putExtra("age", ageS);
+        intent.putExtra("startWeight", weight.getEditText().getText().toString().trim());
         intent.putExtra("weight", weight.getEditText().getText().toString().trim());
         intent.putExtra("height", height.getEditText().getText().toString().trim());
-        intent.putExtra("familySuffered", familySuffered.getText().toString().trim());
+        intent.putExtra("goalWeight", goalWeightLayout.getEditText().getText().toString().trim());
+        intent.putExtra("weeklyGoalWeight", userWeeklyGoalWeight.getText().toString().trim());
+        intent.putExtra("goalStartDate", DateHandler.getCurrentFormedDate());
+
 
 
         String S1 = weight.getEditText().getText().toString();
@@ -287,15 +362,18 @@ public class SignUp2ndClass extends AppCompatActivity {
         }
     }
 
-    private  boolean validateFamilySuffered(){
-        if(rgFamilySuffered.getCheckedRadioButtonId() == -1){
-            Toast.makeText(SignUp2ndClass.this, "Please Select Family Suffered Obesity", Toast.LENGTH_SHORT).show();
+    private  boolean validateGoalWeight(){
+        String val = goalWeightLayout.getEditText().getText().toString().trim();
+
+        if(val.isEmpty()){
+            goalWeightLayout.setError("Field cannot be empty");
             return false;
-        }  else{
+        } else{
+            goalWeightLayout.setError(null);
+            goalWeightLayout.setErrorEnabled(false);
             return true;
         }
     }
-
 
     public void backSignupPage(View view) {
         Intent intent = new Intent(getApplicationContext(),SignUp.class);

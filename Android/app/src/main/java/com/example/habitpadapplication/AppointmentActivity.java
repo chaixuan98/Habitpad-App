@@ -12,15 +12,13 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.habitpadapplication.Settings.FoodReminderActivity;
 import com.example.habitpadapplication.Settings.WaterReminderActivity;
-import com.example.habitpadapplication.Settings.WorkoutReminderActivity;
 
 public class AppointmentActivity extends AppCompatActivity {
 
-    private int[] Icons = {R.drawable.book_appointment, R.drawable.active_appointment, R.drawable.hisotry_appointment};
+    private int[] Icons = {R.drawable.book_appointment, R.drawable.active_appointment};
 
-    private String[] Title = {"Book Appointment", "Active Appointment", "History"};
+    private String[] Title = {"Book Appointment", "Appointment List"};
 
     private ListView appointmentList;
     private String intentUserID;
@@ -53,16 +51,12 @@ public class AppointmentActivity extends AppCompatActivity {
 
                 else if(position == 1) {
                     //code specific to 2nd list item
-                    Intent userAppointmentIntent = new Intent(getApplicationContext(), UserActiveAppointments.class);
+                    Intent userAppointmentIntent = new Intent(getApplicationContext(), UserAppointments.class);
                     userAppointmentIntent.putExtra("intentUserID", intentUserID);
                     startActivity(userAppointmentIntent);
 
                 }
 
-                else if(position == 2) {
-
-                    startActivity(new Intent(AppointmentActivity.this, WaterReminderActivity.class));
-                }
             }
         });
     }

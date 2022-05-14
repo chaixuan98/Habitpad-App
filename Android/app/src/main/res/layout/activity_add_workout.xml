@@ -115,9 +115,9 @@
                     <TextView
                         android:id="@+id/add_workout_duration"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_marginRight="2dp"
-                        android:text="1"
+                        android:text="0"
                         android:textAlignment="viewEnd"
                         android:textColor="@color/red"
                         android:textSize="18sp" />
@@ -125,20 +125,14 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="2dp"
                         android:layout_marginLeft="10dp"
+                        android:layout_marginRight="2dp"
                         android:text="min"
                         android:textAlignment="viewEnd"
                         android:textColor="@color/PrimaryTextColor"
                         android:textSize="18sp" />
 
                 </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@color/LineColor" />
 
 
             </LinearLayout>
@@ -150,19 +144,31 @@
                 android:background="@color/LineColor" />
 
 
-
             <Button
                 android:id="@+id/addworkout_addbutton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="50dp"
-                android:layout_marginBottom="40dp"
+                android:layout_marginBottom="30dp"
                 android:background="@drawable/button_style_01"
                 android:text="Add Workout"
                 android:textAllCaps="false"
                 android:textColor="@color/ButtonTextColor"
                 android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/duration_error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="2dp"
+                android:text="Please enter workout duration"
+                android:layout_gravity="center"
+                android:textAlignment="viewEnd"
+                android:textColor="@color/red"
+                android:visibility="invisible"
+                android:textSize="15sp" />
 
 
         </LinearLayout>

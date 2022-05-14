@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -61,11 +62,12 @@ public class DiaryActivity extends AppCompatActivity {
 
     private RecyclerView userBreakfastFoodList, userLunchFoodList, userDinnerFoodList, userSnacksFoodList, userWorkoutList, userWaterList;
 
-    private String strUserCurrentWeight, strUserAge, strUserHeight, strUserGender, strUserActivityLevel,
+    private String strUserCurrentWeight, strUserGoalWeight, strUserWeeklyGoalWeight, strUserStartWeight, strUserAge, strUserHeight, strUserGender, strUserActivityLevel,
             strUserFood="0", strUserCarbs="0.0", strUserFat="0.0", strUserProtein="0.0", strUserWorkout="0", userServingSize="1",
             strUserDailyCalorieIntake, strUserCaloriesRemaining;
 
     private String strUserWaterNeed,strUserWaterIntake="0";
+    private String weightGoalStatus="", weightAchievementStatus="";
 
 
     @Override
@@ -159,6 +161,8 @@ public class DiaryActivity extends AppCompatActivity {
         waterLinearLayoutManager.setStackFromEnd(true);
         userWaterList.setLayoutManager(waterLinearLayoutManager);
 
+        getUserDetails();
+
         dateButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -182,15 +186,16 @@ public class DiaryActivity extends AppCompatActivity {
 
     }
 
-    /* toolbar back button click action */
     @Override
-    public boolean onSupportNavigateUp()
-    {
-        //onBackPressed();
-        Intent mainIntent = new Intent(this, HomeActivity.class);
-        startActivity(mainIntent);
-        finish();
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
         return true;
+    }
+
+    public void onBackPressed() {
+        Intent intent = new Intent(DiaryActivity.this, HomeActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private void PopupCalendar() {
@@ -253,6 +258,15 @@ public class DiaryActivity extends AppCompatActivity {
 
         }
 
+        if(!TextUtils.isEmpty(strUserWeeklyGoalWeight) && !TextUtils.isEmpty(strUserGoalWeight) && weightGoalStatus.equals("true") &&
+                weightAchievementStatus.equals("false"))
+        {
+
+            String cutCaloriesPerDay = String.format("%.0f",(((Double.parseDouble(strUserWeeklyGoalWeight) * 3500) / 0.45)) / 7);
+            strUserDailyCalorieIntake = String.valueOf(Integer.parseInt(strUserDailyCalorieIntake) - Integer.parseInt(cutCaloriesPerDay));
+
+        }
+
         userDailyCaloriesIntake.setText(strUserDailyCalorieIntake);
 
 
@@ -278,6 +292,123 @@ public class DiaryActivity extends AppCompatActivity {
         strUserProtein="0";
         strUserWorkout="0";
         strUserWaterIntake="0";
+    }
+
+    private void getUserDetails() {
+
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.READ_USER_DETAILS_URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                progressDialog.dismiss();
+
+                try {
+                    Log.i("tagconvertstr", "[" + response + "]");
+                    JSONObject jsonObject = new JSONObject(response);
+
+                    String success = jsonObject.getString("success");
+                    String message = jsonObject.getString("message");
+                    JSONArray jsonArray = jsonObject.getJSONArray("read");
+
+                    if (success.equals("1")) {
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject object = jsonArray.getJSONObject(i);
+
+
+                            strUserStartWeight = object.getString("startWeight").trim();
+                            strUserCurrentWeight = object.getString("weight").trim();
+                            strUserGoalWeight = object.getString("goalWeight").trim();
+                            strUserWeeklyGoalWeight = object.getString("weeklyGoalWeight").trim();
+
+                            getUserWeightAchievemnt();
+
+
+                        }
+                    }
+                    if (success.equals("0")) {
+
+                        Toast.makeText(DiaryActivity.this, "Read error", Toast.LENGTH_SHORT).show();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    progressDialog.dismiss();
+                    Toast.makeText(DiaryActivity.this, "Read error" + e.toString(), Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                progressDialog.dismiss();
+                Toast.makeText(DiaryActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> params = new HashMap<>();
+                params.put("userID", intentUserID);
+
+                return params;
+            }
+        };
+
+        VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
+    }
+
+
+    private void getUserWeightAchievemnt()
+    {
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.GET_USER_WEIGHT_ACHIEVEMENT_URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                try {
+                    Log.i("tagconvertstr", "[" + response + "]");
+                    JSONObject jsonObject = new JSONObject(response);
+
+                    String success = jsonObject.getString("success");
+                    JSONArray jsonArray = jsonObject.getJSONArray("weightAchieve");
+
+                    if (success.equals("1")) {
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject object = jsonArray.getJSONObject(i);
+
+                            weightGoalStatus = object.getString("weightLossGoalStatus").trim();
+                            weightAchievementStatus = object.getString("weightLossAchievementStatus").trim();
+
+                        }
+                    }
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(DiaryActivity.this, "Read error" + e.toString(), Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(DiaryActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> params = new HashMap<>();
+                params.put("userID", intentUserID);
+
+                return params;
+            }
+        };
+
+        VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
     }
 
     private void DisplayUserAllBreakfastFoods(final String intentUserID, final String date){

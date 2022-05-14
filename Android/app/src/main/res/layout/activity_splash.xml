@@ -13,7 +13,9 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="100dp"
-        android:src="@drawable/habitpad2"></ImageView>
+        android:src="@drawable/habitpad2">
+
+    </ImageView>
 
     <TextView
         android:id="@+id/habitpadName"

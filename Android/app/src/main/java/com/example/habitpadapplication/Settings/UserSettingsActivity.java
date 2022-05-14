@@ -394,6 +394,7 @@ public class UserSettingsActivity extends AppCompatActivity  {
                             String password = object.getString("password").trim();
                             String gender = object.getString("gender").trim();
                             String age = object.getString("age").trim();
+                            String startWeight = object.getString("startWeight").trim();
                             String weight = object.getString("weight").trim();
                             String height = object.getString("height").trim();
                             String familySuffered = object.getString("familySuffered").trim();

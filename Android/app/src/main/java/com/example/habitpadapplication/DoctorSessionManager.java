@@ -3,6 +3,7 @@ package com.example.habitpadapplication;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import java.util.HashMap;
 
@@ -80,19 +81,19 @@ public class DoctorSessionManager {
         editor.commit();
         Intent i = new Intent(context, UserOptionActivity.class);
         context.startActivity(i);
-        //((HomeActivity) context).finish();
+        //((DoctorMainActivity) context).finish();
 
     }
 
     public boolean getFirstTimeRunPrefs(){
-        //SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPreferences.getBoolean("first_time_run", true) ;
     }
 
     public void setFirstTimeRunPrefs(boolean b) {
-        // SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        // SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean("first_time_run", b);
-        editor.commit();
+         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+         SharedPreferences.Editor editor = sharedPreferences.edit();
+         editor.putBoolean("first_time_run", b);
+         editor.commit();
     }
 }

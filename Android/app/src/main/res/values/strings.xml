@@ -1,8 +1,7 @@
 <resources>
-    <string name="app_name">HabitpadApplication</string>
+    <string name="app_name">Habitpad</string>
 
-    <!-- Machine IP Address -->
-    <string name="machine_ip_address">10.213.37.32</string>
+
     <!-- Strings used for fragments for navigation -->
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -25,4 +24,9 @@
 
     <!--    <string name="graph_obese_level">0 - Insufficient_Weight   1 - Normal_Weight   2 - Overweight_Level_I\n\n\n3 - Overweight_Level_II   4 - Obesity_Type_I  5 - Obesity_Type_II\n\n6 - Obesity_Type_III"</string>-->
 
+    <string-array name="weekly_goal_weight">
+        <item>0.25</item>
+        <item>0.5</item>
+        <item>0.75</item>
+    </string-array>
 </resources>

@@ -1,48 +1,23 @@
 package com.example.habitpadapplication.Adapters;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.RetryPolicy;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
-import com.example.habitpadapplication.DateHandler;
-import com.example.habitpadapplication.GamificationActivity;
-import com.example.habitpadapplication.HomeActivity;
 import com.example.habitpadapplication.Model.Task;
-import com.example.habitpadapplication.Model.Tip;
 import com.example.habitpadapplication.R;
-import com.example.habitpadapplication.TrackExerciseActivity;
-import com.example.habitpadapplication.Urls;
-import com.example.habitpadapplication.VolleySingleton;
-import com.example.habitpadapplication.WaterMainActivity;
-import com.google.android.material.button.MaterialButton;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> {
 

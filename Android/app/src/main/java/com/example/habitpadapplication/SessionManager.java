@@ -95,7 +95,7 @@ public class SessionManager {
 
     public void checkLogin(){
         if (!this.isUserLogin()){
-            Intent i = new Intent(context, UserOptionActivity.class);
+            Intent i = new Intent(context, MainActivity.class);
             context.startActivity(i);
             //((HomeActivity) context).finish();
         }
@@ -106,9 +106,9 @@ public class SessionManager {
     public void logoutUserFromSession(){
         editor.clear();
         editor.commit();
-        Intent i = new Intent(context, UserOptionActivity.class);
+        Intent i = new Intent(context, MainActivity.class);
         context.startActivity(i);
-        //((HomeActivity) context).finish();
+        ((HomeActivity) context).finish();
 
     }
 

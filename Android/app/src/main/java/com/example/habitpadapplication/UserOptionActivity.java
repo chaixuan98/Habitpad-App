@@ -2,7 +2,12 @@ package com.example.habitpadapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
@@ -13,10 +18,10 @@ public class UserOptionActivity extends AppCompatActivity {
 
     private MaterialButton patientBtn,doctorBtn,adminBtn;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_user_option);
 
         patientBtn = findViewById(R.id.patientLogin);
@@ -51,4 +56,5 @@ public class UserOptionActivity extends AppCompatActivity {
         });
 
     }
+
 }

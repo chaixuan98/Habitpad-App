@@ -7,22 +7,69 @@
     android:padding="10dp"
     tools:context=".FoodListActivity">
 
+
     <SearchView
         android:id="@+id/food_search_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:queryHint="Search for a Food"
-        android:iconifiedByDefault="false"/>
+        android:iconifiedByDefault="false"
+        android:queryHint="Search for a Food" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/food_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="10dp"
-        android:layout_below="@id/food_search_bar"
-        android:background="@color/white">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    </androidx.recyclerview.widget.RecyclerView>
+            <TextView
+                android:id="@+id/tv1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Recent added" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/food_recent_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv1"
+                android:background="@color/white"
+                android:padding="5dp">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <TextView
+                android:id="@+id/recent_food_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No recent food added"
+                android:layout_below="@id/food_recent_list"
+                android:gravity="center"/>
+
+            <View
+                android:id="@+id/line"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_below="@+id/recent_food_tv"
+                android:background="#c0c0c0" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/food_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:padding="5dp">
+
+            </androidx.recyclerview.widget.RecyclerView>
+        </LinearLayout>
+
 
 </LinearLayout>

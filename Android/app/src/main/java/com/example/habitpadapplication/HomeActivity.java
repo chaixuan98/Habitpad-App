@@ -6,24 +6,23 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 
-import android.Manifest;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
+import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -35,36 +34,27 @@ import android.widget.Toast;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
-import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
-import com.example.habitpadapplication.Adapters.TipViewAdpater;
 import com.example.habitpadapplication.Chart.FoodChart;
 import com.example.habitpadapplication.Chart.ObeseLevelChart;
 import com.example.habitpadapplication.Chart.WaterChart;
 import com.example.habitpadapplication.Chart.WorkoutChart;
-import com.example.habitpadapplication.Dialogs.OtherSizeDialog;
-import com.example.habitpadapplication.Model.Tip;
 import com.example.habitpadapplication.Settings.FoodFragmentPrefs;
 import com.example.habitpadapplication.Settings.FragmentPrefs;
-import com.example.habitpadapplication.Settings.PrefsHelper;
-import com.example.habitpadapplication.Settings.WaterReminderActivity;
 import com.example.habitpadapplication.Settings.UserSettingsActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
-import com.opencsv.CSVWriter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -83,7 +73,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     private CircleImageView profileView;
 
-    private TextView foodCardConsumedCalories,workoutCardBurnedCalories,waterCardIntake,waterCardNeed ;
+    private TextView foodCardConsumedCalories,foodGoalCalories,workoutGoalCalories,workoutCardBurnedCalories,waterCardIntake,waterCardNeed ;
 
     private LinearLayout foodCardBreakfastBtn, foodCardLunchBtn, foodCardDinnerBtn, foodCardSnackBtn;
     private Button diaryBtn;
@@ -96,9 +86,16 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private int summaryCardCaloriesBarValue;
 
 
-    private String strUserCurrentWeight, strUserGoalWeight, strUserWeeklyGoalWeight, strUserStartWeight, strUserBYear, strUserAge, strUserHeight,
-            strUserGender, strUserActivityLevel, strUserFoodCalories="0", strUserWorkout="0",strUserFinalCalories,
+    private String strUserCurrentWeight, strUserGoalWeight, strUserWeeklyGoalWeight, strUserStartWeight, strUserAge, strUserHeight,
+            strUserGender, strUserActivityLevel, strUserFoodCalories="0", strUserWorkout="0",strUserFinalCalories, strUserFoodGoal,strUserWorkoutGoal,
             strUserTDEE, strUserCaloriesRemaining, strUserBmi, strUserHealthStatus, strFamilySuffered, strUserAlcohol, strUserSmoked;
+
+
+    private Button weightCardGoalBtn, weightCardRecordBtn;
+    private TextView weightCardCurrentWeight, weightCardGoalWeight, weightCardGoalCompleteDescription;
+    private ImageButton weightCardWeightMinusBtn, weightCardWeightAddBtn;
+    private ProgressBar weightCardGoalProgress;
+    private LinearLayout weightCardGoalContainer;
 
     private TextView bmiCardBmi, bmiCardTips;
     private ImageView bmiCardUnderWeightStatus, bmiCardHealthyWeightStatus, bmiCardOverWeightStatus, bmiCardObesityStatus;
@@ -106,6 +103,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private String strUserWaterNeed,strUserWaterIntake="0";
 
     private int strGender,strActivity,strFamily,strSmoked,strAlcohol,strCalories,strWater;
+
+    private String weightGoalStatus="", weightAchievementStatus="", points="0";
 
     private BroadcastReceiver updateUIReciver;
     private Context context;
@@ -146,6 +145,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         summaryCardTips = (TextView)findViewById(R.id.home_summary_card_tips);
 
         foodCardConsumedCalories = findViewById(R.id.home_food_card_consumed_calories);
+        foodGoalCalories = findViewById(R.id.home_food_goal);
+        workoutGoalCalories = findViewById(R.id.home_workout_goal);
         workoutCardBurnedCalories = findViewById(R.id.home_workout_card_burned_calories);
 
         foodChartBtn = findViewById(R.id.home_food_chart_button);
@@ -155,6 +156,18 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         waterChartBtn = findViewById(R.id.home_water_chart_button);
         waterCardIntake = findViewById(R.id.home_water_card_intake);
         waterCardNeed = findViewById(R.id.home_water_card_need);
+
+        weightCardGoalBtn = (Button) findViewById(R.id.home_weight_card_goal_button);
+        weightCardRecordBtn = (Button) findViewById(R.id.home_weight_card_record_button);
+        weightCardWeightMinusBtn = (ImageButton) findViewById(R.id.home_weight_card_weight_minus_button);
+        weightCardWeightAddBtn = (ImageButton) findViewById(R.id.home_weight_card_weight_add_button);
+        weightCardCurrentWeight = (TextView) findViewById(R.id.home_weight_card_current_weight);
+        weightCardGoalWeight = (TextView) findViewById(R.id.home_weight_card_goal_weight);
+        weightCardGoalProgress = findViewById(R.id.home_weight_card_weight_goal_progress);
+        weightCardGoalContainer = findViewById(R.id.home_weight_card_goal_container);
+        weightCardGoalContainer.setVisibility(View.VISIBLE);
+        weightCardGoalCompleteDescription = findViewById(R.id.home_weight_card_goal_complete_description);
+        weightCardGoalCompleteDescription.setVisibility(View.GONE);
 
 
         bmiCardBmi = (TextView) findViewById(R.id.home_bmi_card_bmi);
@@ -167,7 +180,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         bmiCardObesityStatus = (ImageView)findViewById(R.id.home_bmi_card_obesity_status);
         bmiCardObesityStatus.setVisibility(View.INVISIBLE);
         bmiCardTips = (TextView) findViewById(R.id.home_bmi_card_tips);
-
 
 
         summaryCardObesity = findViewById(R.id.home_classification_level_card);
@@ -190,18 +202,20 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         strUserGender = usersDetails.get(SessionManager.KEY_GENDER);
         strUserAge = usersDetails.get(SessionManager.KEY_AGE);
         strUserActivityLevel = usersDetails.get(SessionManager.KEY_LIFESTYLE);
-        strUserCurrentWeight = usersDetails.get(SessionManager.KEY_WEIGHT);
+        //strUserCurrentWeight = usersDetails.get(SessionManager.KEY_WEIGHT);
         strUserHeight = usersDetails.get(SessionManager.KEY_HEIGHT);
         strFamilySuffered = usersDetails.get(SessionManager.KEY_FAMILY_SUFFERED);
         strUserAlcohol = usersDetails.get(SessionManager.KEY_ALCOHOL);
         strUserSmoked = usersDetails.get(SessionManager.KEY_SMOKED);
 
 
-
         textView.setText(username+" "+userID );
 
-
         //checkAppFirstTimeRun();
+        AddUserWeightAchievement(userID,"true","false");
+        AddUserWaterConsecutive(userID,DateHandler.getCurrentFormedDate(),"0");
+        AddUserWorkoutConsecutive(userID,DateHandler.getCurrentFormedDate(),"0");
+        AddUserFoodConsecutive(userID,DateHandler.getCurrentFormedDate(),"0");
 
         updateView();
         registerUIBroadcastReceiver();
@@ -352,13 +366,50 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
+        weightCardGoalBtn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                UserSendToGoalsPage();
+            }
+        });
+
+        weightCardRecordBtn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                OpenWeightEditDialog();
+            }
+        });
+
+        weightCardWeightMinusBtn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                WeightMinusCalculation();
+            }
+        });
+
+
+        weightCardWeightAddBtn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                WeightAddCalculation();
+            }
+        });
+
+
         reminderBtn.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
                 startActivity(new Intent(HomeActivity.this, ReminderActivity.class));
-
             }
         });
 
@@ -368,7 +419,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View v)
             {
                 UserSendToObeseLevelChartPage();
-
             }
         });
 
@@ -386,7 +436,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 //            Intent intent = new Intent(HomeActivity.this, HomeActivity.class);
 //            startActivity(intent);
 //
-//            finish();
+            finish();
         }
     }
 
@@ -456,7 +506,181 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         super.onDestroy();
     }
 
+    private void getUserDetails() {
 
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.READ_USER_DETAILS_URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                progressDialog.dismiss();
+
+                try {
+                    Log.i("tagconvertstr", "[" + response + "]");
+                    JSONObject jsonObject = new JSONObject(response);
+
+                    String success = jsonObject.getString("success");
+                    String message = jsonObject.getString("message");
+                    JSONArray jsonArray = jsonObject.getJSONArray("read");
+
+                    if (success.equals("1")) {
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject object = jsonArray.getJSONObject(i);
+
+
+                            strUserStartWeight = object.getString("startWeight").trim();
+                            strUserCurrentWeight = object.getString("weight").trim();
+                            strUserGoalWeight = object.getString("goalWeight").trim();
+                            strUserWeeklyGoalWeight = object.getString("weeklyGoalWeight").trim();
+
+
+                            weightCardCurrentWeight.setText(strUserCurrentWeight);
+                            weightCardGoalWeight.setText(strUserGoalWeight);
+
+                            getUserWeightAchievemnt();
+
+
+                        }
+                    }
+                    if (success.equals("0")) {
+
+                        Toast.makeText(HomeActivity.this, "Read error", Toast.LENGTH_SHORT).show();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    progressDialog.dismiss();
+                    Toast.makeText(HomeActivity.this, "Read error" + e.toString(), Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                progressDialog.dismiss();
+                Toast.makeText(HomeActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> params = new HashMap<>();
+                params.put("userID", userID);
+
+                return params;
+            }
+        };
+
+        VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
+    }
+
+    private void OpenWeightEditDialog()
+    {
+        final Dialog weightdialog = new Dialog(HomeActivity.this);
+        weightdialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        weightdialog.setContentView(R.layout.weight_edit_layout);
+        weightdialog.setTitle("weight edit window");
+        weightdialog.show();
+        Window weightWindow = weightdialog.getWindow();
+        weightWindow.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+
+        final EditText editCurrentWeight = (EditText) weightdialog.findViewById(R.id.weight_edit_dialog_inputcurrentweight);
+        final TextView errormsg = (TextView) weightdialog.findViewById(R.id.weight_edit_dialog_error_msg);
+        errormsg.setVisibility(View.GONE);
+
+
+        if(!TextUtils.isEmpty(strUserCurrentWeight))
+        {
+            editCurrentWeight.setText(strUserCurrentWeight);
+        }
+
+
+        /* cancel button click action */
+        Button cancelbtn = (Button)weightdialog.findViewById(R.id.weight_edit_dialog_cancel_button);
+        cancelbtn.setEnabled(true);
+        cancelbtn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                weightdialog.cancel();
+            }
+        });
+
+
+        /* ok button click action */
+        Button okbtn = (Button)weightdialog.findViewById(R.id.weight_edit_dialog_ok_button);
+        okbtn.setEnabled(true);
+        okbtn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if(TextUtils.isEmpty(editCurrentWeight.getText().toString()))
+                {
+                    errormsg.setVisibility(View.VISIBLE);
+                }
+                else
+                {
+                    UpdateUserWeight(userID,editCurrentWeight.getText().toString().trim());
+                    weightdialog.cancel();
+                    updateView();
+                }
+            }
+        });
+
+
+    }
+
+    private void WeightMinusCalculation()
+    {
+        if(!TextUtils.isEmpty(strUserCurrentWeight) && (Double.parseDouble(strUserCurrentWeight)) > 10)
+        {
+            NumberFormat nf = DecimalFormat.getInstance();
+            nf.setMaximumFractionDigits(1);
+
+            strUserCurrentWeight = nf.format(Double.parseDouble(strUserCurrentWeight) - 0.1);
+            strUserCurrentWeight = strUserCurrentWeight.replace(",","");
+
+            UpdateUserWeight(userID,strUserCurrentWeight);
+            weightCardCurrentWeight.setText(strUserCurrentWeight);
+            updateView();
+        }
+
+        if(TextUtils.isEmpty(strUserCurrentWeight))
+        {
+            OpenWeightEditDialog();
+        }
+
+        if((Double.parseDouble(strUserCurrentWeight)) <= 10)
+        {
+            Toast.makeText(getApplicationContext(), "Invalid Weight", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    private void WeightAddCalculation()
+    {
+        if(!TextUtils.isEmpty(strUserCurrentWeight))
+        {
+            NumberFormat nf = DecimalFormat.getInstance();
+            nf.setMaximumFractionDigits(1);
+
+            strUserCurrentWeight = nf.format(Double.parseDouble(strUserCurrentWeight) + 0.1);
+            strUserCurrentWeight = strUserCurrentWeight.replace(",","");
+
+            UpdateUserWeight(userID,strUserCurrentWeight);
+            //weightCardCurrentWeight.setText(strUserCurrentWeight);
+            updateView();
+        }
+        else
+        {
+            OpenWeightEditDialog();
+        }
+    }
 
 
     /* setting user details */
@@ -505,10 +729,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
             strUserTDEE = fc.TDEE(strUserAge, strUserCurrentWeight, strUserHeight, strUserGender, strUserActivityLevel);
 
+
+
             strUserWaterNeed = fc.WaterNeed(strUserCurrentWeight);
             waterCardNeed.setText("of "+strUserWaterNeed + " ml");
 
-            //weightCardCurrentWeight.setText(strUserCurrentWeight);
+            weightCardCurrentWeight.setText(strUserCurrentWeight);
 
 
             /* ###### Start of the BMI Card Calculations ###### */
@@ -561,76 +787,80 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
 //
 //        /* Set weight card details  */
-//        if(!TextUtils.isEmpty(strUserWeeklyGoalWeight) && !TextUtils.isEmpty(strUserGoalWeight) && weightGoalStatus.equals("true") &&
-//                weightAchievementStatus.equals("false"))
-//        {
-//            weightCardGoalWeight.setText(strUserGoalWeight);
-//
-//            String cutCaloriesPerDay = String.format(Locale.US,"%.0f",(((Double.parseDouble(strUserWeeklyGoalWeight) * 3500) / 0.45)) / 7);
-//            strUserTDEE = String.valueOf(Integer.parseInt(strUserTDEE) - Integer.parseInt(cutCaloriesPerDay));
-//
-//            String lossWeightGoal = String.format(Locale.US,"%.1f",(Double.parseDouble(strUserStartWeight) - Double.parseDouble(strUserGoalWeight)));
-//            String lostWeight = String.format(Locale.US,"%.1f",(Double.parseDouble(strUserStartWeight) - Double.parseDouble(strUserCurrentWeight)));
-//
-//            String weightLossProgressValue = String.format(Locale.US,"%.0f",((Double.parseDouble(lostWeight) * 100) / Double.parseDouble(lossWeightGoal)));
-//            weightCardGoalProgress.setProgress(Integer.parseInt(weightLossProgressValue));
-//        }
-//        else
-//        {
-//            weightCardGoalContainer.setVisibility(View.GONE);
-//            weightCardGoalCompleteDescription.setVisibility(View.VISIBLE);
-//        }
-//
-//        /* for new the user */
-//        if(TextUtils.isEmpty(strUserGoalWeight))
-//        {
-//            weightCardGoalCompleteDescription.setText("Decrease your weight by Setting a goal and earn points.");
-//        }
+        if(!TextUtils.isEmpty(strUserWeeklyGoalWeight) && !TextUtils.isEmpty(strUserGoalWeight) && weightGoalStatus.equals("true") &&
+                weightAchievementStatus.equals("false"))
+        {
+            weightCardGoalWeight.setText(strUserGoalWeight);
+
+            String cutCaloriesPerDay = String.format("%.0f",(((Double.parseDouble(strUserWeeklyGoalWeight) * 3500) / 0.45)) / 7);
+            strUserTDEE = String.valueOf(Integer.parseInt(strUserTDEE) - Integer.parseInt(cutCaloriesPerDay));
+
+            String lossWeightGoal = String.format("%.1f",(Double.parseDouble(strUserStartWeight) - Double.parseDouble(strUserGoalWeight)));
+            String lostWeight = String.format("%.1f",(Double.parseDouble(strUserStartWeight) - Double.parseDouble(strUserCurrentWeight)));
+
+            String weightLossProgressValue = String.format("%.0f",((Double.parseDouble(lostWeight) * 100) / Double.parseDouble(lossWeightGoal)));
+            weightCardGoalProgress.setProgress(Integer.parseInt(weightLossProgressValue));
+        }
+        else
+        {
+            weightCardGoalContainer.setVisibility(View.GONE);
+            weightCardGoalCompleteDescription.setVisibility(View.VISIBLE);
+        }
+
+        /* for new the user */
+        if(TextUtils.isEmpty(strUserGoalWeight))
+        {
+            weightCardGoalCompleteDescription.setText("Decrease your weight by Setting a goal and earn points.");
+        }
 
 
-            summaryCardFoodCalories.setText(strUserFoodCalories);
-            summaryCardWorkoutCalories.setText(strUserWorkout);
-            foodCardConsumedCalories.setText(strUserFoodCalories);
-            workoutCardBurnedCalories.setText(strUserWorkout);
+        summaryCardFoodCalories.setText(strUserFoodCalories);
+        summaryCardWorkoutCalories.setText(strUserWorkout);
+        foodCardConsumedCalories.setText(strUserFoodCalories);
+        workoutCardBurnedCalories.setText(strUserWorkout);
 
 
-            strUserFinalCalories = String.valueOf(Integer.parseInt(strUserFoodCalories) - Integer.parseInt(strUserWorkout));
-            summaryCardFinalCalories.setText(strUserFinalCalories);
+        strUserFinalCalories = String.valueOf(Integer.parseInt(strUserFoodCalories) - Integer.parseInt(strUserWorkout));
+        summaryCardFinalCalories.setText(strUserFinalCalories);
 
 
-            summaryCardTDEE01.setText("/ " + strUserTDEE);
-            summaryCardTDEE02.setText(strUserTDEE);
+        summaryCardTDEE01.setText("/ " + strUserTDEE);
+        summaryCardTDEE02.setText(strUserTDEE);
 
-            strUserCaloriesRemaining = fc.CaloriesRemaining(strUserTDEE, strUserFoodCalories, strUserWorkout);
-            summaryCardCaloriesRemaining.setText(strUserCaloriesRemaining);
-
-
-            summaryCardCaloriesBarValue = fc.ProgressBarValue(strUserTDEE, strUserCaloriesRemaining);
-            summaryCardCaloriesBar.setProgress(summaryCardCaloriesBarValue);
+        strUserCaloriesRemaining = fc.CaloriesRemaining(strUserTDEE, strUserFoodCalories, strUserWorkout);
+        summaryCardCaloriesRemaining.setText(strUserCaloriesRemaining);
 
 
-            if (Integer.parseInt(strUserCaloriesRemaining) < 0) {
-                summaryCardTips.setTextColor(getResources().getColor(R.color.WarningTextColor));
-                summaryCardTips.setText("You have eaten too much food.");
-                summaryCardCaloriesRemaining.setTextColor(getResources().getColor(R.color.WarningTextColor));
-            }
+        summaryCardCaloriesBarValue = fc.ProgressBarValue(strUserTDEE, strUserCaloriesRemaining);
+        summaryCardCaloriesBar.setProgress(summaryCardCaloriesBarValue);
 
-            if(Integer.parseInt(strUserFinalCalories)<=Integer.parseInt(strUserTDEE)){
-                strCalories = 0;
+        strUserFoodGoal = fc.FoodCaloriesGoal(strUserTDEE);
+        foodGoalCalories.setText("Eat less than "+strUserFoodGoal+" Cal");
 
-            }
-            if(Integer.parseInt(strUserFinalCalories)>Integer.parseInt(strUserTDEE)){
-                strCalories = 1;
+        strUserWorkoutGoal = fc.WorkoutCaloriesGoal(strUserTDEE);
+        workoutGoalCalories.setText("Burned more than "+strUserWorkoutGoal+" Cal");
 
-            }
 
-            ObeseClassification();
-            strUserFoodCalories = "0";
-            strUserWorkout = "0";
-            strUserWaterIntake = "0";
 
+        if (Integer.parseInt(strUserCaloriesRemaining) < 0) {
+            summaryCardTips.setTextColor(getResources().getColor(R.color.WarningTextColor));
+            summaryCardTips.setText("You have eaten too much food.");
+            summaryCardCaloriesRemaining.setTextColor(getResources().getColor(R.color.WarningTextColor));
+        }
+
+        if(Integer.parseInt(strUserFinalCalories)<=Integer.parseInt(strUserTDEE)){
+            strCalories = 0;
 
         }
+        if(Integer.parseInt(strUserFinalCalories)>Integer.parseInt(strUserTDEE)){
+            strCalories = 1;
+        }
+
+        ObeseClassification();
+        strUserFoodCalories = "0";
+        strUserWorkout = "0";
+        strUserWaterIntake = "0";
+    }
 
 
     private void UserSendToGamificationPage()
@@ -640,11 +870,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         startActivity(gamificationIntent);
     }
 
-    /* User redirect to nutrition page */
     private void UserSendToFoodListPage(String intentFrom)
     {
         Intent foodListIntent = new Intent(this, FoodListActivity.class);
         foodListIntent.putExtra("intentFrom", intentFrom);
+        foodListIntent.putExtra("intentUserID", userID);
         foodListIntent.putExtra("intentUserGender", strUserGender);
         foodListIntent.putExtra("intentUserAge", strUserAge);
         foodListIntent.putExtra("intentUserLifestyle", strUserActivityLevel);
@@ -655,7 +885,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     private void UserSendToAddWorkoutPage()
     {
-        Intent addWorkoutIntent = new Intent(this, TrackExerciseActivity.class);
+        Intent addWorkoutIntent = new Intent(this, WorkoutActivity.class);
         addWorkoutIntent.putExtra("intentUserID", userID);
         addWorkoutIntent.putExtra("intentUserGender", strUserGender);
         addWorkoutIntent.putExtra("intentUserAge", strUserAge);
@@ -669,6 +899,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     {
         Intent getFoodChartIntent = new Intent(this, FoodChart.class);
         getFoodChartIntent.putExtra("intentUserID", userID);
+        getFoodChartIntent.putExtra("foodGoal", strUserFoodGoal);
         startActivity(getFoodChartIntent);
     }
 
@@ -676,10 +907,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     {
         Intent getWorkoutChartIntent = new Intent(this, WorkoutChart.class);
         getWorkoutChartIntent.putExtra("intentUserID", userID);
+        getWorkoutChartIntent.putExtra("workoutGoal", strUserWorkoutGoal);
         startActivity(getWorkoutChartIntent);
     }
 
-    private  void UserSendToDiaryPage(){
+    private  void UserSendToDiaryPage()
+    {
         Intent diaryIntent = new Intent(HomeActivity.this, DiaryActivity.class);
         diaryIntent.putExtra("intentFrom", "HomeActivity");
         diaryIntent.putExtra("intentUserID", userID);
@@ -708,7 +941,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     {
         Intent getWaterChartIntent = new Intent(this, WaterChart.class);
         getWaterChartIntent.putExtra("intentUserID", userID);
+        getWaterChartIntent.putExtra("waterNeed", strUserWaterNeed);
         startActivity(getWaterChartIntent);
+    }
+
+    private void UserSendToGoalsPage()
+    {
+        Intent goalIntent = new Intent(this, GoalsActivity.class);
+        goalIntent.putExtra("intentUserID", userID);
+        startActivity(goalIntent);
     }
 
     private void UserSendToObeseLevelChartPage()
@@ -720,6 +961,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
 
     private void  updateView(){
+        getUserDetails();
         DisplayUserProfilePic(userID);
         DisplayUserFoodCount(userID,DateHandler.getCurrentFormedDate());
         //ObeseClassification();
@@ -774,7 +1016,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(HomeActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+                Log.i("tagerror", "["+error+"]");
+                //Toast.makeText(HomeActivity.this, error.toString(), Toast.LENGTH_LONG).show();
             }
         }){
             @Override
@@ -788,8 +1031,49 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
 
+    }
 
+    private void UpdateUserWeight(final String intentUserID, final String weight){
 
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.UPDATE_USER_WEIGHT_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            Log.i("tagconvertstr", "["+response+"]");
+                            JSONObject jsonObject = new JSONObject(response);
+
+                            String success = jsonObject.getString("success");
+                            String message = jsonObject.getString("message");
+
+                            if (success.equals("1")) {
+                                //Toast.makeText(getApplicationContext(),message,Toast.LENGTH_SHORT).show();
+                                Log.i("tagtoast", "["+message+"]");
+                            }
+
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //Log.i("tagerror", "["+error+"]");
+                Toast.makeText(HomeActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> params = new HashMap<>();
+                params.put("userID",intentUserID);
+                params.put("weight",weight);
+                return params;
+            }
+        };
+
+        VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
     }
 
     private void DisplayUserFoodCount(final String intentUserID, final String date){
@@ -837,7 +1121,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(HomeActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+                Log.i("tagerror", "["+error+"]");
+                //Toast.makeText(HomeActivity.this, error.toString(), Toast.LENGTH_LONG).show();
             }
         }){
             @Override
@@ -893,7 +1178,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(HomeActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+                Log.i("tagerror", "["+error+"]");
+                //Toast.makeText(HomeActivity.this, error.toString(), Toast.LENGTH_LONG).show();
             }
         }){
             @Override
@@ -936,7 +1222,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                                         summaryCardWorkoutCalories.setText(strUserWorkout);
                                         workoutCardBurnedCalories.setText(strUserWorkout);
                                         //strUserFoodCalories = foodCalories;
-                                        //SetUserDataToHomePage();
+
                                         DisplayUserWaterCount(userID,date,foodCalories,strUserWorkout);
 
 
@@ -959,7 +1245,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(HomeActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+                Log.i("tagerror", "["+error+"]");
+                //Toast.makeText(HomeActivity.this, error.toString(), Toast.LENGTH_LONG).show();
             }
         }){
             @Override
@@ -1019,7 +1306,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
                                     DisplayUserWaterCount(userID,date,foodCalories1,strUserWorkout);
 
-                                    //SetUserDataToHomePage();
 
 
                                 }
@@ -1033,7 +1319,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(HomeActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+                Log.i("tagerror", "["+error+"]");
+                //Toast.makeText(HomeActivity.this, error.toString(), Toast.LENGTH_LONG).show();
             }
         }){
             @Override
@@ -1096,7 +1383,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(HomeActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+                Log.i("tagerror", "["+error+"]");
+                //Toast.makeText(HomeActivity.this, error.toString(), Toast.LENGTH_LONG).show();
             }
         }){
             @Override
@@ -1166,7 +1454,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(HomeActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+                Log.i("tagerror", "["+error+"]");
+                //Toast.makeText(HomeActivity.this, error.toString(), Toast.LENGTH_LONG).show();
             }
         }){
             @Override
@@ -1197,15 +1486,16 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                             String message = jsonObject.getString("message");
 
                             if (success.equals("1")) {
-                                Toast.makeText(HomeActivity.this,message,Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(HomeActivity.this,message,Toast.LENGTH_SHORT).show();
+                                Log.i("tagtoast", "["+message+"]");
                             }
                             if (success.equals("0")) {
                                 //Toast.makeText(HomeActivity.this,message,Toast.LENGTH_SHORT).show();
-
+                                Log.i("tagtoast", "["+message+"]");
                             }
 
                         } catch (JSONException e) {
-                            Toast.makeText(HomeActivity.this,"Save Error!" + e.toString(),Toast.LENGTH_LONG).show();
+                            Toast.makeText(HomeActivity.this,"Add task Error!" + e.toString(),Toast.LENGTH_LONG).show();
                         }
 
                     }
@@ -1213,6 +1503,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        Log.i("tagerror", "["+error+"]");
                         Toast.makeText(HomeActivity.this,error.toString(),Toast.LENGTH_LONG).show();
                     }
                 }) {
@@ -1246,10 +1537,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                             summaryCardObesity.setText(data);
 
                             AddObeseLevel(userID,data, DateHandler.getCurrentTime(),DateHandler.getCurrentFormedDate());
-
+                            UpdateUserObeseLevel(userID,data, DateHandler.getCurrentTime(),DateHandler.getCurrentFormedDate());
 
                         } catch (JSONException e) {
-                            Toast.makeText(HomeActivity.this,"Save Error!" + e.toString(),Toast.LENGTH_LONG).show();
+                            Toast.makeText(HomeActivity.this,"shown obese Error!" + e.toString(),Toast.LENGTH_LONG).show();
                         }
 
                     }
@@ -1257,7 +1548,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(HomeActivity.this,error.toString(),Toast.LENGTH_LONG).show();
+                        Log.i("tagerror", "["+error+"]");
+                        //Toast.makeText(HomeActivity.this,error.toString(),Toast.LENGTH_LONG).show();
                     }
                 }) {
             @Override
@@ -1297,7 +1589,108 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                             String message = jsonObject.getString("message");
 
                             if (success.equals("1")) {
-                                Toast.makeText(HomeActivity.this,message,Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(HomeActivity.this,message,Toast.LENGTH_SHORT).show();
+                                Log.i("tagtoast", "["+message+"]");
+                            }
+
+                        } catch (JSONException e) {
+                            Toast.makeText(HomeActivity.this,"Add obese Error!" + e.toString(),Toast.LENGTH_LONG).show();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("tagerror", "["+error+"]");
+                        //Toast.makeText(HomeActivity.this,error.toString(),Toast.LENGTH_LONG).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("userID", intentUserID);
+                params.put("obeseLevel",level);
+                params.put("addObeseTime", time);
+                params.put("addObeseDate", date);
+
+                return params;
+            }
+        };
+
+        VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
+
+    }
+
+    private void UpdateUserObeseLevel(final String intentUserID,final String level, final String time, final String date){
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.UPDATE_USER_OBESE_LEVEL_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            Log.i("tagconvertstr", "["+response+"]");
+                            JSONObject jsonObject = new JSONObject(response);
+
+                            String success = jsonObject.getString("success");
+                            String message = jsonObject.getString("message");
+
+                            if (success.equals("1")) {
+                                //Toast.makeText(getApplicationContext(),message,Toast.LENGTH_SHORT).show();
+                                Log.i("tagtoast", "["+message+"]");
+                            }
+
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //Log.i("tagerror", "["+error+"]");
+                Toast.makeText(HomeActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> params = new HashMap<>();
+                params.put("userID",intentUserID);
+                params.put("obeseLevel",level);
+                params.put("addObeseTime",time);
+                params.put("addObeseDate",date);
+                return params;
+            }
+        };
+
+        VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
+
+
+
+    }
+
+    private void AddUserWeightAchievement(final String intentUserID,final String weightLossGoalStatus, final String weightLossAchievementStatus)
+    {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.ADD_USER_WEIGHT_ACHIEVEMENT_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            Log.i("tagconvertstr", "["+response+"]");
+                            JSONObject jsonObject = new JSONObject(response);
+
+                            String success = jsonObject.getString("success");
+                            String message = jsonObject.getString("message");
+
+                            if (success.equals("1")) {
+                                //Toast.makeText(HomeActivity.this,message,Toast.LENGTH_SHORT).show();
+                                Log.i("tagtoast", "["+message+"]");
+                            }
+
+                            if (success.equals("0")) {
+                                //Toast.makeText(HomeActivity.this,message,Toast.LENGTH_SHORT).show();
+                                Log.i("tagtoast", "["+message+"]");
                             }
 
                         } catch (JSONException e) {
@@ -1309,16 +1702,325 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(HomeActivity.this,error.toString(),Toast.LENGTH_LONG).show();
+                        Log.i("tagerror", "["+error+"]");
+                        //Toast.makeText(HomeActivity.this,error.toString(),Toast.LENGTH_LONG).show();
                     }
                 }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 params.put("userID", intentUserID);
-                params.put("obeseLevel",level);
-                params.put("addObeseTime", time);
-                params.put("addObeseDate", date);
+                params.put("weightLossGoalStatus",weightLossGoalStatus);
+                params.put("weightLossAchievementStatus", weightLossAchievementStatus);
+
+                return params;
+            }
+        };
+
+        VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
+
+    }
+
+    private void getUserWeightAchievemnt()
+    {
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.GET_USER_WEIGHT_ACHIEVEMENT_URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                try {
+                    Log.i("tagconvertstr", "[" + response + "]");
+                    JSONObject jsonObject = new JSONObject(response);
+
+                    String success = jsonObject.getString("success");
+                    String message = jsonObject.getString("message");
+                    JSONArray jsonArray = jsonObject.getJSONArray("weightAchieve");
+
+                    if (success.equals("1")) {
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject object = jsonArray.getJSONObject(i);
+
+                            weightGoalStatus = object.getString("weightLossGoalStatus").trim();
+                            weightAchievementStatus = object.getString("weightLossAchievementStatus").trim();
+
+
+                            if(weightGoalStatus.equals("true") && weightAchievementStatus.equals("false"))
+                            {
+                                if(!strUserCurrentWeight.isEmpty() && !strUserGoalWeight.isEmpty())
+                                {
+                                    if(Double.parseDouble(strUserCurrentWeight) <= Double.parseDouble(strUserGoalWeight))
+                                    {
+                                        PopupAchievementDialog();
+
+                                    }
+                                }
+                            }
+
+                            if(weightGoalStatus.equals("true") && weightAchievementStatus.equals("false"))
+                            {
+                                weightCardGoalContainer.setVisibility(View.VISIBLE);
+                                weightCardGoalCompleteDescription.setVisibility(View.GONE);
+                            }
+                            else
+                            {
+                                weightCardGoalContainer.setVisibility(View.GONE);
+                                weightCardGoalCompleteDescription.setVisibility(View.VISIBLE);
+                            }
+
+
+                        }
+                    }
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(HomeActivity.this, "Get user weight error" + e.toString(), Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(HomeActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> params = new HashMap<>();
+                params.put("userID", userID);
+
+                return params;
+            }
+        };
+
+        VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
+    }
+
+    private void PopupAchievementDialog()
+    {
+
+        UpdateUserWeightAchievement(userID);
+
+
+        final Dialog achievementDialog = new Dialog(HomeActivity.this);
+        achievementDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        achievementDialog.setContentView(R.layout.achievements_layout);
+        achievementDialog.setTitle("Achievement Window");
+        achievementDialog.show();
+        achievementDialog.setCanceledOnTouchOutside(false);
+        achievementDialog.setCancelable(false);
+        Window window = achievementDialog.getWindow();
+        window.setLayout(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+        TextView dialogDescription = achievementDialog.findViewById(R.id.achievement_dialog_description);
+        dialogDescription.setText("Congratulations, You have achieved your weight loss goal.");
+
+//        TextView dialogPoints = achievementDialog.findViewById(R.id.achievement_dialog_points);
+//        dialogPoints.setText("+5 Points");
+
+        ImageView cancelBtn = achievementDialog.findViewById(R.id.achievement_dialog_close_button);
+        cancelBtn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                achievementDialog.dismiss();
+            }
+        });
+    }
+
+    private void UpdateUserWeightAchievement(final String intentUserID){
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.UPDATE_USER_WEIGHT_ACHIEVEMENT_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            Log.i("tagconvertstr", "["+response+"]");
+                            JSONObject jsonObject = new JSONObject(response);
+
+                            String success = jsonObject.getString("success");
+                            String message = jsonObject.getString("message");
+
+                            if (success.equals("1")) {
+                                //Toast.makeText(getApplicationContext(),message,Toast.LENGTH_SHORT).show();
+                                Log.i("tagtoast", "["+message+"]");
+                            }
+
+                        }catch (Exception e){
+                            e.printStackTrace();
+                            Toast.makeText(HomeActivity.this, "update user weight achievement error" + e.toString(), Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //Log.i("tagerror", "["+error+"]");
+                Toast.makeText(HomeActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> params = new HashMap<>();
+                params.put("userID",intentUserID);
+                params.put("weightLossAchievementStatus","true");
+                return params;
+            }
+        };
+
+        VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
+
+
+
+    }
+
+    private void AddUserWaterConsecutive(final String intentUserID,final String launchDate, final String counter)
+    {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.ADD_USER_WATER_CONSECUTIVE_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            Log.i("tagconvertstr", "["+response+"]");
+                            JSONObject jsonObject = new JSONObject(response);
+
+                            String success = jsonObject.getString("success");
+                            String message = jsonObject.getString("message");
+
+                            if (success.equals("1")) {
+                                //Toast.makeText(HomeActivity.this,message,Toast.LENGTH_SHORT).show();
+                                Log.i("tagtoast", "["+message+"]");
+                            }
+
+                            if (success.equals("0")) {
+                                //Toast.makeText(HomeActivity.this,message,Toast.LENGTH_SHORT).show();
+                                Log.i("tagtoast", "["+message+"]");
+                            }
+
+                        } catch (JSONException e) {
+                            Toast.makeText(HomeActivity.this,"Insert water consecutive Error!" + e.toString(),Toast.LENGTH_LONG).show();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("tagerror", "["+error+"]");
+                        //Toast.makeText(HomeActivity.this,error.toString(),Toast.LENGTH_LONG).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("userID", intentUserID);
+                params.put("lastLaunchDate",launchDate);
+                params.put("counterDay", counter);
+
+                return params;
+            }
+        };
+
+        VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
+
+    }
+
+    private void AddUserWorkoutConsecutive(final String intentUserID,final String launchDate, final String counter)
+    {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.ADD_USER_WORKOUT_CONSECUTIVE_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            Log.i("tagconvertstr", "["+response+"]");
+                            JSONObject jsonObject = new JSONObject(response);
+
+                            String success = jsonObject.getString("success");
+                            String message = jsonObject.getString("message");
+
+                            if (success.equals("1")) {
+                                //Toast.makeText(HomeActivity.this,message,Toast.LENGTH_SHORT).show();
+                                Log.i("tagtoast", "["+message+"]");
+                            }
+
+                            if (success.equals("0")) {
+                                //Toast.makeText(HomeActivity.this,message,Toast.LENGTH_SHORT).show();
+                                Log.i("tagtoast", "["+message+"]");
+                            }
+
+                        } catch (JSONException e) {
+                            Toast.makeText(HomeActivity.this,"Insert water consecutive Error!" + e.toString(),Toast.LENGTH_LONG).show();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("tagerror", "["+error+"]");
+                        //Toast.makeText(HomeActivity.this,error.toString(),Toast.LENGTH_LONG).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("userID", intentUserID);
+                params.put("workoutLastLaunchDate",launchDate);
+                params.put("workoutCounterDay", counter);
+
+                return params;
+            }
+        };
+
+        VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
+
+    }
+
+    private void AddUserFoodConsecutive(final String intentUserID,final String launchDate, final String counter)
+    {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.ADD_USER_FOOD_CONSECUTIVE_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            Log.i("tagconvertstr", "["+response+"]");
+                            JSONObject jsonObject = new JSONObject(response);
+
+                            String success = jsonObject.getString("success");
+                            String message = jsonObject.getString("message");
+
+                            if (success.equals("1")) {
+                                //Toast.makeText(HomeActivity.this,message,Toast.LENGTH_SHORT).show();
+                                Log.i("tagtoast", "["+message+"]");
+                            }
+
+                            if (success.equals("0")) {
+                                //Toast.makeText(HomeActivity.this,message,Toast.LENGTH_SHORT).show();
+                                Log.i("tagtoast", "["+message+"]");
+                            }
+
+                        } catch (JSONException e) {
+                            Toast.makeText(HomeActivity.this,"Insert water consecutive Error!" + e.toString(),Toast.LENGTH_LONG).show();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("tagerror", "["+error+"]");
+                        //Toast.makeText(HomeActivity.this,error.toString(),Toast.LENGTH_LONG).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("userID", intentUserID);
+                params.put("foodLastLaunchDate",launchDate);
+                params.put("foodCounterDay", counter);
 
                 return params;
             }

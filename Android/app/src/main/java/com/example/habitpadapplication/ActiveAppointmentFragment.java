@@ -1,14 +1,19 @@
 package com.example.habitpadapplication;
 
-import androidx.appcompat.app.AppCompatActivity;
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -16,58 +21,66 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.example.habitpadapplication.Adapters.DoctorAdapter;
 import com.example.habitpadapplication.Adapters.UserAppointmetAdapter;
-import com.example.habitpadapplication.Model.Doctor;
 import com.example.habitpadapplication.Model.UserAppointment;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class UserActiveAppointments extends AppCompatActivity {
 
+public class ActiveAppointmentFragment extends Fragment {
 
     private RecyclerView activeAppointmentRecyclerView;
     private RecyclerView.LayoutManager manager;
     private UserAppointmetAdapter userAppAdapter;
     private List<UserAppointment> userAppointments;
 
-    private Context context;
     private String intentUserID;
+    private TextView noAppTV;
 
+    private Calendar calendar;
+    private SimpleDateFormat dateFormat;
+    private String date;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        setTitle("Active Appointment");
-        setContentView(R.layout.activity_user_active_appointments);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_active_appointment, container, false);
 
-        activeAppointmentRecyclerView = findViewById(R.id.user_appointments_rv);
 
-        intentUserID = getIntent().getExtras().getString("intentUserID");
 
-        manager = new LinearLayoutManager(UserActiveAppointments.this);
+        Intent intent = ((Activity) getContext()).getIntent();
+        intentUserID = intent.getExtras().getString("intentUserID");
+
+        activeAppointmentRecyclerView = view.findViewById(R.id.user_appointments_rv);
+        noAppTV = view.findViewById(R.id.active_app_tv);
+
+        manager = new LinearLayoutManager(getContext());
         activeAppointmentRecyclerView.setLayoutManager(manager);
         activeAppointmentRecyclerView.setHasFixedSize(true);
         userAppointments = new ArrayList<>();
-        userAppAdapter = new UserAppointmetAdapter(UserActiveAppointments.this, userAppointments);
+        userAppAdapter = new UserAppointmetAdapter(getContext(), userAppointments);
 
         getUserAppointment();
+
+        // Inflate the layout for this fragment
+        return view;
     }
 
     private void getUserAppointment() {
-        // Initializing Request queue
 
-        final ProgressDialog progressDialog = new ProgressDialog(this);
+        final ProgressDialog progressDialog = new ProgressDialog(getContext());
         progressDialog.setMessage("Loading...");
         progressDialog.show();
+
+        calendar = Calendar.getInstance();
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.GET_USER_APPOINTMENT_URL,
                 new Response.Listener<String>() {
@@ -96,9 +109,25 @@ public class UserActiveAppointments extends AppCompatActivity {
                                     String appointmentTime = object.getString("appointmentTime").trim();
                                     String appointmentRemark = object.getString("appointmentRemark").trim();
 
+                                    dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                                    date = dateFormat.format(calendar.getTime());
 
-                                    UserAppointment userAppointment = new UserAppointment(appointmentID,doctorID,doctorPhoto, doctorName, appointmentDate, appointmentTime, appointmentRemark);
-                                    userAppointments.add(userAppointment);
+                                    noAppTV.setVisibility(View.GONE);
+
+                                    if (appointmentDate.compareTo(date) >= 0 ) {
+                                        //Log.i("app", "Date1 is after Date2");
+                                        UserAppointment userAppointment = new UserAppointment(appointmentID,doctorID,doctorPhoto, doctorName, appointmentDate, appointmentTime, appointmentRemark);
+                                        userAppointments.add(userAppointment);
+                                        activeAppointmentRecyclerView.setAdapter(userAppAdapter);
+                                    }
+
+                                    if (userAppAdapter.getItemCount() == 0)
+                                    {
+                                        noAppTV.setVisibility(View.VISIBLE);
+                                    }
+
+
+
                                 }
                             }
 
@@ -107,14 +136,14 @@ public class UserActiveAppointments extends AppCompatActivity {
                             e.printStackTrace();
                         }
 
-                        activeAppointmentRecyclerView.setAdapter(userAppAdapter);
+
 
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 progressDialog.dismiss();
-                Toast.makeText(UserActiveAppointments.this, error.toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), error.toString(), Toast.LENGTH_LONG).show();
             }
         }){
             @Override
@@ -125,20 +154,7 @@ public class UserActiveAppointments extends AppCompatActivity {
             }
         };
 
-        VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(stringRequest);
+        VolleySingleton.getInstance(getContext()).addToRequestQueue(stringRequest);
 
-    }
-
-    @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
-    }
-
-    public void onBackPressed() {
-        Intent intent = new Intent(UserActiveAppointments.this, AppointmentActivity.class);
-        intent.putExtra("intentUserID", intentUserID);
-        startActivity(intent);
-        finish();
     }
 }

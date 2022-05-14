@@ -35,11 +35,11 @@ public class AddWorkoutActivity extends AppCompatActivity {
 
     private ProgressDialog loadingbar;
 
-    private TextView workoutName, workoutMET, workoutDuration, workoutCalories;
+    private TextView workoutName, workoutMET, workoutDuration, workoutCalories, durationError;
     private Button addbtn;
     private LinearLayout workoutDurationContainer;
 
-    private String workoutDurationValue="1", workoutNameValue, workoutMETValue, workoutCaloriesValue;
+    private String workoutDurationValue="0", workoutNameValue, workoutMETValue, workoutCaloriesValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +64,7 @@ public class AddWorkoutActivity extends AppCompatActivity {
         workoutDuration = (TextView) findViewById(R.id.add_workout_duration);
         workoutCalories = (TextView) findViewById(R.id.addworkout_calories);
         workoutDurationContainer = findViewById(R.id.add_food_workout_duration_container);
+        durationError = findViewById(R.id.duration_error);
 
         addbtn = (Button) findViewById(R.id.addworkout_addbutton);
 
@@ -79,7 +80,14 @@ public class AddWorkoutActivity extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                AddWorkoutoUserDiary(DateHandler.getCurrentFormedDate(),DateHandler.getCurrentTime());
+                if(TextUtils.isEmpty(workoutDuration.getText().toString()) || Double.parseDouble(workoutDuration.getText().toString()) <= 0)
+                {
+                    durationError.setVisibility(View.VISIBLE);
+                }
+                if(!TextUtils.isEmpty(workoutDuration.getText().toString()) && Double.parseDouble(workoutDuration.getText().toString()) > 0){
+                    durationError.setVisibility(View.GONE);
+                    AddWorkoutoUserDiary(DateHandler.getCurrentFormedDate(),DateHandler.getCurrentTime());
+                }
             }
         });
 

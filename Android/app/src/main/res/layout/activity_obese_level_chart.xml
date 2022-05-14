@@ -46,62 +46,62 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <LinearLayout
-                    android:id="@+id/linearLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="@dimen/activity_horizontal_margin"
-                    android:layout_marginRight="@dimen/activity_horizontal_margin"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:layout_marginBottom="@dimen/activity_horizontal_margin"
-                    android:orientation="vertical">
+<!--                <LinearLayout-->
+<!--                    android:id="@+id/linearLayout"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_marginTop="@dimen/activity_horizontal_margin"-->
+<!--                    android:layout_marginRight="@dimen/activity_horizontal_margin"-->
+<!--                    android:layout_marginLeft="@dimen/activity_horizontal_margin"-->
+<!--                    android:layout_marginBottom="@dimen/activity_horizontal_margin"-->
+<!--                    android:orientation="vertical">-->
 
-                    <TextView
-                        android:layout_width="354dp"
-                        android:layout_height="50dp"
-                        android:id="@+id/textView"
-                        android:layout_gravity="center_horizontal"
-                        android:textStyle="bold"
-                        android:textSize="16sp"
-                        android:paddingLeft="10dp"
-                        android:gravity="center_vertical"
-                        android:textColor="@color/blue" />
+<!--                    <TextView-->
+<!--                        android:layout_width="354dp"-->
+<!--                        android:layout_height="50dp"-->
+<!--                        android:id="@+id/textView"-->
+<!--                        android:layout_gravity="center_horizontal"-->
+<!--                        android:textStyle="bold"-->
+<!--                        android:textSize="16sp"-->
+<!--                        android:paddingLeft="10dp"-->
+<!--                        android:gravity="center_vertical"-->
+<!--                        android:textColor="@color/blue" />-->
 
-                    <com.github.mikephil.charting.charts.LineChart
-                        android:id="@+id/day_chart"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+<!--                    <com.github.mikephil.charting.charts.LineChart-->
+<!--                        android:id="@+id/day_chart"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="match_parent" />-->
 
-                </LinearLayout>
+<!--                </LinearLayout>-->
 
 
 
-                <LinearLayout
-                    android:id="@+id/linearLayout2"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="@dimen/activity_horizontal_margin"
-                    android:layout_marginRight="@dimen/activity_horizontal_margin"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:layout_marginBottom="@dimen/activity_horizontal_margin"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="354dp"
-                        android:layout_height="73dp"
-                        android:id="@+id/textView2"
-                        android:layout_gravity="center_horizontal"
-                        android:textStyle="bold"
-                        android:textSize="16sp"
-                        android:paddingLeft="10dp"
-                        android:gravity="center_vertical"
-                        android:textColor="@color/blue" />
+<!--                <LinearLayout-->
+<!--                    android:id="@+id/linearLayout2"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_marginTop="@dimen/activity_horizontal_margin"-->
+<!--                    android:layout_marginRight="@dimen/activity_horizontal_margin"-->
+<!--                    android:layout_marginLeft="@dimen/activity_horizontal_margin"-->
+<!--                    android:layout_marginBottom="@dimen/activity_horizontal_margin"-->
+<!--                    android:orientation="vertical">-->
+<!--                    <TextView-->
+<!--                        android:layout_width="354dp"-->
+<!--                        android:layout_height="73dp"-->
+<!--                        android:id="@+id/textView2"-->
+<!--                        android:layout_gravity="center_horizontal"-->
+<!--                        android:textStyle="bold"-->
+<!--                        android:textSize="16sp"-->
+<!--                        android:paddingLeft="10dp"-->
+<!--                        android:gravity="center_vertical"-->
+<!--                        android:textColor="@color/blue" />-->
 
-                    <com.github.mikephil.charting.charts.LineChart
-                        android:id="@+id/week_chart"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+<!--                    <com.github.mikephil.charting.charts.LineChart-->
+<!--                        android:id="@+id/week_chart"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="match_parent" />-->
 
-                </LinearLayout>
+<!--                </LinearLayout>-->
 
                 <LinearLayout
                     android:id="@+id/linearLayout3"
@@ -112,16 +112,16 @@
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
                     android:layout_marginBottom="@dimen/activity_horizontal_margin"
                     android:orientation="vertical">
-                    <TextView
-                        android:layout_width="354dp"
-                        android:layout_height="73dp"
-                        android:id="@+id/textView3"
-                        android:layout_gravity="center_horizontal"
-                        android:paddingLeft="10dp"
-                        android:textStyle="bold"
-                        android:textSize="16sp"
-                        android:gravity="center_vertical"
-                        android:textColor="@color/blue" />
+<!--                    <TextView-->
+<!--                        android:layout_width="354dp"-->
+<!--                        android:layout_height="73dp"-->
+<!--                        android:id="@+id/textView3"-->
+<!--                        android:layout_gravity="center_horizontal"-->
+<!--                        android:paddingLeft="10dp"-->
+<!--                        android:textStyle="bold"-->
+<!--                        android:textSize="16sp"-->
+<!--                        android:gravity="center_vertical"-->
+<!--                        android:textColor="@color/blue" />-->
 
                     <com.github.mikephil.charting.charts.LineChart
                         android:id="@+id/month_chart"
@@ -130,33 +130,33 @@
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/linearLayout4"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="@dimen/activity_horizontal_margin"
-                    android:layout_marginRight="@dimen/activity_horizontal_margin"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:layout_marginBottom="@dimen/activity_horizontal_margin"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="354dp"
-                        android:layout_height="73dp"
-                        android:id="@+id/textView4"
-                        android:paddingLeft="10dp"
-                        android:layout_gravity="center_horizontal"
-                        android:textStyle="bold"
-                        android:textSize="16sp"
-                        android:gravity="center_vertical"
-                        android:textColor="@color/blue" />
+<!--                <LinearLayout-->
+<!--                    android:id="@+id/linearLayout4"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_marginTop="@dimen/activity_horizontal_margin"-->
+<!--                    android:layout_marginRight="@dimen/activity_horizontal_margin"-->
+<!--                    android:layout_marginLeft="@dimen/activity_horizontal_margin"-->
+<!--                    android:layout_marginBottom="@dimen/activity_horizontal_margin"-->
+<!--                    android:orientation="vertical">-->
+<!--                    <TextView-->
+<!--                        android:layout_width="354dp"-->
+<!--                        android:layout_height="73dp"-->
+<!--                        android:id="@+id/textView4"-->
+<!--                        android:paddingLeft="10dp"-->
+<!--                        android:layout_gravity="center_horizontal"-->
+<!--                        android:textStyle="bold"-->
+<!--                        android:textSize="16sp"-->
+<!--                        android:gravity="center_vertical"-->
+<!--                        android:textColor="@color/blue" />-->
 
 
-                    <com.github.mikephil.charting.charts.LineChart
-                        android:id="@+id/year_chart"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+<!--                    <com.github.mikephil.charting.charts.LineChart-->
+<!--                        android:id="@+id/year_chart"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="match_parent" />-->
 
-                </LinearLayout>
+<!--                </LinearLayout>-->
 
             </FrameLayout>
 

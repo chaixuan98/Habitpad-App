@@ -44,19 +44,34 @@
 
                     <TextView
                         android:layout_width="354dp"
-                        android:layout_height="73dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
                         android:id="@+id/textView"
                         android:layout_gravity="center_horizontal"
                         android:textStyle="bold"
-                        android:textSize="16sp"
+                        android:textSize="15sp"
                         android:paddingLeft="10dp"
                         android:gravity="center_vertical"
                         android:textColor="@color/blue" />
+
+                    <TextView
+                        android:id="@+id/consecutive_day_tv"
+                        android:layout_width="354dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_gravity="center_horizontal"
+                        android:textStyle="bold"
+                        android:textSize="15sp"
+                        android:paddingLeft="10dp"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/blue" />
+
 
                     <com.github.mikephil.charting.charts.LineChart
                         android:id="@+id/day_chart"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -68,13 +83,27 @@
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
                     android:layout_marginBottom="@dimen/activity_horizontal_margin"
                     android:orientation="vertical">
+
                     <TextView
-                        android:layout_width="354dp"
-                        android:layout_height="73dp"
                         android:id="@+id/textView2"
+                        android:layout_width="354dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
                         android:layout_gravity="center_horizontal"
                         android:textStyle="bold"
-                        android:textSize="16sp"
+                        android:textSize="15sp"
+                        android:paddingLeft="10dp"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/blue" />
+
+                    <TextView
+                        android:id="@+id/consecutive_week_tv"
+                        android:layout_width="354dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_gravity="center_horizontal"
+                        android:textStyle="bold"
+                        android:textSize="15sp"
                         android:paddingLeft="10dp"
                         android:gravity="center_vertical"
                         android:textColor="@color/blue" />
@@ -96,13 +125,26 @@
                     android:layout_marginBottom="@dimen/activity_horizontal_margin"
                     android:orientation="vertical">
                     <TextView
-                        android:layout_width="354dp"
-                        android:layout_height="73dp"
                         android:id="@+id/textView3"
+                        android:layout_width="354dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
                         android:layout_gravity="center_horizontal"
                         android:paddingLeft="10dp"
                         android:textStyle="bold"
-                        android:textSize="16sp"
+                        android:textSize="15sp"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/blue" />
+
+                    <TextView
+                        android:id="@+id/consecutive_month_tv"
+                        android:layout_width="354dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_gravity="center_horizontal"
+                        android:textStyle="bold"
+                        android:textSize="15sp"
+                        android:paddingLeft="10dp"
                         android:gravity="center_vertical"
                         android:textColor="@color/blue" />
 
@@ -124,7 +166,7 @@
                     android:orientation="vertical">
                     <TextView
                         android:layout_width="354dp"
-                        android:layout_height="73dp"
+                        android:layout_height="60dp"
                         android:id="@+id/textView4"
                         android:paddingLeft="10dp"
                         android:layout_gravity="center_horizontal"

@@ -26,7 +26,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
 import com.example.habitpadapplication.Adapters.BookAppointmentAdapter;
-import com.example.habitpadapplication.Model.Doctor;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -268,7 +267,7 @@ public class BookAppointment extends AppCompatActivity {
             if (sItem != null) {
                 UpdateSlot(sItem,"Reserved");
                 AddAppointment(bookDate.getText().toString().trim(),sItem, drRemark.getText().toString().trim());
-                Intent intent = new Intent(getApplicationContext(), UserActiveAppointments.class);
+                Intent intent = new Intent(getApplicationContext(), UserAppointments.class);
 
                 intent.putExtra("intentUserID", intentUserID);
 

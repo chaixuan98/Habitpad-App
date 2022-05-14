@@ -35,8 +35,9 @@ public class SignUp4ndClass extends AppCompatActivity {
     private ImageView backBtn;
     private MaterialButton finish;
     private TextView loginText;
-    private RadioGroup rgSmoked, rgAlcohol ,rgMedical;
-    private RadioButton smoked, alcohol, medical;
+    private RadioGroup rgSmoked, rgAlcohol ,rgMedical, rgFamilySuffered;
+    private RadioButton smoked, alcohol, medical, familySuffered;
+
 
 
 
@@ -53,15 +54,19 @@ public class SignUp4ndClass extends AppCompatActivity {
         String password = intent.getStringExtra("password");
         String gender = intent.getStringExtra("gender");
         String age = intent.getStringExtra("age");
+        String startWeight = intent.getStringExtra("startWeight");
         String weight = intent.getStringExtra("weight");
         String height = intent.getStringExtra("height");
-        String familySuffered = intent.getStringExtra("familySuffered");
         String lifestyle = intent.getStringExtra("lifestyle");
         String bmi = intent.getStringExtra("bmi");
+        String goalWeight = getIntent().getStringExtra("goalWeight");
+        String weeklyGoalWeight = getIntent().getStringExtra("weeklyGoalWeight");
+        String goalStartDate = getIntent().getStringExtra("goalStartDate");
 
         rgMedical = findViewById(R.id.radioGroupMedical);
         rgSmoked = findViewById(R.id.radioGroupSmoked);
         rgAlcohol = findViewById(R.id.radioGroupAlcohol);
+        rgFamilySuffered = findViewById(R.id.radioGroupFamily);
         finish = findViewById(R.id.finishbtn);
         loginText = findViewById(R.id.signin_textView);
 
@@ -74,6 +79,20 @@ public class SignUp4ndClass extends AppCompatActivity {
 
             }
         });
+
+        rgFamilySuffered.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId){
+                    case R.id.family_Yes:
+                        familySuffered = findViewById(checkedId);
+
+                    case R.id.family_No:
+                        familySuffered = findViewById(checkedId);
+                }
+            }
+        });
+
         rgSmoked.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -131,12 +150,12 @@ public class SignUp4ndClass extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if(!validateSmoked()|!validateFamilySuffered()|!validateMedical()){
+                if(!validateSmoked()| !validateAlcohol()|!validateFamilySuffered()|!validateMedical()){
                     return;
                 }
 
-                createUser(username,email,phone,password,gender,age,weight,height,familySuffered,lifestyle,bmi,smoked.getText().toString(),alcohol.getText().toString(),medical.getText().toString() );
-                startActivity(new Intent(SignUp4ndClass.this,MainActivity.class));
+                createUser(username,email,phone,password,gender,age,startWeight,weight,height,goalWeight,weeklyGoalWeight,goalStartDate,familySuffered.getText().toString(),lifestyle,bmi,smoked.getText().toString(),alcohol.getText().toString(),medical.getText().toString() );
+
             }
         });
     }
@@ -147,8 +166,12 @@ public class SignUp4ndClass extends AppCompatActivity {
                             final String password,
                             final String gender,
                             final String age,
+                            final String startWeight,
                             final String weight,
                             final String height,
+                            final String goalWeight,
+                            final String weeklyGoalWeight,
+                            final String goalStartDate,
                             final String familySuffered,
                             final String lifestyle,
                             final String bmi,
@@ -156,8 +179,6 @@ public class SignUp4ndClass extends AppCompatActivity {
                             final String alcohol,
                             final String medical){
 
-        // Progress
-        finish.setText("Creating User...");
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.SIGN_UP_URL, new Response.Listener<String>() {
             @Override
@@ -171,16 +192,13 @@ public class SignUp4ndClass extends AppCompatActivity {
                     String message = jsonObject.getString("message");
 
                     if (success.equals("1")) {
-
                         Toast.makeText(getApplicationContext(),"Sign Up successffully! Please login again",Toast.LENGTH_SHORT).show();
-                        finish.setText("Sign Up");
-
+                        startActivity(new Intent(SignUp4ndClass.this,MainActivity.class));
                     }
 
                 } catch (JSONException e) {
 
                     Toast.makeText(getApplicationContext(),"Register Error!" + e.toString(),Toast.LENGTH_LONG).show();
-                    finish.setText("Sign Up");
 
                 }
 
@@ -190,7 +208,6 @@ public class SignUp4ndClass extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
 
                 Toast.makeText(getApplicationContext(),error.toString(),Toast.LENGTH_LONG).show();
-                finish.setText("Sign Up");
 
             }
         })
@@ -205,8 +222,12 @@ public class SignUp4ndClass extends AppCompatActivity {
                 params.put("password",password);
                 params.put("gender",gender);
                 params.put("age",age);
+                params.put("startWeight",startWeight);
                 params.put("weight",weight);
                 params.put("height",height);
+                params.put("goalWeight",goalWeight);
+                params.put("weeklyGoalWeight",weeklyGoalWeight);
+                params.put("goalStartDate",goalStartDate);
                 params.put("familySuffered",familySuffered);
                 params.put("lifestyle",lifestyle);
                 params.put("bmi",bmi);
@@ -221,7 +242,14 @@ public class SignUp4ndClass extends AppCompatActivity {
         VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
     }
 
-
+    private  boolean validateFamilySuffered(){
+        if(rgFamilySuffered.getCheckedRadioButtonId() == -1){
+            Toast.makeText(SignUp4ndClass.this, "Please Select Family Suffered Obesity", Toast.LENGTH_SHORT).show();
+            return false;
+        }  else{
+            return true;
+        }
+    }
 
     private  boolean validateSmoked(){
         if(rgSmoked.getCheckedRadioButtonId() == -1){
@@ -232,7 +260,7 @@ public class SignUp4ndClass extends AppCompatActivity {
         }
     }
 
-    private  boolean validateFamilySuffered(){
+    private  boolean validateAlcohol(){
         if(rgAlcohol.getCheckedRadioButtonId() == -1){
             Toast.makeText(SignUp4ndClass.this, "Please Select Alcohol", Toast.LENGTH_SHORT).show();
             return false;

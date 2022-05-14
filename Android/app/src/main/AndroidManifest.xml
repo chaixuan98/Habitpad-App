@@ -29,16 +29,19 @@
         android:theme="@style/Theme.HabitpadApplication"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".GoalsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TermConditionActivity"
+            android:exported="false" />
+        <activity
             android:name=".ViewUserProfile"
             android:exported="false" />
         <activity
-            android:name=".UserActiveAppointments"
+            android:name=".UserAppointments"
             android:exported="false" />
         <activity
             android:name=".AppointmentActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ActiveAppointments"
             android:exported="false" />
         <activity
             android:name=".DoctorListActivity"
@@ -87,10 +90,9 @@
             android:exported="true" />
         <activity
             android:name=".ReminderActivity"
-            android:exported="true" />
-        <activity
-            android:name=".StepActivity"
-            android:exported="true" />
+            android:exported="true" /> <!-- <activity -->
+        <!-- android:name=".StepActivity" -->
+        <!-- android:exported="true" /> -->
         <activity
             android:name=".Chart.FoodChart"
             android:exported="true" />
@@ -105,21 +107,27 @@
             android:exported="true" />
         <activity
             android:name=".FoodListActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
         <activity
             android:name=".Chart.WorkoutChart"
             android:exported="true" />
         <activity
-            android:name=".TrackExerciseActivity"
+            android:name=".WorkoutActivity"
             android:exported="true" />
         <activity
             android:name=".Settings.UserSettingsActivity"
             android:exported="true" />
         <activity
             android:name=".Settings.WaterReminderActivity"
-            android:exported="true" />
-        <activity
-            android:name=".Dialogs.congratulationDialog"
             android:exported="true" />
         <activity
             android:name=".Dialogs.OtherSizeDialog"

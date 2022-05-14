@@ -2,14 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
-    android:padding="10dp">
+    android:layout_marginLeft="6dp"
+    android:layout_marginRight="6dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="6dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -23,6 +22,7 @@
                 android:id="@+id/workout_name"
                 android:layout_width="220dp"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
                 android:text="name"
                 android:textColor="@color/grey"
                 android:textSize="15sp" />
@@ -36,12 +36,20 @@
                     android:id="@+id/workout_MET"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
                     android:layout_alignParentEnd="true"
                     android:text="MET"
                     android:textColor="@color/grey"
                     android:textSize="15sp" />
             </RelativeLayout>
         </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="#c0c0c0" />
 
     </LinearLayout>
 </RelativeLayout>

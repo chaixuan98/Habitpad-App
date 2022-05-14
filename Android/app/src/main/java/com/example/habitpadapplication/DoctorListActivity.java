@@ -121,9 +121,9 @@ public class DoctorListActivity extends AppCompatActivity {
         return true;
     }
 
-    public void onBackPressed() {
-        Intent intent = new Intent(DoctorListActivity.this, HomeActivity.class);
-        startActivity(intent);
-        finish();
-    }
+//    public void onBackPressed() {
+//        Intent intent = new Intent(DoctorListActivity.this, HomeActivity.class);
+//        startActivity(intent);
+//        finish();
+//    }
 }

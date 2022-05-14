@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<searchable xmlns:android="http://schemas.android.com/apk/res/android"
+    android:label="Habitpad"
+    android:hint="search_hint"
+    android:searchSuggestAuthority="example.com.cle.MySuggestionProvider"
+    android:searchSuggestSelection=" ?">
+</searchable>

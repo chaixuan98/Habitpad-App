@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +28,7 @@ import com.example.habitpadapplication.Urls;
 import com.example.habitpadapplication.VolleySingleton;
 import com.google.android.material.button.MaterialButton;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -54,8 +56,9 @@ public class UserAppointmetAdapter extends RecyclerView.Adapter<UserAppointmetAd
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         private CircleImageView dImg;
-        private TextView dName, dDate, dTime, dRemark;
+        private TextView dName, dDate, dTime, dRemark, uAdvice;
         private MaterialButton deleteBtn;
+        private LinearLayout adviceLayout;
 
 
         public MyViewHolder (View view){
@@ -67,6 +70,9 @@ public class UserAppointmetAdapter extends RecyclerView.Adapter<UserAppointmetAd
             dTime = view.findViewById(R.id.app_dr_time);
             dRemark = view.findViewById(R.id.app_dr_remark);
             deleteBtn = view.findViewById(R.id.app_delete_btn);
+
+            adviceLayout = view.findViewById(R.id.advice_layout);
+            uAdvice = view.findViewById(R.id.advice_detail);
 
         }
     }
@@ -83,6 +89,7 @@ public class UserAppointmetAdapter extends RecyclerView.Adapter<UserAppointmetAd
         final UserAppointment userAppointment = userAppointments.get(position);
 
         String docName = userAppointment.getDrName();
+        String appID = userAppointment.getAppID();
 
         holder.dName.setText("Dr."+docName);
         holder.dDate.setText(userAppointment.getAppDate());
@@ -149,6 +156,62 @@ public class UserAppointmetAdapter extends RecyclerView.Adapter<UserAppointmetAd
             dialog.show();
 
         });
+
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.GET_USER_ADVICE_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            Log.i("tagconvertstr", "[" + response + "]");
+
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray jsonArray = jsonObject.getJSONArray("advice");
+
+                            String success = jsonObject.getString("success");
+
+                            if (success.equals("1")) {
+
+                                for (int i = 0; i < jsonArray.length(); i++) {
+
+                                    JSONObject object = jsonArray.getJSONObject(i);
+
+                                    String adviceDetail = object.getString("adviceDetail").trim();
+
+                                    holder.adviceLayout.setVisibility(View.VISIBLE);
+                                    holder.uAdvice.setText(adviceDetail);
+                                    holder.deleteBtn.setVisibility(View.GONE);
+
+                                }
+                            }
+
+                            if (success.equals("0")) {
+                                holder.adviceLayout.setVisibility(View.GONE);
+                                holder.deleteBtn.setVisibility(View.VISIBLE);
+                            }
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(mContext, error.toString(), Toast.LENGTH_LONG).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("appointmentID", appID);
+                return params;
+            }
+        };
+
+        VolleySingleton.getInstance(mContext).addToRequestQueue(stringRequest);
+
 
     }
 

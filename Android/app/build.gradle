@@ -58,6 +58,7 @@ dependencies {
     implementation 'com.daimajia.androidanimations:library:2.4@aar'
 
     implementation 'com.github.lzyzsd:circleprogress:1.1.0@aar'
+//    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.2'
     implementation 'com.github.PhilJay:MPAndroidChart:v2.2.4'
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'com.afollestad:sectioned-recyclerview:0.2.3'
