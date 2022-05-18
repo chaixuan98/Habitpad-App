@@ -57,7 +57,7 @@ import java.util.Map;
 public class WaterChart extends AppCompatActivity {
 
     private String intentUserID, userWaterNeed, lastLaunchDate, thisDay;
-    private int counter, drunkWater;
+    private int counter = 0, drunkWater;
     private TextView consecutiveDay, consecutiveWeek, consecutiveMonth;
 
     LineChart dayLineChart;
@@ -622,6 +622,12 @@ public class WaterChart extends AppCompatActivity {
                                 if (Integer.parseInt(dayDifference) > 1){
                                     counter = 1;
                                 }
+                                UpdateUserWaterConsecutive(DateHandler.getCurrentFormedDate(), counter);
+                            }
+
+                            else{
+                                counter = 0;
+
                                 UpdateUserWaterConsecutive(DateHandler.getCurrentFormedDate(), counter);
                             }
 

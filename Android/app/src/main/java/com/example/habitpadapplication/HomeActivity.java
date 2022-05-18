@@ -106,6 +106,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     private String weightGoalStatus="", weightAchievementStatus="", points="0";
 
+    private String userPoint = "0";
+
     private BroadcastReceiver updateUIReciver;
     private Context context;
     private String userID, username, userPhoto;
@@ -212,6 +214,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         textView.setText(username+" "+userID );
 
         //checkAppFirstTimeRun();
+        AddUserPoint(userID,"0");
+        AddUserWeightAchievement(userID,"true","false");
         AddUserWeightAchievement(userID,"true","false");
         AddUserWaterConsecutive(userID,DateHandler.getCurrentFormedDate(),"0");
         AddUserWorkoutConsecutive(userID,DateHandler.getCurrentFormedDate(),"0");
@@ -865,7 +869,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     private void UserSendToGamificationPage()
     {
-        Intent gamificationIntent = new Intent(this, GamificationActivity.class);
+        Intent gamificationIntent = new Intent(this, MissionRewardActivity.class);
         gamificationIntent.putExtra("intentUserID", userID);
         startActivity(gamificationIntent);
     }
@@ -1224,8 +1228,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                                         //strUserFoodCalories = foodCalories;
 
                                         DisplayUserWaterCount(userID,date,foodCalories,strUserWorkout);
-
-
                                     }
 
                                     else{
@@ -1488,6 +1490,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                             if (success.equals("1")) {
                                 //Toast.makeText(HomeActivity.this,message,Toast.LENGTH_SHORT).show();
                                 Log.i("tagtoast", "["+message+"]");
+                                getTaskPoint(taskID);
+
                             }
                             if (success.equals("0")) {
                                 //Toast.makeText(HomeActivity.this,message,Toast.LENGTH_SHORT).show();
@@ -1801,6 +1805,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     {
 
         UpdateUserWeightAchievement(userID);
+        AddUserTask(userID, 5, DateHandler.getCurrentFormedDate());
 
 
         final Dialog achievementDialog = new Dialog(HomeActivity.this);
@@ -1816,8 +1821,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         TextView dialogDescription = achievementDialog.findViewById(R.id.achievement_dialog_description);
         dialogDescription.setText("Congratulations, You have achieved your weight loss goal.");
 
-//        TextView dialogPoints = achievementDialog.findViewById(R.id.achievement_dialog_points);
-//        dialogPoints.setText("+5 Points");
+        TextView dialogPoints = achievementDialog.findViewById(R.id.achievement_dialog_points);
+        dialogPoints.setText("+5 Points");
 
         ImageView cancelBtn = achievementDialog.findViewById(R.id.achievement_dialog_close_button);
         cancelBtn.setOnClickListener(new View.OnClickListener()
@@ -2028,6 +2033,201 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
 
+    }
+
+    private void getTaskPoint(final int taskID)
+    {
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.GET_TASK_POINT_URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                try {
+                    Log.i("tagconvertstr", "[" + response + "]");
+                    JSONObject jsonObject = new JSONObject(response);
+
+                    String success = jsonObject.getString("success");
+                    String message = jsonObject.getString("message");
+                    JSONArray jsonArray = jsonObject.getJSONArray("taskPoint");
+
+                    if (success.equals("1")) {
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject object = jsonArray.getJSONObject(i);
+
+                            String taskPoint = object.getString("taskPoint").trim();
+                            DisplayUserTotalPoint(userID,taskPoint);
+
+                        }
+                    }
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(HomeActivity.this, "Get user weight error" + e.toString(), Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(HomeActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> params = new HashMap<>();
+                params.put("taskID", String.valueOf(taskID));
+
+                return params;
+            }
+        };
+
+        VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
+    }
+
+    private void DisplayUserTotalPoint(final String intentUserID, final String taskPoint){
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.GET_USER_TOTAL_POINT_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            Log.i("tagconvertstr", "["+response+"]");
+                            //JSONArray array = new JSONArray(response);
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray jsonArray = jsonObject.getJSONArray("userPoint");
+                            String success = jsonObject.getString("success") ;
+
+                            if(success.equals("1")) {
+
+                                for (int i = 0; i < jsonArray.length(); i++) {
+
+                                    JSONObject object = jsonArray.getJSONObject(i);
+
+                                    userPoint = object.getString("totalPoint");
+
+                                    userPoint = String.valueOf(Integer.parseInt(userPoint) + Integer.parseInt(taskPoint));
+                                    UpdateUserPoint(userID, userPoint);
+                                }
+                            }
+
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(HomeActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> params = new HashMap<>();
+                params.put("userID",intentUserID);
+                return params;
+            }
+        };
+        VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
+
+
+    }
+
+
+    private void AddUserPoint(final String intentUserID, final String point)
+    {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.ADD_USER_POINT_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            Log.i("tagconvertstr", "["+response+"]");
+                            JSONObject jsonObject = new JSONObject(response);
+
+                            String success = jsonObject.getString("success");
+                            String message = jsonObject.getString("message");
+
+                            if (success.equals("1")) {
+                                //Toast.makeText(HomeActivity.this,message,Toast.LENGTH_SHORT).show();
+                                Log.i("tagtoast", "["+message+"]");
+                            }
+
+                            if (success.equals("0")) {
+                                //Toast.makeText(HomeActivity.this,message,Toast.LENGTH_SHORT).show();
+                                Log.i("tagtoast", "["+message+"]");
+                            }
+
+                        } catch (JSONException e) {
+                            Toast.makeText(HomeActivity.this,"Insert user point Error!" + e.toString(),Toast.LENGTH_LONG).show();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("tagerror", "["+error+"]");
+                        //Toast.makeText(HomeActivity.this,error.toString(),Toast.LENGTH_LONG).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("userID", intentUserID);
+                params.put("totalPoint",point);
+                return params;
+            }
+        };
+
+        VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
+
+    }
+
+    private void UpdateUserPoint(final String intentUserID, final String point){
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.UPDATE_USER_POINT_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            Log.i("tagconvertstr", "["+response+"]");
+                            JSONObject jsonObject = new JSONObject(response);
+
+                            String success = jsonObject.getString("success");
+                            String message = jsonObject.getString("message");
+
+                            if (success.equals("1")) {
+                                Toast.makeText(getApplicationContext(),message,Toast.LENGTH_SHORT).show();
+                                Log.i("tagtoast", "["+message+"]");
+                            }
+
+                        }catch (Exception e){
+                            e.printStackTrace();
+                            Toast.makeText(HomeActivity.this, "update user point error" + e.toString(), Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //Log.i("tagerror", "["+error+"]");
+                Toast.makeText(HomeActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> params = new HashMap<>();
+                params.put("userID",intentUserID);
+                params.put("totalPoint",point);
+                return params;
+            }
+        };
+
+        VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
     }
 
 }

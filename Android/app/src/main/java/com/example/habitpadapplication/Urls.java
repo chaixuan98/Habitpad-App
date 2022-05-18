@@ -116,6 +116,23 @@ public class Urls {
     public static final String GET_USER_FOOD_CONSECUTIVE_URL = ROOT_URL+"get_user_food_consecutive.php";
     public static final String UPDATE_USER_FOOD_CONSECUTIVE_URL = ROOT_URL+"edit_user_food_consecutive.php";
 
+    public static final String ADD_USER_POINT_URL = ROOT_URL+"add_user_point.php";
+    public static final String UPDATE_USER_POINT_URL = ROOT_URL+"edit_user_point.php";
+
+    public static final String GET_TASK_POINT_URL = ROOT_URL+"get_task_point.php";
+
+    public static final String GET_VOUCHER_LIST_URL = ROOT_URL+"get_voucher_list.php";
+    public static final String GET_VOUCHER_DETAILS_URL = ROOT_URL+"get_voucher_details.php";
+
+    public static final String ADD_USER_VOUCHER_URL = ROOT_URL+"add_user_voucher.php";
+    public static final String GET_USER_VOUCHER_URL = ROOT_URL+"get_user_voucher.php";
+
+
+    public static final String GET_GIFT_LIST_URL = ROOT_URL+"get_gift_list.php";
+    public static final String GET_GIFT_DETAILS_URL = ROOT_URL+"get_gift_details.php";
+
+    public static final String ADD_USER_GIFT_URL = ROOT_URL+"add_user_gift.php";
+    public static final String GET_USER_GIFT_URL = ROOT_URL+"get_user_gift.php";
 
 
 }

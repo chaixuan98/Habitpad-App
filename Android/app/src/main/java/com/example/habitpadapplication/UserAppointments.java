@@ -33,13 +33,6 @@ import java.util.Map;
 
 public class UserAppointments extends AppCompatActivity {
 
-
-    private RecyclerView activeAppointmentRecyclerView;
-    private RecyclerView.LayoutManager manager;
-    private UserAppointmetAdapter userAppAdapter;
-    private List<UserAppointment> userAppointments;
-
-    private Context context;
     private String intentUserID;
 
     private TabLayout tabLayout;
@@ -51,8 +44,10 @@ public class UserAppointments extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        setTitle("Active Appointment");
+        setTitle("Appointments");
         setContentView(R.layout.activity_user_appointments);
+
+        intentUserID = getIntent().getExtras().getString("intentUserID");
 
         tabLayout = findViewById(R.id.appointment_tab_layout);
         viewPager = findViewById(R.id.appointment_view_pager);
@@ -64,85 +59,7 @@ public class UserAppointments extends AppCompatActivity {
         appointmentViewPagerAdapter.addFragment(new PastAppointmentFragment(), "Past");
         viewPager.setAdapter(appointmentViewPagerAdapter);
 
-//        activeAppointmentRecyclerView = findViewById(R.id.user_appointments_rv);
-//
-//        intentUserID = getIntent().getExtras().getString("intentUserID");
-//
-//        manager = new LinearLayoutManager(UserAppointments.this);
-//        activeAppointmentRecyclerView.setLayoutManager(manager);
-//        activeAppointmentRecyclerView.setHasFixedSize(true);
-//        userAppointments = new ArrayList<>();
-//        userAppAdapter = new UserAppointmetAdapter(UserAppointments.this, userAppointments);
-//
-//        getUserAppointment();
     }
-
-//    private void getUserAppointment() {
-//        // Initializing Request queue
-//
-//        final ProgressDialog progressDialog = new ProgressDialog(this);
-//        progressDialog.setMessage("Loading...");
-//        progressDialog.show();
-//
-//        StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.GET_USER_APPOINTMENT_URL,
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        progressDialog.dismiss();
-//                        try {
-//                            Log.i("tagconvertstr", "["+response+"]");
-//                            //JSONArray array = new JSONArray(response);
-//                            JSONObject jsonObject = new JSONObject(response);
-//                            JSONArray jsonArray = jsonObject.getJSONArray("userapp");
-//
-//                            String success = jsonObject.getString("success");
-//
-//                            if (success.equals("1")) {
-//
-//                                for (int i = 0; i < jsonArray.length(); i++) {
-//
-//                                    JSONObject object = jsonArray.getJSONObject(i);
-//
-//                                    String appointmentID = object.getString("appointmentID").trim();
-//                                    String doctorID = object.getString("doctorID").trim();
-//                                    String doctorPhoto = object.getString("doctorPhoto").trim();
-//                                    String doctorName = object.getString("doctorName").trim();
-//                                    String appointmentDate = object.getString("appointmentDate").trim();
-//                                    String appointmentTime = object.getString("appointmentTime").trim();
-//                                    String appointmentRemark = object.getString("appointmentRemark").trim();
-//
-//
-//                                    UserAppointment userAppointment = new UserAppointment(appointmentID,doctorID,doctorPhoto, doctorName, appointmentDate, appointmentTime, appointmentRemark);
-//                                    userAppointments.add(userAppointment);
-//                                }
-//                            }
-//
-//                        }catch (Exception e){
-//                            progressDialog.dismiss();
-//                            e.printStackTrace();
-//                        }
-//
-//                        activeAppointmentRecyclerView.setAdapter(userAppAdapter);
-//
-//                    }
-//                }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                progressDialog.dismiss();
-//                Toast.makeText(UserAppointments.this, error.toString(), Toast.LENGTH_LONG).show();
-//            }
-//        }){
-//            @Override
-//            protected Map<String, String> getParams() throws AuthFailureError {
-//                Map<String, String> params = new HashMap<>();
-//                params.put("userID", intentUserID);
-//                return params;
-//            }
-//        };
-//
-//        VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(stringRequest);
-//
-//    }
 
     @Override
     public boolean onSupportNavigateUp() {

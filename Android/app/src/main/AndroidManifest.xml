@@ -29,6 +29,9 @@
         android:theme="@style/Theme.HabitpadApplication"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".MissionRewardActivity"
+            android:exported="false" />
+        <activity
             android:name=".GoalsActivity"
             android:exported="false" />
         <activity

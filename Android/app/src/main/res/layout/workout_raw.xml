@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:text="name"
-                android:textColor="@color/grey"
+                android:textColor="@color/black"
                 android:textSize="15sp" />
 
 
@@ -36,10 +36,10 @@
                     android:id="@+id/workout_MET"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="5dp"
                     android:layout_alignParentEnd="true"
+                    android:layout_marginRight="5dp"
                     android:text="MET"
-                    android:textColor="@color/grey"
+                    android:textColor="@color/black"
                     android:textSize="15sp" />
             </RelativeLayout>
         </LinearLayout>

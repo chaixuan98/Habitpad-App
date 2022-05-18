@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".UserAppointments">
+    tools:context=".MissionRewardActivity">
 
     <com.google.android.material.tabs.TabLayout
-        android:id="@+id/appointment_tab_layout"
+        android:id="@+id/mission_tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -17,17 +17,22 @@
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Active" />
+            android:text="Missions"/>
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Past"/>
+            android:text="Redeem"/>
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="My rewards"/>
 
     </com.google.android.material.tabs.TabLayout>
 
     <androidx.viewpager.widget.ViewPager
-        android:id="@+id/appointment_view_pager"
+        android:id="@+id/mission_view_pager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

@@ -122,25 +122,25 @@ public class FormulaCalculations
         return Integer.parseInt(result);
     }
 
-    /* calculate point progress bar value */
-    public int GamificationProgressBarValue(String pointEarned)
-    {
-        String result;
-
-
-        double pointEarned2 = Double.parseDouble(pointEarned);
-
-        double Gprogressbarvalue;
-
-        Gprogressbarvalue = pointEarned2 % 100;
-
-        NumberFormat nf = DecimalFormat.getInstance();
-        nf.setMaximumFractionDigits(0);
-        result = nf.format(Gprogressbarvalue);
-        result = result.replace(",", "");
-
-        return Integer.parseInt(result);
-    }
+//    /* calculate point progress bar value */
+//    public int GamificationProgressBarValue(String pointEarned)
+//    {
+//        String result;
+//
+//
+//        double pointEarned2 = Double.parseDouble(pointEarned);
+//
+//        double Gprogressbarvalue;
+//
+//        Gprogressbarvalue = pointEarned2 % 100;
+//
+//        NumberFormat nf = DecimalFormat.getInstance();
+//        nf.setMaximumFractionDigits(0);
+//        result = nf.format(Gprogressbarvalue);
+//        result = result.replace(",", "");
+//
+//        return Integer.parseInt(result);
+//    }
 
 
 
