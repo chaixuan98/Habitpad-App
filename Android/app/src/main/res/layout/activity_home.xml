@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/user_drawer_layout"
-        tools:openDrawer="">
+        tools:openDrawer="start">
 
 
         <com.google.android.material.navigation.NavigationView
@@ -177,6 +177,17 @@
                                 android:textAlignment="center"
                                 android:textColor="@color/PrimaryTextColor"
                                 android:textSize="20sp" />
+
+                            <TextView
+                                android:id="@+id/home_habit_change_card"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:text="habit change"
+                                android:textAlignment="center"
+                                android:textStyle="italic"
+                                android:textColor="@color/PrimaryTextColor"
+                                android:textSize="14sp" />
 
 
                         </LinearLayout>
@@ -425,6 +436,8 @@
                                     android:textStyle="bold" />
 
                             </LinearLayout>
+
+
 
 
                             <TextView
@@ -1032,6 +1045,139 @@
                     </LinearLayout>
                     <!-- ###### end of water card ###### -->
 
+                    <!-- ###### start of step card ###### -->
+                    <LinearLayout
+                        android:id="@+id/home_step_card"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/card_style_01"
+                        android:orientation="vertical"
+                        android:padding="10dp"
+                        android:visibility="visible"
+                        app:layout_constraintTop_toBottomOf="@+id/home_water_card">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp">
+
+                            <ImageView
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:layout_centerVertical="true"
+                                app:srcCompat="@drawable/ic_baseline_directions_walk_24_black" />
+
+                            <TextView
+                                android:id="@+id/stepview"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="30dp"
+                                android:text="Step"
+                                android:textColor="@color/PrimaryTextColor"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                            <ImageView
+                                android:id="@+id/home_step_level"
+                                android:layout_width="30dp"
+                                android:layout_height="37dp"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginStart="20dp"
+                               android:layout_toRightOf="@+id/stepview"
+                                android:background="#545559"
+                                android:src="@drawable/editthree"/>
+
+<!--                            <ImageButton-->
+<!--                                android:id="@+id/home_step_add_button"-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_alignParentEnd="true"-->
+<!--                                android:backgroundTint="@color/white"-->
+<!--                                android:src="@drawable/ic_baseline_add_24"-->
+<!--                                app:tint="@color/black" />-->
+
+                            <Button
+                                android:id="@+id/home_step_card_goal_button"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginRight="80dp"
+                                android:background="@drawable/button_style_04"
+                                android:text="Set Goal"
+                                android:textAllCaps="false"
+                                android:textColor="@color/PrimaryTextColor" />
+
+                            <ImageButton
+                                android:id="@+id/home_step_chart_button"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:backgroundTint="@color/white"
+                                android:src="@drawable/ic_baseline_show_chart_24"
+                                app:tint="@color/black" />
+
+                        </RelativeLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="0.5dp"
+                            android:background="@color/LineColor" />
+
+                        <LinearLayout
+                            android:id="@+id/home_step_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginBottom="15dp"
+                            android:orientation="vertical">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/home_step_count_card"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:textAlignment="center"
+                                android:textColor="@color/PrimaryTextColor"
+                                android:textSize="30sp" />
+
+                            <TextView
+                                android:id="@+id/home_step_card_goal"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="8dp"
+                                android:text="out of 0 steps"
+                                android:textAlignment="center"
+                                android:textColor="@color/PrimaryTextColor"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Step Count"
+                                android:textAlignment="center"
+                                android:textColor="@color/SecondaryTextColor"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="0.5dp"
+                            android:background="@color/LineColor" />
+
+
+                    </LinearLayout>
+                    <!-- ###### end of step card ###### -->
+
 
                     <!-- ###### start of the weight card ###### -->
                     <LinearLayout
@@ -1044,7 +1190,7 @@
                         android:background="@drawable/card_style_01"
                         android:orientation="vertical"
                         android:padding="10dp"
-                        app:layout_constraintTop_toBottomOf="@+id/home_water_card">
+                        app:layout_constraintTop_toBottomOf="@+id/home_step_card">
 
 
                         <RelativeLayout

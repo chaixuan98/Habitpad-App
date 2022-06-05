@@ -122,27 +122,47 @@ public class FormulaCalculations
         return Integer.parseInt(result);
     }
 
-//    /* calculate point progress bar value */
-//    public int GamificationProgressBarValue(String pointEarned)
+//    /* calculate challenge step progress bar value */
+//    public int MyChallegeStepProgressBarValue(String totalStep, String requiredStep)
 //    {
 //        String result;
 //
 //
-//        double pointEarned2 = Double.parseDouble(pointEarned);
+//        double totalStep2 = Double.parseDouble(totalStep);
+//        double requiredStep2 = Double.parseDouble(requiredStep);
 //
-//        double Gprogressbarvalue;
 //
-//        Gprogressbarvalue = pointEarned2 % 100;
+//        double mcProgressbarvalue;
+//
+//        mcProgressbarvalue = (totalStep2 * 100) / requiredStep2;
 //
 //        NumberFormat nf = DecimalFormat.getInstance();
 //        nf.setMaximumFractionDigits(0);
-//        result = nf.format(Gprogressbarvalue);
+//        result = nf.format(mcProgressbarvalue);
 //        result = result.replace(",", "");
 //
 //        return Integer.parseInt(result);
 //    }
 
+    /* calculate total workout calories */
+    public String TotalWorkoutCalories(String workout, String step)
+    {
+        String result;
 
+        double step2 = Double.parseDouble(step);
+        double workout2 = Double.parseDouble(workout);
+
+        double totalWorkout;
+
+        totalWorkout = workout2 + step2;
+
+        NumberFormat nf = DecimalFormat.getInstance();
+        nf.setMaximumFractionDigits(0);
+        result = nf.format(totalWorkout);
+        result = result.replace(",", "");
+
+        return result;
+    }
 
     /* calculate remaining calories */
     public String CaloriesRemaining(String tdee, String food, String workout)
@@ -175,6 +195,25 @@ public class FormulaCalculations
         double foodGoal;
 
         foodGoal = tdee2 * 0.8;
+
+        NumberFormat nf = DecimalFormat.getInstance();
+        nf.setMaximumFractionDigits(0);
+        result = nf.format(foodGoal);
+        result = result.replace(",", "");
+
+        return result;
+    }
+
+    /* calculate food goal calories */
+    public String FoodCaloriesGoal80(String foodGoal)
+    {
+        String result;
+
+        double foodGoal2 = Double.parseDouble(foodGoal);
+
+        double foodGoal80;
+
+        foodGoal80 = foodGoal2 * 0.8;
 
         NumberFormat nf = DecimalFormat.getInstance();
         nf.setMaximumFractionDigits(0);

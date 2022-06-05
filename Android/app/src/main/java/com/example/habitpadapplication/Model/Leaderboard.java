@@ -2,12 +2,12 @@ package com.example.habitpadapplication.Model;
 
 public class Leaderboard {
 
-    private String leaderboardRank,leaderboardUsername,leaderboardPoint;
+    private String leaderboardRank,leaderboardUsername,leaderboardStep;
 
-    public Leaderboard(String leaderboardRank,String leaderboardUsername, String leaderboardPoint) {
+    public Leaderboard(String leaderboardRank,String leaderboardUsername, String leaderboardStep) {
         this.leaderboardRank = leaderboardRank;
         this.leaderboardUsername = leaderboardUsername;
-        this.leaderboardPoint = leaderboardPoint;
+        this.leaderboardStep = leaderboardStep;
 
     }
 
@@ -19,7 +19,7 @@ public class Leaderboard {
         return leaderboardUsername;
     }
 
-    public String getLeaderboardPoint() {
-        return leaderboardPoint;
+    public String getLeaderboardStep() {
+        return leaderboardStep;
     }
 }

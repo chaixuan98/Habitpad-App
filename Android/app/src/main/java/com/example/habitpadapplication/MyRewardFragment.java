@@ -3,9 +3,12 @@ package com.example.habitpadapplication;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -77,7 +80,13 @@ public class MyRewardFragment extends Fragment {
         swipMyRewardLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                getFragmentManager().beginTransaction().detach(MyRewardFragment.this).attach(MyRewardFragment.this).commit();
+                FragmentManager transaction = getActivity().getSupportFragmentManager();
+                if (Build.VERSION.SDK_INT >= 26) {
+                    transaction.beginTransaction().setReorderingAllowed(false);
+                }
+                transaction.beginTransaction().detach(MyRewardFragment.this).commit ();
+                transaction.beginTransaction().attach (MyRewardFragment.this).commit();
+
 
                 swipMyRewardLayout.setRefreshing(false);
             }
@@ -114,12 +123,12 @@ public class MyRewardFragment extends Fragment {
                                 for (int i = 0; i < jsonArray.length(); i++) {
 
                                     JSONObject object = jsonArray.getJSONObject(i);
-
+                                    String voucherID = object.getString("voucherID").trim();
                                     String voucherPhoto = object.getString("voucherPhoto").trim();
                                     String voucherTitle = object.getString("voucherTitle").trim();
 
 
-                                    MyVoucher myVoucher = new MyVoucher(voucherPhoto, voucherTitle);
+                                    MyVoucher myVoucher = new MyVoucher(voucherID,voucherPhoto, voucherTitle);
                                     myVouchers.add(myVoucher);
 
                                     myVoucherAdapter = new MyVoucherAdapter(getContext(), myVouchers);
@@ -179,11 +188,12 @@ public class MyRewardFragment extends Fragment {
 
                                     JSONObject object = jsonArray.getJSONObject(i);
 
+                                    String giftID = object.getString("giftID").trim();
                                     String giftPhoto = object.getString("giftPhoto").trim();
                                     String giftTitle = object.getString("giftTitle").trim();
 
 
-                                    MyGift myGift = new MyGift(giftPhoto, giftTitle);
+                                    MyGift myGift = new MyGift(giftID,giftPhoto, giftTitle);
                                     myGifts.add(myGift);
 
                                     myGiftAdpater = new MyGiftAdpater(getContext(), myGifts);

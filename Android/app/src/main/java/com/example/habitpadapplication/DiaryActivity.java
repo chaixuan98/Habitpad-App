@@ -58,16 +58,19 @@ public class DiaryActivity extends AppCompatActivity {
     private LinearLayout dateButton;
     private TextView diaryDate;
 
-    private TextView userCaloriesRemaining, userFoodCalories, userWorkoutCalories, userDailyCaloriesIntake, userCarbs, userFat, userProtein, userWaterIntake,userWaterNeed ;
+    private TextView userCaloriesRemaining, userFoodCalories, userWorkoutCalories, userDailyCaloriesIntake, userCarbs, userFat, userProtein, userWaterIntake,userWaterNeed,
+            userStep, userStepDistance, userStepCal, summaryStepCal;
 
     private RecyclerView userBreakfastFoodList, userLunchFoodList, userDinnerFoodList, userSnacksFoodList, userWorkoutList, userWaterList;
 
     private String strUserCurrentWeight, strUserGoalWeight, strUserWeeklyGoalWeight, strUserStartWeight, strUserAge, strUserHeight, strUserGender, strUserActivityLevel,
             strUserFood="0", strUserCarbs="0.0", strUserFat="0.0", strUserProtein="0.0", strUserWorkout="0", userServingSize="1",
-            strUserDailyCalorieIntake, strUserCaloriesRemaining;
+            strUserDailyCalorieIntake, strUserCaloriesRemaining, strUserFinalWorkoutCalories, strUserFinalCalories;
 
     private String strUserWaterNeed,strUserWaterIntake="0";
     private String weightGoalStatus="", weightAchievementStatus="";
+
+    private String strStep = "0", strStepGoal, strStepCal="0.0", strStepDistance="0.0";
 
 
     @Override
@@ -101,6 +104,7 @@ public class DiaryActivity extends AppCompatActivity {
         userDailyCaloriesIntake = (TextView) findViewById(R.id.diary_caloriecard_dailycalorieintake);
         userFoodCalories = (TextView) findViewById(R.id.diary_caloriecard_foodcalorie);
         userWorkoutCalories = (TextView) findViewById(R.id.diary_caloriecard_workoutcalories);
+        summaryStepCal = (TextView) findViewById(R.id.diary_caloriecard_stepcalories);
 
 
         userCarbs = (TextView) findViewById(R.id.diary_summary_card_carbs);
@@ -110,6 +114,9 @@ public class DiaryActivity extends AppCompatActivity {
         userWaterIntake = findViewById(R.id.diary_summary_card_water_intake);
         userWaterNeed = findViewById(R.id.diary_summary_card_water_need);
 
+        userStep = (TextView) findViewById(R.id.diary_summary_card_step);
+        userStepDistance = (TextView) findViewById(R.id.diary_summary_card_distance);
+        userStepCal = (TextView) findViewById(R.id.diary_summary_card_stepcal);
 
         userBreakfastFoodList = (RecyclerView)findViewById(R.id.diary_breakfast_foodlist);
         userBreakfastFoodList.setNestedScrollingEnabled(false);
@@ -251,6 +258,10 @@ public class DiaryActivity extends AppCompatActivity {
             strUserWaterNeed = fc.WaterNeed(strUserCurrentWeight);
             userWaterNeed.setText("of "+strUserWaterNeed + " ml");
 
+//            if(Integer.parseInt(strUserWaterIntake) >= Integer.parseInt(strUserWaterNeed)){
+//                AddUserTask(intentUserID, 7, DateHandler.getCurrentFormedDate());
+//            }
+
         }
         else
         {
@@ -277,8 +288,16 @@ public class DiaryActivity extends AppCompatActivity {
         userFat.setText(strUserFat+"g");
         userProtein.setText(strUserProtein+"g");
         userWaterIntake.setText(strUserWaterIntake);
+        userStep.setText(strStep);
+        userStepDistance.setText(strStepDistance);
+        summaryStepCal.setText(strStepCal);
+        userStepCal.setText(strStepCal);
 
-        strUserCaloriesRemaining = fc.CaloriesRemaining(strUserDailyCalorieIntake, strUserFood, strUserWorkout);
+        strUserFinalWorkoutCalories = fc.TotalWorkoutCalories(strUserWorkout,strStepCal);
+
+        //strUserFinalCalories = String.valueOf(Integer.parseInt(strUserFood) - Integer.parseInt(strUserFinalWorkoutCalories));
+
+        strUserCaloriesRemaining = fc.CaloriesRemaining(strUserDailyCalorieIntake, strUserFood, strUserFinalWorkoutCalories);
         userCaloriesRemaining.setText(strUserCaloriesRemaining);
 
         if(Integer.parseInt(strUserCaloriesRemaining) < 0)
@@ -292,6 +311,9 @@ public class DiaryActivity extends AppCompatActivity {
         strUserProtein="0";
         strUserWorkout="0";
         strUserWaterIntake="0";
+        strStep="0";
+        strStepDistance="0";
+        strStepCal="0";
     }
 
     private void getUserDetails() {
@@ -1064,10 +1086,13 @@ public class DiaryActivity extends AppCompatActivity {
 
                                     if (CountWater == 0){
                                         userWaterIntake.setText(strUserWaterIntake);
+//
+//                                        strUserFood = foodCalories2;
+//                                        strUserWorkout = workoutCalories;
+                                        //DisplayUserStep(intentUserID,date, foodCalories2, workoutCalories,strUserWaterIntake);
+                                        //SetSummaryCardsDetails();
 
-                                        strUserFood = foodCalories2;
-                                        strUserWorkout = workoutCalories;
-                                        SetSummaryCardsDetails();
+                                        DisplayUserStepCount(intentUserID,date, foodCalories2, workoutCalories,strUserWaterIntake);
 
 
                                     }
@@ -1130,10 +1155,13 @@ public class DiaryActivity extends AppCompatActivity {
 
                                     userWaterIntake.setText(strUserWaterIntake);
 
-                                    strUserFood =foodCalories3;
-                                    strUserWorkout = workoutCalories1;
+//                                    strUserFood =foodCalories3;
+//                                    strUserWorkout = workoutCalories1;
 
-                                    SetSummaryCardsDetails();
+                                    DisplayUserStepCount(userID,date, foodCalories3, workoutCalories1,strUserWaterIntake);
+
+
+                                    //SetSummaryCardsDetails();
 
                                 }
                             }
@@ -1159,6 +1187,135 @@ public class DiaryActivity extends AppCompatActivity {
             }
         };
 
+        VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
+
+
+    }
+
+    private void DisplayUserStepCount(final String intentUserID, final String date, final String foodCalories4, final String workoutCalories2,  final String waterIntake){
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.GET_USER_STEP_COUNT_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            Log.i("tagconvertstr", "["+response+"]");
+                            //JSONArray array = new JSONArray(response);
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray jsonArray = jsonObject.getJSONArray("stepcount");
+                            String success = jsonObject.getString("success");
+
+                            if(success.equals("1")) {
+
+                                for (int i = 0; i < jsonArray.length(); i++) {
+
+                                    JSONObject object = jsonArray.getJSONObject(i);
+
+                                    int CountStep= object.getInt("CountStep");
+
+
+                                    if (CountStep == 0){
+                                        //waterCardIntake.setText(strUserWaterIntake);
+
+                                        strUserFood = foodCalories4;
+                                        strUserWorkout = workoutCalories2;
+                                        strUserWaterIntake = waterIntake;
+                                        //DisplayUserStep(userID,date, foodCalories4, workoutCalories2,strUserWaterIntake);
+                                        SetSummaryCardsDetails();
+                                    }
+
+                                    else{
+                                        DisplayUserStep(intentUserID,date, foodCalories4, workoutCalories2,strUserWaterIntake);
+                                    }
+
+                                }
+                            }
+
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.i("tagerror", "["+error+"]");
+                //Toast.makeText(HomeActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> params = new HashMap<>();
+                params.put("userID",intentUserID);
+                params.put("stepDate",date);
+                return params;
+            }
+        };
+
+
+        VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
+
+
+
+    }
+
+    private void DisplayUserStep(final String intentUserID, final String date, final String foodCalories4, final String workoutCalories2, final String waterIntake){
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.GET_USER_TODAY_STEP_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            Log.i("step", "["+response+"]");
+                            //JSONArray array = new JSONArray(response);
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray jsonArray = jsonObject.getJSONArray("userStep");
+                            String success = jsonObject.getString("success") ;
+
+                            if(success.equals("1")) {
+
+                                for (int i = 0; i < jsonArray.length(); i++) {
+
+                                    JSONObject object = jsonArray.getJSONObject(i);
+
+                                    strStep = object.getString("totalStep");
+                                    strStepDistance = object.getString("stepDistance");
+                                    strStepCal = object.getString("stepCal");
+
+                                    userStep.setText(strStep);
+                                    userStepDistance.setText(strStepDistance);
+                                    userStepCal.setText(strStepCal);
+                                    summaryStepCal.setText(strStepCal);
+
+                                    strUserFood =foodCalories4;
+                                    strUserWorkout = workoutCalories2;
+                                    strUserWaterIntake = waterIntake;
+
+                                    SetSummaryCardsDetails();
+                                }
+                            }
+
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(DiaryActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> params = new HashMap<>();
+                params.put("userID",intentUserID);
+                params.put("stepDate",date);
+                return params;
+            }
+        };
         VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
 
 
@@ -1212,8 +1369,7 @@ public class DiaryActivity extends AppCompatActivity {
 
     }
 
-    private void getTaskPoint(final int taskID)
-    {
+    private void getTaskPoint(final int taskID) {
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.GET_TASK_POINT_URL, new Response.Listener<String>() {
             @Override

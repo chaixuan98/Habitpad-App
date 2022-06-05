@@ -65,10 +65,10 @@ public class LeaderboardActivity extends AppCompatActivity {
                                 JSONObject object = jsonArray.getJSONObject(i);
                                 String rank = object.getString("rank").trim();
                                 String username = object.getString("username").trim();
-                                String totalPoint = object.getString("totalPoint").trim();
+                                String totalUserStep = object.getString("totalUserStep").trim();
 
 
-                                Leaderboard leaderboard = new Leaderboard(rank,username, totalPoint);
+                                Leaderboard leaderboard = new Leaderboard(rank,username, totalUserStep);
                                 leaderboards.add(leaderboard);
                             }
 

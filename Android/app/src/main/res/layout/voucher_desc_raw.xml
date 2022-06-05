@@ -28,6 +28,9 @@
             android:layout_marginTop="10dp"
             android:src="@drawable/bags" />
 
+
+
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -70,7 +73,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
-                android:gravity="center"
                 android:text="Description ...."
                 android:textColor="@color/black"
                 android:textSize="15sp" />
@@ -78,6 +80,7 @@
 
 
         </LinearLayout>
+
 
 
         <LinearLayout
@@ -121,5 +124,7 @@
         </LinearLayout>
 
     </LinearLayout>
+
+
 
 </ScrollView>

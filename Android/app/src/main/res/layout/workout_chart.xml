@@ -54,17 +54,17 @@
                         android:gravity="center_vertical"
                         android:textColor="@color/blue" />
 
-                    <TextView
-                        android:id="@+id/consecutive_day_tv"
-                        android:layout_width="354dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp"
-                        android:layout_gravity="center_horizontal"
-                        android:textStyle="bold"
-                        android:textSize="15sp"
-                        android:paddingLeft="10dp"
-                        android:gravity="center_vertical"
-                        android:textColor="@color/blue" />
+<!--                    <TextView-->
+<!--                        android:id="@+id/consecutive_day_tv"-->
+<!--                        android:layout_width="354dp"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginBottom="5dp"-->
+<!--                        android:layout_gravity="center_horizontal"-->
+<!--                        android:textStyle="bold"-->
+<!--                        android:textSize="15sp"-->
+<!--                        android:paddingLeft="10dp"-->
+<!--                        android:gravity="center_vertical"-->
+<!--                        android:textColor="@color/blue" />-->
 
                     <com.github.mikephil.charting.charts.LineChart
                         android:id="@+id/day_chart"

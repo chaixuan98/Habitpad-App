@@ -13,6 +13,8 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/alobar-preference" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/trackstep" />
+            <option value="$PROJECT_DIR$/walk" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

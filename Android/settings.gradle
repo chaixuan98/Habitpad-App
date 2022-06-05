@@ -10,3 +10,5 @@ dependencyResolutionManagement {
 rootProject.name = "HabitpadApplication"
 include ':app'
 include ':alobar-preference'
+include ':trackstep'
+include ':walk'

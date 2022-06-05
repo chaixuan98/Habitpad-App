@@ -3,12 +3,7 @@ package com.example.habitpadapplication;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 
 public class SessionManager {
@@ -95,9 +90,10 @@ public class SessionManager {
 
     public void checkLogin(){
         if (!this.isUserLogin()){
-            Intent i = new Intent(context, MainActivity.class);
+            Intent i = new Intent(context, LoginActivity.class);
+            //i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(i);
-            //((HomeActivity) context).finish();
+            ((HomeActivity) context).finish();
         }
 
     }
@@ -106,22 +102,22 @@ public class SessionManager {
     public void logoutUserFromSession(){
         editor.clear();
         editor.commit();
-        Intent i = new Intent(context, MainActivity.class);
+        Intent i = new Intent(context, LoginActivity.class);
         context.startActivity(i);
         ((HomeActivity) context).finish();
 
     }
 
-    public boolean getFirstTimeRunPrefs(){
-        //SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return sharedPreferences.getBoolean("first_time_run", true) ;
-    }
-
-    public void setFirstTimeRunPrefs(boolean b) {
-       // SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-       // SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean("first_time_run", b);
-        editor.commit();
-    }
+//    public boolean getFirstTimeRunPrefs(){
+//        //SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+//        return sharedPreferences.getBoolean("first_time_run", true) ;
+//    }
+//
+//    public void setFirstTimeRunPrefs(boolean b) {
+//       // SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+//       // SharedPreferences.Editor editor = sharedPreferences.edit();
+//        editor.putBoolean("first_time_run", b);
+//        editor.commit();
+//    }
 
 }

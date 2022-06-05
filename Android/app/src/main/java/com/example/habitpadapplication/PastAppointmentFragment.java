@@ -114,7 +114,7 @@ public class PastAppointmentFragment extends Fragment {
                                     noAppTV.setVisibility(View.GONE);
 
                                     if(appointmentDate.compareTo(date) < 0 ){
-                                        //Log.i("app", "Date1 is after Date2");
+
                                         UserAppointment userAppointment = new UserAppointment(appointmentID,doctorID,doctorPhoto, doctorName, appointmentDate, appointmentTime, appointmentRemark);
                                         userAppointments.add(userAppointment);
                                         pastAppointmentRecyclerView.setAdapter(userAppAdapter);

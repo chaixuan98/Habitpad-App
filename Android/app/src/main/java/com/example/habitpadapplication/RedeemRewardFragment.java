@@ -3,9 +3,11 @@ package com.example.habitpadapplication;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -69,7 +71,12 @@ public class RedeemRewardFragment extends Fragment {
         swipLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                getFragmentManager().beginTransaction().detach(RedeemRewardFragment.this).attach(RedeemRewardFragment.this).commit();
+               FragmentManager transaction = getActivity().getSupportFragmentManager();
+                if (Build.VERSION.SDK_INT >= 26) {
+                    transaction.beginTransaction().setReorderingAllowed(false);
+                }
+                transaction.beginTransaction().detach(RedeemRewardFragment.this).commit ();
+                transaction.beginTransaction().attach (RedeemRewardFragment.this).commit();
 
                 swipLayout.setRefreshing(false);
             }
@@ -87,8 +94,8 @@ public class RedeemRewardFragment extends Fragment {
         LinearLayoutManager giftLinearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false);
         redeemGiftRecyclerView.setLayoutManager(giftLinearLayoutManager);
 
-        getVoucherList();
-        getGiftList();
+        GetVoucherList();
+        GetGiftList();
         return view;
     }
 
@@ -142,7 +149,7 @@ public class RedeemRewardFragment extends Fragment {
 
     }
 
-    private void getVoucherList(){
+    private void GetVoucherList(){
 
         final ProgressDialog progressDialog = new ProgressDialog(getContext());
         progressDialog.setMessage("Loading...");
@@ -169,7 +176,7 @@ public class RedeemRewardFragment extends Fragment {
                                     String voucherPhoto = object.getString("voucherPhoto").trim();
                                     String voucherPoint = object.getString("voucherPoint").trim();
                                     String voucherTitle = object.getString("voucherTitle").trim();
-
+                                    String voucherDesc = object.getString("voucherDesc").trim();
 
                                     Voucher voucher = new Voucher(voucherID, voucherPhoto, voucherPoint, voucherTitle);
                                     vouchers.add(voucher);
@@ -198,7 +205,7 @@ public class RedeemRewardFragment extends Fragment {
 
     }
 
-    private void getGiftList(){
+    private void GetGiftList(){
 
         final ProgressDialog progressDialog = new ProgressDialog(getContext());
         progressDialog.setMessage("Loading...");
@@ -225,6 +232,7 @@ public class RedeemRewardFragment extends Fragment {
                                     String giftPhoto = object.getString("giftPhoto").trim();
                                     String giftPoint = object.getString("giftPoint").trim();
                                     String giftTitle = object.getString("giftTitle").trim();
+                                    String giftDesc = object.getString("giftDesc").trim();
 
 
                                     Gift gift = new Gift(giftID, giftPhoto, giftPoint, giftTitle);

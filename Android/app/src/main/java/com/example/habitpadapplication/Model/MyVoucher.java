@@ -2,19 +2,24 @@ package com.example.habitpadapplication.Model;
 
 public class MyVoucher {
 
-    private String myimage,myreward;
+    private String voucherID, myVoucherImage,myVoucherReward;
 
-    public MyVoucher(String myimage, String myreward){
-        this.myimage = myimage;
-        this.myreward = myreward;
+    public MyVoucher(String voucherID, String myimage, String myreward){
+        this.voucherID =voucherID;
+        this.myVoucherImage = myVoucherImage;
+        this.myVoucherReward = myVoucherReward;
     }
 
-    public String getMyimage() {
-        return myimage;
+    public String getVoucherID() {
+        return voucherID;
+    }
+
+    public String getMyVoucherImage() {
+        return myVoucherImage;
     }
 
 
-    public String getMyreward() {
-        return myreward;
+    public String getMyVoucherReward() {
+        return myVoucherReward;
     }
 }

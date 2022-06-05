@@ -68,7 +68,7 @@ public class Urls {
     public static final String ADD_USER_TASK_DETAIL_URL = ROOT_URL+"add_task_detail.php";
 //    public static final String GET_USER_TOTAL_TASK_POINT_DAILY_URL = ROOT_URL+"get_user_total_task_point_daily.php";
     public static final String GET_USER_TOTAL_POINT_URL = ROOT_URL+"get_user_total_point.php";
-    public static final String GET_USER_RANK_URL = ROOT_URL+"get_user_rank.php";
+//    public static final String GET_USER_RANK_URL = ROOT_URL+"get_user_rank.php";
 
     public static final String GET_USER_RANKING_LIST_URL = ROOT_URL+"get_user_ranking_list.php";
 
@@ -104,17 +104,17 @@ public class Urls {
     public static final String UPDATE_USER_GOAL_WEIGHT_URL = ROOT_URL+"edit_user_goal_weight.php";
 
     public static final String ADD_USER_WATER_CONSECUTIVE_URL = ROOT_URL+"add_water_consecutive.php";
-    public static final String GET_USER_WATER_CONSECUTIVE_URL = ROOT_URL+"get_user_water_consecutive.php";
-    public static final String UPDATE_USER_WATER_CONSECUTIVE_URL = ROOT_URL+"edit_user_water_consecutive.php";
+//    public static final String GET_USER_WATER_CONSECUTIVE_URL = ROOT_URL+"get_user_water_consecutive.php";
+//    public static final String UPDATE_USER_WATER_CONSECUTIVE_URL = ROOT_URL+"edit_user_water_consecutive.php";
 
 
     public static final String ADD_USER_WORKOUT_CONSECUTIVE_URL = ROOT_URL+"add_workout_consecutive.php";
-    public static final String GET_USER_WORKOUT_CONSECUTIVE_URL = ROOT_URL+"get_user_workout_consecutive.php";
-    public static final String UPDATE_USER_WORKOUT_CONSECUTIVE_URL = ROOT_URL+"edit_user_workout_consecutive.php";
+//    public static final String GET_USER_WORKOUT_CONSECUTIVE_URL = ROOT_URL+"get_user_workout_consecutive.php";
+//    public static final String UPDATE_USER_WORKOUT_CONSECUTIVE_URL = ROOT_URL+"edit_user_workout_consecutive.php";
 
     public static final String ADD_USER_FOOD_CONSECUTIVE_URL = ROOT_URL+"add_food_consecutive.php";
-    public static final String GET_USER_FOOD_CONSECUTIVE_URL = ROOT_URL+"get_user_food_consecutive.php";
-    public static final String UPDATE_USER_FOOD_CONSECUTIVE_URL = ROOT_URL+"edit_user_food_consecutive.php";
+//    public static final String GET_USER_FOOD_CONSECUTIVE_URL = ROOT_URL+"get_user_food_consecutive.php";
+//    public static final String UPDATE_USER_FOOD_CONSECUTIVE_URL = ROOT_URL+"edit_user_food_consecutive.php";
 
     public static final String ADD_USER_POINT_URL = ROOT_URL+"add_user_point.php";
     public static final String UPDATE_USER_POINT_URL = ROOT_URL+"edit_user_point.php";
@@ -133,6 +133,26 @@ public class Urls {
 
     public static final String ADD_USER_GIFT_URL = ROOT_URL+"add_user_gift.php";
     public static final String GET_USER_GIFT_URL = ROOT_URL+"get_user_gift.php";
+
+    public static final String ADD_USER_STEP_URL = ROOT_URL+"add_user_step.php";
+    public static final String GET_USER_TODAY_STEP_URL = ROOT_URL+"get_user_today_step.php";
+//    public static final String UPDATE_USER_STEP_URL = ROOT_URL+"edit_user_step.php";
+    public static final String GET_USER_STEP_COUNT_URL = ROOT_URL+"get_user_step_count.php";
+    public static final String UPDATE_USER_STEP_GOAL_URL = ROOT_URL+"edit_user_step_goal.php";
+    public static final String GET_STEP_WEEK_GRAPH_URL = ROOT_URL+"get_step_byweek.php";
+    public static final String GET_STEP_MONTH_GRAPH_URL = ROOT_URL+"get_step_bymonth.php";
+    public static final String GET_STEP_YEAR_GRAPH_URL = ROOT_URL+"get_step_byyear.php";
+    public static final String GET_USER_TOTAL_STEP_URL = ROOT_URL+"get_user_total_step.php";
+
+    public static final String ADD_FEEDBACK_URL = ROOT_URL+"add_feedback.php";
+
+    public static final String GET_CHALLENGE_LIST_URL = ROOT_URL+"get_challenge_list.php";
+    public static final String GET_CHALLENGE_DETAILS_URL = ROOT_URL+"get_challenge_details.php";
+    public static final String ADD_USER_CHALLENGE_URL = ROOT_URL+"add_user_challenge.php";
+    public static final String GET_USER_CHALLENGE_URL = ROOT_URL+"get_user_challenge.php";
+    public static final String GET_USER_CHALLENGE_TOTAL_STEP_URL = ROOT_URL+"get_user_challenge_total_step.php";
+    public static final String UPDATE_USER_CHALLENGE_ACHIEVEMENT_URL = ROOT_URL+"edit_user_challenge_achievement.php";
+
 
 
 }

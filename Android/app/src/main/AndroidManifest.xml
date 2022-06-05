@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.habitpadapplication">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -8,17 +9,8 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" /> <!-- <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/> -->
-    <!-- <uses-permission android:name="com.android.alarm.permission.SET_ALARM" /> -->
-    <!-- <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> -->
-    <!-- <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> -->
-    <!-- <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" /> -->
-    <!-- <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" /> -->
-    <!-- <uses-permission android:name="android.permission.FOREGROUND_SERVICE" /> -->
-    <!-- <uses-permission android:name="android.permission.WAKE_LOCK" /> -->
-    <queries>
-        <package android:name="com.sec.android.app.shealth" />
-    </queries>
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:allowBackup="true"
@@ -27,7 +19,26 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.HabitpadApplication"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+        tools:replace="android:icon,label,theme">
+        <activity
+            android:name=".MyChallengeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ChallengeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FeedbackActivity"
+            android:exported="false" />
+        <activity
+            android:name=".StepLevelActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Chart.StepChart"
+            android:exported="false" />
+        <activity
+            android:name=".Settings.AccountSettingActivity"
+            android:exported="false" />
         <activity
             android:name=".MissionRewardActivity"
             android:exported="false" />
@@ -81,9 +92,6 @@
             android:exported="true" />
         <activity
             android:name=".ViewTipActivity"
-            android:exported="true" />
-        <activity
-            android:name=".GamificationActivity"
             android:exported="true" />
         <activity
             android:name=".Settings.WorkoutReminderActivity"
@@ -175,7 +183,7 @@
             android:name=".SignUp"
             android:exported="true" />
         <activity
-            android:name=".MainActivity"
+            android:name=".LoginActivity"
             android:exported="true" />
         <activity
             android:name=".SplashActivity"
@@ -190,12 +198,13 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-        <meta-data
-            android:name="com.samsung.android.health.permission.read"
-            android:value="com.samsung.health.step_count" />
 
         <receiver android:name=".Notifications.NotificationReciever" />
         <receiver android:name=".BroadcastReceivers.StopNotificationBroadcastReceiver" />
+
+        <service
+            android:name=".service.StepsDistanceService"
+            android:process=":StepsDistanceService" />
     </application>
 
 </manifest>

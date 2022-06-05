@@ -3,6 +3,7 @@ package com.example.habitpadapplication;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.widget.Toolbar;
@@ -11,11 +12,16 @@ import androidx.appcompat.widget.Toolbar;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.os.RemoteException;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
@@ -37,13 +43,19 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
+import com.codility.pedometer.IActivity;
+import com.codility.pedometer.IMyServiceConnectorInterface;
+
 import com.example.habitpadapplication.Chart.FoodChart;
 import com.example.habitpadapplication.Chart.ObeseLevelChart;
+import com.example.habitpadapplication.Chart.StepChart;
 import com.example.habitpadapplication.Chart.WaterChart;
 import com.example.habitpadapplication.Chart.WorkoutChart;
+import com.example.habitpadapplication.Settings.AccountSettingActivity;
 import com.example.habitpadapplication.Settings.FoodFragmentPrefs;
 import com.example.habitpadapplication.Settings.FragmentPrefs;
-import com.example.habitpadapplication.Settings.UserSettingsActivity;
+import com.example.habitpadapplication.service.StepsDistanceService;
+import com.example.habitpadapplication.utils.StepDetector;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
@@ -54,7 +66,6 @@ import org.json.JSONObject;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -65,19 +76,21 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     SessionManager sessionManager;
     FoodFragmentPrefs foodFragmentPrefs;
     FragmentPrefs fragmentPrefs;
+    StepDetector stepDetector;
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     Toolbar toolbar;
 
-    private String urlClassify = "https://obese-classify.herokuapp.com/predict";
+    private final String urlClassify = "https://obesity-classify-app.herokuapp.com/predict";
 
     private CircleImageView profileView;
 
-    private TextView foodCardConsumedCalories,foodGoalCalories,workoutGoalCalories,workoutCardBurnedCalories,waterCardIntake,waterCardNeed ;
+    private TextView foodCardConsumedCalories,foodGoalCalories,workoutGoalCalories,workoutCardBurnedCalories,waterCardIntake,waterCardNeed, stepGoal, habitChangeTV;
+    private AppCompatTextView stepCount ;
 
     private LinearLayout foodCardBreakfastBtn, foodCardLunchBtn, foodCardDinnerBtn, foodCardSnackBtn;
-    private Button diaryBtn;
-    private ImageButton foodChartBtn,workoutAddBtn,workoutChartBtn,waterAddBtn,waterChartBtn, reminderBtn, obeseLevelChartBtn;
+    private Button diaryBtn, stepGoalBtn;
+    private ImageButton foodChartBtn,workoutAddBtn,workoutChartBtn,waterAddBtn,waterChartBtn, reminderBtn, obeseLevelChartBtn, stepAddBtn, stepChartBtn;
 
 
     private ProgressBar summaryCardCaloriesBar;
@@ -88,7 +101,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     private String strUserCurrentWeight, strUserGoalWeight, strUserWeeklyGoalWeight, strUserStartWeight, strUserAge, strUserHeight,
             strUserGender, strUserActivityLevel, strUserFoodCalories="0", strUserWorkout="0",strUserFinalCalories, strUserFoodGoal,strUserWorkoutGoal,
-            strUserTDEE, strUserCaloriesRemaining, strUserBmi, strUserHealthStatus, strFamilySuffered, strUserAlcohol, strUserSmoked;
+            strUserTDEE, strUserCaloriesRemaining, strUserBmi, strUserHealthStatus, strFamilySuffered, strUserAlcohol, strUserSmoked,
+            strUserFinalWorkoutCalories,strUserFoodGoal80;
 
 
     private Button weightCardGoalBtn, weightCardRecordBtn;
@@ -98,25 +112,71 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private LinearLayout weightCardGoalContainer;
 
     private TextView bmiCardBmi, bmiCardTips;
-    private ImageView bmiCardUnderWeightStatus, bmiCardHealthyWeightStatus, bmiCardOverWeightStatus, bmiCardObesityStatus;
+    private ImageView bmiCardUnderWeightStatus, bmiCardHealthyWeightStatus, bmiCardOverWeightStatus, bmiCardObesityStatus, stepLevel;
 
     private String strUserWaterNeed,strUserWaterIntake="0";
 
     private int strGender,strActivity,strFamily,strSmoked,strAlcohol,strCalories,strWater;
 
-    private String weightGoalStatus="", weightAchievementStatus="", points="0";
+    private String weightGoalStatus="", weightAchievementStatus="";
 
     private String userPoint = "0";
 
+    private String userStep = "0", strStepGoal, strStepCal, strStepDistance;
+
+    private int level = 0, level2 = 0, goalreach=3000;
+
+
     private BroadcastReceiver updateUIReciver;
     private Context context;
-    private String userID, username, userPhoto;
+    public static String userID;
+    private String username, useremail,userPhoto;
+
+
+    IMyServiceConnectorInterface mService;
+
+
+    ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            mService = IMyServiceConnectorInterface.Stub.asInterface(service);
+            try {
+                mService.registerActivityCallback(mCallback);
+                mService.setForeground(false);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            if(mService != null){
+                mService = null;
+            }
+        }
+    };
+
+    IActivity.Stub mCallback = new IActivity.Stub() {
+        @Override
+//        public void onUiUpdate(long steps, float distance) throws RemoteException {
+//            textView.setText( TEXT_NUM_STEPS+steps +" \nDistance ="+(distance/1000)+" km");
+//        }
+
+        public void onUiUpdate(long steps, float distance)throws RemoteException{
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    stepCount.setText( steps +" ("+String.format("%.0f",distance)+" km)");
+                }
+            });
+        }
+    };
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setTitle("Home");
         setContentView(R.layout.activity_home);
 
         context=getApplicationContext();
@@ -159,6 +219,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         waterCardIntake = findViewById(R.id.home_water_card_intake);
         waterCardNeed = findViewById(R.id.home_water_card_need);
 
+        //stepAddBtn =  findViewById(R.id.home_step_add_button);
+        stepCount = findViewById(R.id.home_step_count_card);
+        stepGoal = findViewById(R.id.home_step_card_goal);
+        stepGoalBtn = findViewById(R.id.home_step_card_goal_button);
+        stepChartBtn = findViewById(R.id.home_step_chart_button);
+        stepLevel = findViewById(R.id.home_step_level);
+
+
         weightCardGoalBtn = (Button) findViewById(R.id.home_weight_card_goal_button);
         weightCardRecordBtn = (Button) findViewById(R.id.home_weight_card_record_button);
         weightCardWeightMinusBtn = (ImageButton) findViewById(R.id.home_weight_card_weight_minus_button);
@@ -185,6 +253,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
 
         summaryCardObesity = findViewById(R.id.home_classification_level_card);
+        habitChangeTV = findViewById(R.id.home_habit_change_card);
         obeseLevelChartBtn = findViewById(R.id.home_classification_chart_button);
 
 
@@ -201,6 +270,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         userID = usersDetails.get(SessionManager.KEY_USERID);
         userPhoto = usersDetails.get(SessionManager.KEY_USERPHOTO);
         username = usersDetails.get(SessionManager.KEY_USERNAME);
+        useremail = usersDetails.get(SessionManager.KEY_EMAIL);
         strUserGender = usersDetails.get(SessionManager.KEY_GENDER);
         strUserAge = usersDetails.get(SessionManager.KEY_AGE);
         strUserActivityLevel = usersDetails.get(SessionManager.KEY_LIFESTYLE);
@@ -213,8 +283,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         textView.setText(username+" "+userID );
 
+
+
         //checkAppFirstTimeRun();
         AddUserPoint(userID,"0");
+        AddUserStep(userID, "10000","0","0.00","0.00", DateHandler.getCurrentFormedDate());
         AddUserWeightAchievement(userID,"true","false");
         AddUserWeightAchievement(userID,"true","false");
         AddUserWaterConsecutive(userID,DateHandler.getCurrentFormedDate(),"0");
@@ -240,7 +313,16 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
                     case R.id.bottom_tip:
                         AddUserTask(userID, 4, DateHandler.getCurrentFormedDate());
-                        startActivity(new Intent(getApplicationContext(), ViewTipActivity.class));
+                        Intent tipIntent = new Intent(getApplicationContext(), ViewTipActivity.class);
+                        tipIntent.putExtra("intentUserID", userID);
+                        startActivity(tipIntent);
+                        overridePendingTransition(0,0);
+                        return true;
+
+                    case R.id.bottom_challenge:
+                        Intent challengeIntent = new Intent(getApplicationContext(), ChallengeActivity.class);
+                        challengeIntent.putExtra("intentUserID", userID);
+                        startActivity(challengeIntent);
                         overridePendingTransition(0,0);
                         return true;
 
@@ -252,7 +334,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                         return true;
 
                     case R.id.bottom_profile:
-                        startActivity(new Intent(getApplicationContext(),UserSettingsActivity.class));
+                        Intent profileIntent = new Intent(getApplicationContext(), AccountSettingActivity.class);
+                        profileIntent.putExtra("intentUserID", userID);
+                        startActivity(profileIntent);
                         overridePendingTransition(0,0);
                         return true;
 
@@ -370,6 +454,32 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
+
+        stepGoalBtn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                OpenStepGoalDialog();
+            }
+        });
+
+        stepChartBtn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                UserSendToStepChartPage();
+            }
+        });
+
+        stepLevel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UserSendToStepLevelPage();
+            }
+        });
+
         weightCardGoalBtn.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -437,9 +547,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
         else{
             super.onBackPressed();
-//            Intent intent = new Intent(HomeActivity.this, HomeActivity.class);
-//            startActivity(intent);
-//
+            Intent intent = new Intent(HomeActivity.this, HomeActivity.class);
+            startActivity(intent);
             finish();
         }
     }
@@ -458,6 +567,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(new Intent(this,ViewTipActivity.class));
                 break;
 
+            case R.id.nav_challenge:
+                Intent challengeIntent = new Intent(this, ChallengeActivity.class);
+                challengeIntent.putExtra("intentUserID", userID);
+                startActivity(challengeIntent);
+                break;
+
             case R.id.nav_reminder:
                 startActivity(new Intent(this,ReminderActivity.class));
                 break;
@@ -466,7 +581,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 Intent appointmentIntent = new Intent(this, AppointmentActivity.class);
                 appointmentIntent.putExtra("intentUserID", userID);
                 startActivity(appointmentIntent);
-
                 break;
 
             case R.id.nav_privacy:
@@ -474,14 +588,16 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.nav_setting:
-                startActivity(new Intent(this,UserSettingsActivity.class));
+                Intent settingtIntent = new Intent(this, AccountSettingActivity.class);
+                settingtIntent.putExtra("intentUserID", userID);
+                startActivity(settingtIntent);
                 break;
-
 
             case R.id.nav_logout:
                 sessionManager.logoutUserFromSession();
                 foodFragmentPrefs.logoutUserFromFoodReminderSession();
                 fragmentPrefs.logoutUserFromWaterReminderSession();
+                stepDetector.logoutUserFromStepSession();
 
                 SharedPreferences sp = getSharedPreferences("Shpr", Context.MODE_PRIVATE);
                 SharedPreferences.Editor ed = sp.edit();
@@ -493,22 +609,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-
-//    private void checkAppFirstTimeRun() {
-//
-//        if (sessionManager.getFirstTimeRunPrefs()) {
-//
-//            saveDateToServer(0, waterNeed1, DateHandler.getCurrentFormedDate());
-//            sessionManager.setFirstTimeRunPrefs(false);
-//
-//        }
-
-//    }
     @Override
     protected void onDestroy(){
         unregisterReceiver(updateUIReciver);
         super.onDestroy();
     }
+
 
     private void getUserDetails() {
 
@@ -578,6 +684,66 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         };
 
         VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
+    }
+
+    private void OpenStepGoalDialog()
+    {
+        final Dialog stepdialog = new Dialog(HomeActivity.this);
+        stepdialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        stepdialog.setContentView(R.layout.step_goal_edit_layout);
+        stepdialog.setTitle("Step Goal edit window");
+        stepdialog.show();
+        Window stepWindow = stepdialog.getWindow();
+        stepWindow.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+
+        final EditText editStepGoal = (EditText) stepdialog.findViewById(R.id.step_edit_dialog_inputcurrentstepgoal);
+        final TextView errormsg = (TextView) stepdialog.findViewById(R.id.step_edit_dialog_error_msg);
+        errormsg.setVisibility(View.GONE);
+
+
+        if(!TextUtils.isEmpty(strStepGoal))
+        {
+            editStepGoal.setText(strStepGoal);
+        }
+
+
+        /* cancel button click action */
+        Button cancelbtn = (Button)stepdialog.findViewById(R.id.step_edit_dialog_cancel_button);
+        cancelbtn.setEnabled(true);
+        cancelbtn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                stepdialog.cancel();
+            }
+        });
+
+
+        /* ok button click action */
+        Button okbtn = (Button)stepdialog.findViewById(R.id.step_edit_dialog_ok_button);
+        okbtn.setEnabled(true);
+        okbtn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if(TextUtils.isEmpty(editStepGoal.getText().toString()))
+                {
+                    errormsg.setVisibility(View.VISIBLE);
+                }
+                else
+                {
+                    //strStepGoal = editStepGoal.getText().toString().trim();
+                    UpdateUserStepGoal(userID,editStepGoal.getText().toString().trim(),DateHandler.getCurrentFormedDate());
+                    stepdialog.cancel();
+                    updateView();
+                }
+            }
+        });
+
+
     }
 
     private void OpenWeightEditDialog()
@@ -665,7 +831,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-
     private void WeightAddCalculation()
     {
         if(!TextUtils.isEmpty(strUserCurrentWeight))
@@ -734,12 +899,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             strUserTDEE = fc.TDEE(strUserAge, strUserCurrentWeight, strUserHeight, strUserGender, strUserActivityLevel);
 
 
-
             strUserWaterNeed = fc.WaterNeed(strUserCurrentWeight);
             waterCardNeed.setText("of "+strUserWaterNeed + " ml");
 
-            weightCardCurrentWeight.setText(strUserCurrentWeight);
+            if(Integer.parseInt(strUserWaterIntake) >= Integer.parseInt(strUserWaterNeed)){
+                AddUserTask(userID, 7, DateHandler.getCurrentFormedDate());
+            }
 
+            weightCardCurrentWeight.setText(strUserCurrentWeight);
 
             /* ###### Start of the BMI Card Calculations ###### */
             strUserBmi = fc.BMI(strUserCurrentWeight, strUserHeight);
@@ -780,7 +947,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             }
             /* ###### end of the BMI Card Calculations ###### */
 
-
+            ObeseClassification();
         }
         else
         {
@@ -788,9 +955,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             /* set default TDEE */
             strUserTDEE = "2300";
             bmiCardTips.setText("Please setup your profile for check your Body Mass Index.");
+            strStepGoal = "10000";
+            stepGoal.setText("out of " + strStepGoal+ "steps");
+            strUserWaterNeed = "2000";
+            waterCardNeed.setText("of "+strUserWaterNeed + " ml");
         }
-//
-//        /* Set weight card details  */
+
+        /* Set weight card details  */
         if(!TextUtils.isEmpty(strUserWeeklyGoalWeight) && !TextUtils.isEmpty(strUserGoalWeight) && weightGoalStatus.equals("true") &&
                 weightAchievementStatus.equals("false"))
         {
@@ -817,21 +988,23 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             weightCardGoalCompleteDescription.setText("Decrease your weight by Setting a goal and earn points.");
         }
 
+        strUserFinalWorkoutCalories = fc.TotalWorkoutCalories(strUserWorkout,strStepCal);
+
 
         summaryCardFoodCalories.setText(strUserFoodCalories);
-        summaryCardWorkoutCalories.setText(strUserWorkout);
+        summaryCardWorkoutCalories.setText(strUserFinalWorkoutCalories);
         foodCardConsumedCalories.setText(strUserFoodCalories);
         workoutCardBurnedCalories.setText(strUserWorkout);
 
 
-        strUserFinalCalories = String.valueOf(Integer.parseInt(strUserFoodCalories) - Integer.parseInt(strUserWorkout));
+        strUserFinalCalories = String.valueOf(Integer.parseInt(strUserFoodCalories) - Integer.parseInt(strUserFinalWorkoutCalories));
         summaryCardFinalCalories.setText(strUserFinalCalories);
 
 
         summaryCardTDEE01.setText("/ " + strUserTDEE);
         summaryCardTDEE02.setText(strUserTDEE);
 
-        strUserCaloriesRemaining = fc.CaloriesRemaining(strUserTDEE, strUserFoodCalories, strUserWorkout);
+        strUserCaloriesRemaining = fc.CaloriesRemaining(strUserTDEE, strUserFoodCalories, strUserFinalWorkoutCalories);
         summaryCardCaloriesRemaining.setText(strUserCaloriesRemaining);
 
 
@@ -844,7 +1017,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         strUserWorkoutGoal = fc.WorkoutCaloriesGoal(strUserTDEE);
         workoutGoalCalories.setText("Burned more than "+strUserWorkoutGoal+" Cal");
 
+        strUserFoodGoal80 = fc.FoodCaloriesGoal80(strUserFoodGoal);
 
+        if(Integer.parseInt(strUserFoodCalories) >= Integer.parseInt(strUserFoodGoal80) && Integer.parseInt(strUserFoodCalories) <= Integer.parseInt(strUserFoodGoal)){
+            AddUserTask(userID, 8, DateHandler.getCurrentFormedDate());
+        }
+
+        if(Integer.parseInt(strUserWorkout) >= Integer.parseInt(strUserWorkoutGoal)){
+            AddUserTask(userID, 9, DateHandler.getCurrentFormedDate());
+        }
 
         if (Integer.parseInt(strUserCaloriesRemaining) < 0) {
             summaryCardTips.setTextColor(getResources().getColor(R.color.WarningTextColor));
@@ -863,6 +1044,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         ObeseClassification();
         strUserFoodCalories = "0";
         strUserWorkout = "0";
+        strStepCal = "0";
         strUserWaterIntake = "0";
     }
 
@@ -949,12 +1131,28 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         startActivity(getWaterChartIntent);
     }
 
+    private void UserSendToStepChartPage()
+    {
+        Intent getStepChartIntent = new Intent(this, StepChart.class);
+        getStepChartIntent.putExtra("intentUserID", userID);
+        getStepChartIntent.putExtra("stepGoal", strStepGoal);
+        startActivity(getStepChartIntent);
+    }
+
     private void UserSendToGoalsPage()
     {
         Intent goalIntent = new Intent(this, GoalsActivity.class);
         goalIntent.putExtra("intentUserID", userID);
         startActivity(goalIntent);
     }
+
+    private void UserSendToStepLevelPage()
+    {
+        Intent stepLevelIntent = new Intent(this, StepLevelActivity.class);
+        stepLevelIntent.putExtra("intentUserID", userID);
+        startActivity(stepLevelIntent);
+    }
+
 
     private void UserSendToObeseLevelChartPage()
     {
@@ -965,11 +1163,56 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
 
     private void  updateView(){
+
         getUserDetails();
         DisplayUserProfilePic(userID);
         DisplayUserFoodCount(userID,DateHandler.getCurrentFormedDate());
+        Loadtotalsteps(userID);
+        //DisplayUserTodayStep(userID,DateHandler.getCurrentFormedDate());
+        connectToService();
+        showCurrentValue();
         //ObeseClassification();
+        //GetObeseLevelChange(userID);
     }
+    private void showCurrentValue(){
+//        long steps = SharedPref.on(this).readLong(Constant.KEY_STEP_COUNT);
+//        float distance = SharedPref.on(this).readFloat(Constant.KEY_DISTANCE);
+//        textView.setText( TEXT_NUM_STEPS+ steps +" \nDistance ="+(distance / 1000)+" km");
+        DisplayUserTodayStep(userID, DateHandler.getCurrentFormedDate());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        connectToService();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        disconnectFromService();
+    }
+
+    private void connectToService() {
+        Intent serviceIntent = new Intent(this, StepsDistanceService.class);
+        serviceIntent.putExtra("intentUserID", userID);
+        startService(serviceIntent);
+        bindService(serviceIntent, serviceConnection, BIND_AUTO_CREATE);
+
+    }
+
+    private void disconnectFromService() {
+        if (mService != null) {
+            try {
+                mService.setForeground(true);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+            unbindService(serviceConnection);
+            mService = null;
+        }
+    }
+
 
     private void registerUIBroadcastReceiver() {
         IntentFilter filter = new IntentFilter();
@@ -1366,7 +1609,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
                                         strUserFoodCalories = foodCalories2;
                                         strUserWorkout = workoutCalories;
-                                        SetUserDataToHomePage();
+                                        DisplayUserStepCount(userID,date, foodCalories2, workoutCalories,strUserWaterIntake);
+                                        //SetUserDataToHomePage();
                                     }
 
                                     else{
@@ -1439,10 +1683,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                                         strWater =3;
                                     }
 
-                                    strUserFoodCalories =foodCalories3;
-                                    strUserWorkout = workoutCalories1;
 
-                                    SetUserDataToHomePage();
+
+//                                    strUserFoodCalories =foodCalories3;
+//                                    strUserWorkout = workoutCalories1;
+
+                                    DisplayUserStepCount(userID,date, foodCalories3, workoutCalories1,strUserWaterIntake);
+
 
 
                                 }
@@ -1471,6 +1718,138 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         };
 
         VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
+
+    }
+
+    private void DisplayUserStepCount(final String intentUserID, final String date, final String foodCalories4, final String workoutCalories2,  final String waterIntake){
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.GET_USER_STEP_COUNT_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            Log.i("tagconvertstr", "["+response+"]");
+                            //JSONArray array = new JSONArray(response);
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray jsonArray = jsonObject.getJSONArray("stepcount");
+                            String success = jsonObject.getString("success");
+
+                            if(success.equals("1")) {
+
+                                for (int i = 0; i < jsonArray.length(); i++) {
+
+                                    JSONObject object = jsonArray.getJSONObject(i);
+
+                                    int CountStep= object.getInt("CountStep");
+
+
+                                    if (CountStep == 0){
+                                        //waterCardIntake.setText(strUserWaterIntake);
+
+                                        strUserFoodCalories = foodCalories4;
+                                        strUserWorkout = workoutCalories2;
+                                        strUserWaterIntake = waterIntake;
+                                        //DisplayUserStep(userID,date, foodCalories4, workoutCalories2,strUserWaterIntake);
+                                        SetUserDataToHomePage();
+                                    }
+
+                                    else{
+                                        DisplayUserStep(userID,date, foodCalories4, workoutCalories2,strUserWaterIntake);
+                                    }
+
+                                }
+                            }
+
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.i("tagerror", "["+error+"]");
+                //Toast.makeText(HomeActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> params = new HashMap<>();
+                params.put("userID",intentUserID);
+                params.put("stepDate",date);
+                return params;
+            }
+        };
+
+
+        VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
+
+
+
+    }
+
+    private void DisplayUserStep(final String intentUserID, final String date, final String foodCalories5, final String workoutCalories3, final String waterIntake1){
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.GET_USER_TODAY_STEP_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            Log.i("step", "["+response+"]");
+                            //JSONArray array = new JSONArray(response);
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray jsonArray = jsonObject.getJSONArray("userStep");
+                            String success = jsonObject.getString("success") ;
+
+                            if(success.equals("1")) {
+
+                                for (int i = 0; i < jsonArray.length(); i++) {
+
+                                    JSONObject object = jsonArray.getJSONObject(i);
+
+                                    strStepGoal = object.getString("stepGoal");
+                                    userStep = object.getString("totalStep");
+                                    strStepCal = object.getString("stepCal");
+
+                                    stepCount.setText(userStep);
+                                    stepGoal.setText("out of " + strStepGoal+ " steps");
+
+                                    if(Integer.parseInt(userStep) >= Integer.parseInt(strStepGoal)){
+                                        AddUserTask(intentUserID, 6, date);
+                                    }
+
+                                    strUserFoodCalories =foodCalories5;
+                                    strUserWorkout = workoutCalories3;
+                                    strUserWaterIntake = waterIntake1;
+
+                                    SetUserDataToHomePage();
+                                    //ObeseClassification();
+                                }
+                            }
+
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(HomeActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> params = new HashMap<>();
+                params.put("userID",intentUserID);
+                params.put("stepDate",date);
+                return params;
+            }
+        };
+        VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
+
 
     }
 
@@ -1539,9 +1918,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                             String data = jsonObject.getString("NObeyesdad");
 
                             summaryCardObesity.setText(data);
+                            //Toast.makeText(HomeActivity.this,data,Toast.LENGTH_LONG).show();
 
                             AddObeseLevel(userID,data, DateHandler.getCurrentTime(),DateHandler.getCurrentFormedDate());
                             UpdateUserObeseLevel(userID,data, DateHandler.getCurrentTime(),DateHandler.getCurrentFormedDate());
+                            GetObeseLevelChange(userID);
 
                         } catch (JSONException e) {
                             Toast.makeText(HomeActivity.this,"shown obese Error!" + e.toString(),Toast.LENGTH_LONG).show();
@@ -1552,8 +1933,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.i("tagerror", "["+error+"]");
-                        //Toast.makeText(HomeActivity.this,error.toString(),Toast.LENGTH_LONG).show();
+                        //Log.i("tagerrorobese", "["+error+"]");
+                        Toast.makeText(HomeActivity.this,error.toString(),Toast.LENGTH_LONG).show();
                     }
                 }) {
             @Override
@@ -2035,8 +2416,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-    private void getTaskPoint(final int taskID)
-    {
+    private void getTaskPoint(final int taskID) {
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.GET_TASK_POINT_URL, new Response.Listener<String>() {
             @Override
@@ -2229,5 +2609,378 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
     }
+
+    private void AddUserStep(final String intentUserID, final String goal, final String step, final String distance, final String cal, final String date)
+    {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.ADD_USER_STEP_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            Log.i("tagconvertstr", "["+response+"]");
+                            JSONObject jsonObject = new JSONObject(response);
+
+                            String success = jsonObject.getString("success");
+                            String message = jsonObject.getString("message");
+
+                            if (success.equals("1")) {
+                                //Toast.makeText(HomeActivity.this,message,Toast.LENGTH_SHORT).show();
+                                Log.i("tagtoast", "["+message+"]");
+                            }
+
+                            if (success.equals("0")) {
+                                //Toast.makeText(HomeActivity.this,message,Toast.LENGTH_SHORT).show();
+                                Log.i("tagtoast", "["+message+"]");
+                            }
+
+                        } catch (JSONException e) {
+                            Toast.makeText(HomeActivity.this,"Insert user step Error!" + e.toString(),Toast.LENGTH_LONG).show();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("tagerror", "["+error+"]");
+                        //Toast.makeText(HomeActivity.this,error.toString(),Toast.LENGTH_LONG).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("userID", intentUserID);
+                params.put("stepGoal",goal);
+                params.put("totalStep",step);
+                params.put("stepDistance",distance);
+                params.put("stepCal",cal);
+                params.put("stepDate",date);
+                return params;
+            }
+        };
+
+        VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
+
+    }
+
+    private void DisplayUserTodayStep(final String intentUserID, final String date){
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.GET_USER_TODAY_STEP_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            Log.i("step", "["+response+"]");
+                            //JSONArray array = new JSONArray(response);
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray jsonArray = jsonObject.getJSONArray("userStep");
+                            String success = jsonObject.getString("success") ;
+
+                            if(success.equals("1")) {
+
+                                for (int i = 0; i < jsonArray.length(); i++) {
+
+                                    JSONObject object = jsonArray.getJSONObject(i);
+
+                                    userStep = object.getString("totalStep");
+
+                                    stepCount.setText(userStep);
+                                    //stepCount.setText( userStep +" ("+String.format("%.0f",distance)+" km)");
+
+                                }
+                            }
+
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(HomeActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> params = new HashMap<>();
+                params.put("userID",intentUserID);
+                params.put("stepDate",date);
+                return params;
+            }
+        };
+        VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
+
+
+    }
+
+    private void UpdateUserStepGoal(final String intentUserID, final String goal,final String date){
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.UPDATE_USER_STEP_GOAL_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            Log.i("tagconvertstr", "["+response+"]");
+                            JSONObject jsonObject = new JSONObject(response);
+
+                            String success = jsonObject.getString("success");
+                            String message = jsonObject.getString("message");
+
+                            if (success.equals("1")) {
+                                Toast.makeText(getApplicationContext(),message,Toast.LENGTH_SHORT).show();
+                                Log.i("tagtoast", "["+message+"]");
+                            }
+
+                        }catch (Exception e){
+                            e.printStackTrace();
+                            Toast.makeText(HomeActivity.this, "update user step goal error" + e.toString(), Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //Log.i("tagerror", "["+error+"]");
+                Toast.makeText(HomeActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> params = new HashMap<>();
+                params.put("userID",intentUserID);
+                params.put("stepGoal",goal);
+                params.put("stepDate",date);
+                return params;
+            }
+        };
+
+        VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
+    }
+
+    private void GetObeseLevelChange(final String userID){
+
+        // Initializing Request queue
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.GET_OBESE_LEVEL_MONTH_GRAPH_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+
+                            Log.i("tagconvertstr", "["+response+"]");
+
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray jsonArray = jsonObject.getJSONArray("obesemonth");
+                            String success = jsonObject.getString("success");
+
+                            if(success.equals("1")) {
+
+                                for (int i = jsonArray.length()-1; i < jsonArray.length(); i++) {
+
+                                    JSONObject object = jsonArray.getJSONObject(i);
+
+                                    String obeseLevel = object.getString("obeseLevel");
+                                    String addObeseDate = object.getString("addObeseDate").trim();
+
+                                    switch (obeseLevel) {
+                                        case "Insufficient_Weight":
+                                            level = 0;
+                                            break;
+                                        case "Normal_Weight":
+                                            level = 1;
+                                            break;
+                                        case "Overweight_Level_I":
+                                            level = 2;
+                                            break;
+                                        case "Overweight_Level_II":
+                                            level = 3;
+                                            break;
+                                        case "Obesity_Type_I":
+                                            level = 4;
+                                            break;
+                                        case "Obesity_Type_II":
+                                            level = 5;
+                                            break;
+                                        case "Obesity_Type_III":
+                                            level = 6;
+                                            break;
+
+                                    }
+                                    //Toast.makeText(HomeActivity.this, addObeseDate + level, Toast.LENGTH_LONG).show();
+
+                                }
+
+                                for (int i = jsonArray.length()-3; i < jsonArray.length()-1; i++) {
+
+                                    JSONObject object = jsonArray.getJSONObject(i);
+
+                                    String obeseLevel = object.getString("obeseLevel");
+                                    String addObeseDate = object.getString("addObeseDate").trim();
+
+                                    switch (obeseLevel) {
+                                        case "Insufficient_Weight":
+                                            level2 = 0;
+                                            break;
+                                        case "Normal_Weight":
+                                            level2 = 1;
+                                            break;
+                                        case "Overweight_Level_I":
+                                            level2 = 2;
+                                            break;
+                                        case "Overweight_Level_II":
+                                            level2 = 3;
+                                            break;
+                                        case "Obesity_Type_I":
+                                            level2 = 4;
+                                            break;
+                                        case "Obesity_Type_II":
+                                            level2 = 5;
+                                            break;
+                                        case "Obesity_Type_III":
+                                            level2 = 6;
+                                            break;
+
+                                    }
+
+                                    //Toast.makeText(HomeActivity.this, addObeseDate + level2, Toast.LENGTH_LONG).show();
+
+                                }
+
+                                if(level < level2){
+                                    //Toast.makeText(HomeActivity.this, "Your Habit have changed (obese level decrease)", Toast.LENGTH_LONG).show();
+                                    habitChangeTV.setText("Your Habit have changed (obese level decrease)");
+                                }
+
+                                if(level > level2){
+                                    //Toast.makeText(HomeActivity.this, "Your Habit have changed (obese level increase)", Toast.LENGTH_LONG).show();
+                                    habitChangeTV.setText("Your Habit have changed (obese level increase)");
+                                }
+
+                                if(level2 == level){
+                                    //Toast.makeText(HomeActivity.this, "Your Habit no change", Toast.LENGTH_LONG).show();
+                                    habitChangeTV.setText("Your Habit no changes");
+                                }
+
+                            }
+
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(HomeActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> params = new HashMap<>();
+                params.put("userID",userID);
+
+                return params;
+            }
+        };
+        VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
+    }
+
+    private void Loadtotalsteps(final String userID) {
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.GET_USER_TOTAL_STEP_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            Log.i("step", "["+response+"]");
+                            //JSONArray array = new JSONArray(response);
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray jsonArray = jsonObject.getJSONArray("uTotalStep");
+                            String success = jsonObject.getString("success") ;
+
+                            if(success.equals("1")) {
+
+                                for (int i = 0; i < jsonArray.length(); i++) {
+
+                                    JSONObject object = jsonArray.getJSONObject(i);
+
+                                    int totalsteps = object.getInt("userTotalStep");
+                                    if(totalsteps<3000){
+                                        stepLevel.setBackgroundColor(Color.GRAY);
+                                        stepLevel.setImageResource(R.drawable.editthree);
+                                        goalreach=3000;
+                                    }
+                                    if(totalsteps>=3000 && totalsteps<7000){
+                                        stepLevel.setBackgroundColor(Color.BLUE);
+                                        stepLevel.setImageResource(R.drawable.editthree);
+                                        goalreach=7000;
+                                    }
+                                    if(totalsteps>=7000 && totalsteps<10000){
+                                        stepLevel.setBackgroundColor(Color.BLUE);
+                                        stepLevel.setImageResource(R.drawable.editseven);
+                                        goalreach=10000;
+                                    }
+                                    if(totalsteps>=10000 && totalsteps<14000){
+                                        stepLevel.setBackgroundColor(Color.BLUE);
+                                        stepLevel.setImageResource(R.drawable.edit10);
+                                        goalreach=14000;
+                                    }
+                                    if(totalsteps>=14000 && totalsteps<20000){
+                                        stepLevel.setBackgroundColor(Color.BLUE);
+                                        stepLevel.setImageResource(R.drawable.editfort);
+                                        goalreach=20000;
+                                    }
+                                    if(totalsteps>=20000 && totalsteps<30000){
+                                        stepLevel.setBackgroundColor(Color.BLUE);
+                                        stepLevel.setImageResource(R.drawable.edittwenty);
+                                        goalreach=30000;
+                                    }
+                                    if(totalsteps>=30000 && totalsteps<40000){
+                                        stepLevel.setBackgroundColor(Color.BLUE);
+                                        stepLevel.setImageResource(R.drawable.editthirty);
+                                        goalreach=40000;
+                                    }
+                                    if(totalsteps>=40000 && totalsteps<60000){
+                                        stepLevel.setBackgroundColor(Color.BLUE);
+                                        stepLevel.setImageResource(R.drawable.editforty);
+                                        goalreach=60000;
+                                    }
+                                    if(totalsteps>=60000 && totalsteps<70000){
+                                        stepLevel.setBackgroundColor(Color.BLUE);
+                                        stepLevel.setImageResource(R.drawable.editforty);
+                                        goalreach=700000;
+                                    }
+                                }
+                            }
+
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(HomeActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> params = new HashMap<>();
+                params.put("userID",userID);
+                return params;
+            }
+        };
+        VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
+
+    }
+
+
+
 
 }

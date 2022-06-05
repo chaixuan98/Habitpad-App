@@ -34,7 +34,8 @@ import java.util.Map;
 public class ObeseLevelChart extends AppCompatActivity {
 
     private String intentUserID;
-    private int level = 0;
+    private int level = 0, todaylevel = 0, level2 = 0;
+    private TextView habitChange;
 
     LineChart dayLineChart;
     LineChart weekLineChart;
@@ -63,6 +64,8 @@ public class ObeseLevelChart extends AppCompatActivity {
 
         Intent intent = getIntent();
         intentUserID = intent.getExtras().getString("intentUserID");
+
+        habitChange = findViewById(R.id.obese_habit_change);
 //
 //        TextView foodInDay=(TextView) findViewById(R.id.textView);
 //        TextView foodInWeek=(TextView) findViewById(R.id.textView2);
@@ -456,6 +459,96 @@ public class ObeseLevelChart extends AppCompatActivity {
                                     yMonth.add(new Entry((level),i));
 
                                 }
+
+                                for (int i = jsonArray.length()-1; i < jsonArray.length(); i++) {
+
+                                    JSONObject object = jsonArray.getJSONObject(i);
+
+                                    String obeseLevel = object.getString("obeseLevel");
+                                    String addObeseDate = object.getString("addObeseDate").trim();
+
+                                    switch (obeseLevel) {
+                                        case "Insufficient_Weight":
+                                            todaylevel = 0;
+                                            break;
+                                        case "Normal_Weight":
+                                            todaylevel = 1;
+                                            break;
+                                        case "Overweight_Level_I":
+                                            todaylevel = 2;
+                                            break;
+                                        case "Overweight_Level_II":
+                                            todaylevel = 3;
+                                            break;
+                                        case "Obesity_Type_I":
+                                            todaylevel = 4;
+                                            break;
+                                        case "Obesity_Type_II":
+                                            todaylevel = 5;
+                                            break;
+                                        case "Obesity_Type_III":
+                                            todaylevel = 6;
+                                            break;
+
+                                    }
+                                    //Toast.makeText(ObeseLevelChart.this, addObeseDate + level, Toast.LENGTH_LONG).show();
+
+                                }
+
+                                for (int i = jsonArray.length()-3; i < jsonArray.length()-1; i++) {
+
+                                    JSONObject object = jsonArray.getJSONObject(i);
+
+                                    String obeseLevel = object.getString("obeseLevel");
+                                    String addObeseDate = object.getString("addObeseDate").trim();
+
+                                    switch (obeseLevel) {
+                                        case "Insufficient_Weight":
+                                            level2 = 0;
+                                            break;
+                                        case "Normal_Weight":
+                                            level2 = 1;
+                                            break;
+                                        case "Overweight_Level_I":
+                                            level2 = 2;
+                                            break;
+                                        case "Overweight_Level_II":
+                                            level2 = 3;
+                                            break;
+                                        case "Obesity_Type_I":
+                                            level2 = 4;
+                                            break;
+                                        case "Obesity_Type_II":
+                                            level2 = 5;
+                                            break;
+                                        case "Obesity_Type_III":
+                                            level2 = 6;
+                                            break;
+
+                                    }
+
+                                    //Toast.makeText(ObeseLevelChart.this, addObeseDate, Toast.LENGTH_LONG).show();
+
+//                                    xMonth.add(DateHandler.dateFormat2(addObeseDate));
+//                                    yMonth.add(new Entry((level),i));
+
+                                }
+
+                                if(todaylevel < level2){
+                                    habitChange.setText("Your Habit have changed (obese level decrease)");
+                                    //Toast.makeText(ObeseLevelChart.this, "Your Habit have changed (obese level decrease )", Toast.LENGTH_LONG).show();
+                                }
+
+                                if(todaylevel > level2){
+                                    habitChange.setText("Your Habit have changed (obese level increase)");
+                                    //Toast.makeText(ObeseLevelChart.this, "Your Habit have changed (obese level increase)", Toast.LENGTH_LONG).show();
+                                }
+
+                                if(level2 == todaylevel){
+                                    habitChange.setText("Your Habit no changes");
+                                    //Toast.makeText(ObeseLevelChart.this, "Your Habit no change", Toast.LENGTH_LONG).show();
+                                }
+
                                 LineDataSet set1 = new LineDataSet(yMonth, "Obesity Level" );
                                 set1.setLineWidth(1.5f);
                                 set1.setCircleRadius(4f);

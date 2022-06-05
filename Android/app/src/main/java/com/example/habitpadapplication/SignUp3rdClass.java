@@ -6,19 +6,15 @@ import android.app.ActivityOptions;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
-
-import java.text.DecimalFormat;
 
 public class SignUp3rdClass extends AppCompatActivity implements View.OnClickListener{
 
@@ -46,7 +42,7 @@ public class SignUp3rdClass extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(SignUp3rdClass.this,MainActivity.class));
+                startActivity(new Intent(SignUp3rdClass.this, LoginActivity.class));
 
             }
         });

@@ -18,6 +18,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.example.habitpadapplication.Adapters.TipViewAdpater;
 import com.example.habitpadapplication.Model.Tip;
+import com.example.habitpadapplication.Settings.AccountSettingActivity;
 import com.example.habitpadapplication.Settings.UserSettingsActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -33,6 +34,8 @@ public class ViewTipActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager manager;
     private List<Tip> tips;
 
+    private String userID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +43,8 @@ public class ViewTipActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         setTitle("Tips and Information");
         setContentView(R.layout.activity_view_tip);
+
+        userID = getIntent().getExtras().getString("intentUserID");
 
         recyclerView = findViewById(R.id.tip_recyclerview);
         manager = new LinearLayoutManager(ViewTipActivity.this);
@@ -49,39 +54,6 @@ public class ViewTipActivity extends AppCompatActivity {
 
         getTips();
 
-
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-
-        bottomNavigationView.setSelectedItemId(R.id.bottom_tip);
-
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.bottom_home:
-                        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-                        overridePendingTransition(0, 0);
-                        return true;
-
-                    case R.id.bottom_tip:
-                        startActivity(new Intent(getApplicationContext(), ViewTipActivity.class));
-                        overridePendingTransition(0, 0);
-                        return true;
-
-                    case R.id.bottom_appointment:
-//                        startActivity(new Intent(getApplicationContext(),HomeActivity.class));
-//                        overridePendingTransition(0,0);
-//                        return true;
-
-                    case R.id.bottom_profile:
-                        startActivity(new Intent(getApplicationContext(), UserSettingsActivity.class));
-                        overridePendingTransition(0,0);
-                        return true;
-
-                }
-                return false;
-            }
-        });
 
     }
 

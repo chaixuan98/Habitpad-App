@@ -1,7 +1,6 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
-
 }
 
 android {
@@ -9,13 +8,33 @@ android {
 
     defaultConfig {
         applicationId "com.example.habitpadapplication"
-        minSdk 24
+        minSdk 26
         targetSdk 30
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+    signingConfigs {
+        release
+    }
+
+    flavorDimensions "main"
+
+    productFlavors {
+        play {
+            dimension "main"
+        }
+        fdroid {
+            dimension "main"
+        }
+    }
+
+    lintOptions{
+        disable 'MissingTranslation'
+        disable 'ExtraTranslation'
+    }
+
 
     buildTypes {
         release {
@@ -31,6 +50,8 @@ android {
         viewBinding true
         dataBinding = true
     }
+
+
 }
 
 dependencies {
@@ -67,4 +88,6 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel:2.2.0"
 
     implementation 'com.opencsv:opencsv:4.0'
+
+    implementation 'com.github.lecho:hellocharts-library:1.5.8@aar'
 }

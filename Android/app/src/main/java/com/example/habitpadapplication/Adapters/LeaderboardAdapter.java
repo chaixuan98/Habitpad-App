@@ -28,14 +28,14 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView leaderboardRank, leaderboardUsername, leaderboardPoint;
+        private TextView leaderboardRank, leaderboardUsername, leaderboardStep;
 
         public MyViewHolder (View view){
             super(view);
 
             leaderboardRank = view.findViewById(R.id.leaderboard_rank);
             leaderboardUsername = view.findViewById(R.id.leaderboard_username);
-            leaderboardPoint = view.findViewById(R.id.leaderboard_point);
+            leaderboardStep = view.findViewById(R.id.leaderboard_total_step);
 
         }
     }
@@ -54,7 +54,7 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
 
         holder.leaderboardRank.setText(leaderboard.getLeaderboardRank());
         holder.leaderboardUsername.setText(leaderboard.getLeaderboardUsername());
-        holder.leaderboardPoint.setText(leaderboard.getLeaderboardPoint());
+        holder.leaderboardStep.setText(leaderboard.getLeaderboardStep());
 
     }
 

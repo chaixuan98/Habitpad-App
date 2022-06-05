@@ -5,19 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ActivityOptions;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.Notification;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.Message;
-import android.provider.CalendarContract;
-import android.text.TextUtils;
 import android.util.Pair;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -33,11 +27,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.text.DecimalFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 
 public class SignUp2ndClass extends AppCompatActivity {
 
@@ -79,7 +69,7 @@ public class SignUp2ndClass extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(SignUp2ndClass.this,MainActivity.class));
+                startActivity(new Intent(SignUp2ndClass.this, LoginActivity.class));
 
             }
         });

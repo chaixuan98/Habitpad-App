@@ -1,0 +1,651 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".StepLevelActivity">
+
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_marginTop="30dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="vertical">-->
+
+<!--        <ImageView-->
+<!--            android:layout_width="100dp"-->
+<!--            android:layout_height="110dp"-->
+<!--            android:layout_gravity="center_horizontal"-->
+<!--            android:id="@+id/mainacheivemnt"-->
+<!--            android:background="@color/bottom_navigation"-->
+<!--            android:src="@drawable/editthree">-->
+<!--        </ImageView>-->
+
+
+<!--        <TextView-->
+<!--            android:id="@+id/mainacheivemnttext"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:text="Away from Sofa"-->
+<!--            android:textColor="#000"-->
+<!--            android:textSize="25dp"-->
+<!--            android:textStyle="bold">-->
+
+<!--        </TextView>-->
+
+<!--        <ProgressBar-->
+<!--            android:id="@+id/progressBar"-->
+<!--            style="?android:attr/progressBarStyleHorizontal"-->
+<!--            android:layout_width="350dp"-->
+<!--            android:layout_height="40dp"-->
+<!--            android:layout_marginStart="10dp"-->
+<!--            android:layout_weight="1" />-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="326dp"-->
+<!--            android:layout_height="47dp"-->
+<!--            android:layout_marginStart="50dp"-->
+<!--            android:orientation="horizontal">-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/stepslefttonextlevel"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="10dp"-->
+<!--                android:text="3000"-->
+<!--                android:textSize="">-->
+
+<!--            </TextView>-->
+
+<!--            <Space-->
+<!--                android:layout_width="4dp"-->
+<!--                android:layout_height="4dp"></Space>-->
+
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="more steps to reach level"-->
+<!--                android:textSize="20dp">-->
+
+<!--            </TextView>-->
+<!--            <Space-->
+<!--                android:layout_width="4dp"-->
+<!--                android:layout_height="4dp"></Space>-->
+
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="1"-->
+<!--                android:id="@+id/levtext"-->
+<!--                android:textSize="20dp">-->
+
+<!--            </TextView>-->
+
+<!--        </LinearLayout>-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:orientation="horizontal">-->
+
+<!--            <LinearLayout-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_marginStart="20dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="vertical">-->
+
+<!--                <ImageView-->
+<!--                    android:id="@+id/three"-->
+<!--                    android:layout_width="70dp"-->
+<!--                    android:layout_height="80dp"-->
+<!--                    android:layout_marginStart="30dp"-->
+<!--                    android:background="@color/bottom_navigation"-->
+<!--                    android:src="@drawable/editthree">-->
+
+<!--                </ImageView>-->
+
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginStart="15dp"-->
+<!--                    android:text="Away from Sofa"-->
+<!--                    android:textSize="15dp">-->
+
+<!--                </TextView>-->
+
+
+<!--            </LinearLayout>-->
+
+<!--            <LinearLayout-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="vertical">-->
+
+<!--                <ImageView-->
+<!--                    android:id="@+id/seven"-->
+<!--                    android:layout_width="70dp"-->
+<!--                    android:layout_height="80dp"-->
+<!--                    android:layout_marginStart="30dp"-->
+<!--                    android:background="@color/bottom_navigation"-->
+<!--                    android:src="@drawable/editseven">-->
+
+<!--                </ImageView>-->
+
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginStart="40dp"-->
+<!--                    android:text="Keep Fit"-->
+<!--                    android:textSize="15dp">-->
+
+<!--                </TextView>-->
+
+
+<!--            </LinearLayout>-->
+
+<!--            <LinearLayout-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="20dp"-->
+<!--                android:orientation="vertical">-->
+
+<!--                <ImageView-->
+<!--                    android:id="@+id/ten"-->
+<!--                    android:layout_width="70dp"-->
+<!--                    android:layout_height="80dp"-->
+<!--                    android:layout_marginStart="30dp"-->
+<!--                    android:background="@color/bottom_navigation"-->
+<!--                    android:src="@drawable/edit10">-->
+
+<!--                </ImageView>-->
+
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginStart="30dp"-->
+<!--                    android:text="Healthy Day"-->
+<!--                    android:textSize="15dp">-->
+
+<!--                </TextView>-->
+
+
+<!--            </LinearLayout>-->
+
+<!--        </LinearLayout>-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_marginStart="20dp"-->
+<!--            android:orientation="horizontal">-->
+<!--            <LinearLayout-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="vertical">-->
+<!--                <ImageView-->
+<!--                    android:layout_width="70dp"-->
+<!--                    android:layout_marginStart="30dp"-->
+<!--                    android:layout_height="80dp"-->
+<!--                    android:id="@+id/fourteen"-->
+<!--                    android:src="@drawable/editfort"-->
+<!--                    android:background="@color/bottom_navigation">-->
+
+<!--                </ImageView>-->
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Slimmer Day"-->
+<!--                    android:layout_marginStart="30dp"-->
+<!--                    android:textSize="15dp">-->
+
+<!--                </TextView>-->
+
+
+<!--            </LinearLayout>-->
+<!--            <LinearLayout-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="vertical">-->
+
+<!--                <ImageView-->
+<!--                    android:id="@+id/twenty"-->
+<!--                    android:layout_width="70dp"-->
+<!--                    android:layout_height="80dp"-->
+<!--                    android:layout_marginStart="35dp"-->
+<!--                    android:background="@color/bottom_navigation"-->
+<!--                    android:src="@drawable/edittwenty">-->
+
+<!--                </ImageView>-->
+
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Hiker"-->
+<!--                    android:layout_marginStart="50dp"-->
+<!--                    android:textSize="15dp">-->
+
+<!--                </TextView>-->
+
+
+<!--            </LinearLayout>-->
+<!--            <LinearLayout-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="vertical">-->
+<!--                <ImageView-->
+<!--                    android:layout_width="70dp"-->
+<!--                    android:layout_marginStart="50dp"-->
+<!--                    android:layout_height="80dp"-->
+<!--                    android:id="@+id/thirty"-->
+<!--                    android:src="@drawable/editthirty"-->
+<!--                    android:background="@color/bottom_navigation">-->
+
+<!--                </ImageView>-->
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Explorer"-->
+<!--                    android:layout_marginStart="60dp"-->
+<!--                    android:textSize="15dp">-->
+
+<!--                </TextView>-->
+
+
+<!--            </LinearLayout>-->
+<!--        </LinearLayout>-->
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:orientation="horizontal">-->
+<!--            <LinearLayout-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="vertical">-->
+<!--                <ImageView-->
+<!--                    android:layout_width="70dp"-->
+<!--                    android:layout_marginStart="50dp"-->
+<!--                    android:layout_height="80dp"-->
+<!--                    android:id="@+id/fourty"-->
+<!--                    android:src="@drawable/editforty"-->
+<!--                    android:background="@color/bottom_navigation">-->
+
+<!--                </ImageView>-->
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Hero"-->
+<!--                    android:layout_marginStart="70dp"-->
+<!--                    android:textSize="15dp">-->
+
+<!--                </TextView>-->
+
+
+<!--            </LinearLayout>-->
+<!--            <LinearLayout-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="vertical">-->
+<!--                <ImageView-->
+<!--                    android:layout_width="70dp"-->
+<!--                    android:layout_marginStart="50dp"-->
+<!--                    android:layout_height="80dp"-->
+<!--                    android:id="@+id/sixty"-->
+<!--                    android:src="@drawable/editsixty"-->
+<!--                    android:background="@color/bottom_navigation">-->
+
+<!--                </ImageView>-->
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Conqueror"-->
+<!--                    android:layout_marginStart="50dp"-->
+<!--                    android:textSize="15dp">-->
+
+<!--                </TextView>-->
+
+
+<!--            </LinearLayout>-->
+
+
+<!--        </LinearLayout>-->
+
+<!--    </LinearLayout>-->
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="80dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="110dp"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/mainacheivemnt"
+                android:background="@color/bottom_navigation"
+                android:src="@drawable/editthree">
+            </ImageView>
+
+
+            <TextView
+                android:id="@+id/mainacheivemnttext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Away from Sofa"
+                android:textColor="#000"
+                android:textSize="18sp"
+                android:textStyle="bold">
+
+            </TextView>
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/stepslefttonextlevel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="3000"
+                    android:textSize="18dp">
+
+                </TextView>
+
+                <Space
+                    android:layout_width="4dp"
+                    android:layout_height="4dp"></Space>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="more steps to reach level"
+                    android:textSize="18dp">
+
+                </TextView>
+                <Space
+                    android:layout_width="4dp"
+                    android:layout_height="4dp"></Space>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1"
+                    android:id="@+id/levtext"
+                    android:textSize="18dp">
+
+                </TextView>
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/three"
+                        android:layout_width="70dp"
+                        android:layout_height="82dp"
+                        android:layout_marginStart="15dp"
+                        android:background="@color/bottom_navigation"
+                        android:src="@drawable/editthree">
+
+                    </ImageView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="Away from Sofa"
+                        android:textSize="15sp">
+
+                    </TextView>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/seven"
+                        android:layout_width="70dp"
+                        android:layout_height="84dp"
+                        android:background="@color/bottom_navigation"
+                        android:src="@drawable/editseven">
+
+                    </ImageView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="Keep Fit"
+                        android:textSize="15sp">
+
+                    </TextView>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="25dp"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/ten"
+                        android:layout_width="70dp"
+                        android:layout_height="80dp"
+                        android:background="@color/bottom_navigation"
+                        android:src="@drawable/edit10">
+
+                    </ImageView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:text="Healthy Day"
+                        android:textSize="15sp">
+
+                    </TextView>
+
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/fourteen"
+                        android:layout_width="70dp"
+                        android:layout_height="80dp"
+                        android:layout_marginStart="5dp"
+                        android:background="@color/bottom_navigation"
+                        android:src="@drawable/editfort">
+
+                    </ImageView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:text="Slimmer Day"
+                        android:textSize="15sp">
+
+                    </TextView>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/twenty"
+                        android:layout_width="70dp"
+                        android:layout_height="80dp"
+                        android:background="@color/bottom_navigation"
+                        android:src="@drawable/edittwenty">
+
+                    </ImageView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:text="Hiker"
+                        android:textSize="15sp">
+
+                    </TextView>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/thirty"
+                        android:layout_width="70dp"
+                        android:layout_height="80dp"
+                        android:background="@color/bottom_navigation"
+                        android:src="@drawable/editthirty">
+
+                    </ImageView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="50dp"
+                        android:text="Explorer"
+                        android:textSize="15sp">
+
+                    </TextView>
+
+
+                </LinearLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:orientation="vertical">
+                    <ImageView
+                        android:layout_width="70dp"
+                        android:layout_marginStart="15dp"
+                        android:layout_height="80dp"
+                        android:id="@+id/fourty"
+                        android:src="@drawable/editforty"
+                        android:background="@color/bottom_navigation">
+
+                    </ImageView>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Hero"
+                        android:layout_marginStart="30dp"
+                        android:textSize="15sp">
+
+                    </TextView>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/sixty"
+                        android:layout_width="70dp"
+                        android:layout_height="80dp"
+                        android:layout_marginStart="20dp"
+                        android:background="@color/bottom_navigation"
+                        android:src="@drawable/editsixty">
+
+                    </ImageView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:text="Conqueror"
+                        android:textSize="15sp">
+
+                    </TextView>
+
+
+                </LinearLayout>
+
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</ScrollView>

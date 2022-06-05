@@ -15,13 +15,77 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9eaa9752-8433-4a9e-8338-7ff53b691a7c" name="Default Changelist" comment="" />
+    <list default="true" id="9eaa9752-8433-4a9e-8338-7ff53b691a7c" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/Android/app/src/main/java/com/example/habitpadapplication/listener/StepListener.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Android/app/src/main/java/com/example/habitpadapplication/service/StepsDistanceService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Android/app/src/main/java/com/example/habitpadapplication/utils/SensorFilter.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Android/app/src/main/java/com/example/habitpadapplication/utils/StepDetector.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Android/app/src/main/res/drawable/ic_baseline_directions_walk_24_black.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Android/app/src/main/res/layout/mygift_desc_raw.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Android/trackstep/src/main/java/com/example/pedometer/util/StepDateHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Android/trackstep/src/main/java/com/example/pedometer/util/StepUrls.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Android/trackstep/src/main/java/com/example/pedometer/util/VolleySingleton.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Android/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Android/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Android/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Android/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Android/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/Android/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Android/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Android/app/src/main/java/com/example/habitpadapplication/Adapters/MyGiftAdpater.java" beforeDir="false" afterPath="$PROJECT_DIR$/Android/app/src/main/java/com/example/habitpadapplication/Adapters/MyGiftAdpater.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Android/app/src/main/java/com/example/habitpadapplication/HomeActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/Android/app/src/main/java/com/example/habitpadapplication/HomeActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Android/app/src/main/java/com/example/habitpadapplication/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/Android/app/src/main/java/com/example/habitpadapplication/LoginActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Android/app/src/main/java/com/example/habitpadapplication/Model/MyGift.java" beforeDir="false" afterPath="$PROJECT_DIR$/Android/app/src/main/java/com/example/habitpadapplication/Model/MyGift.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Android/app/src/main/java/com/example/habitpadapplication/MyRewardFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/Android/app/src/main/java/com/example/habitpadapplication/MyRewardFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Android/app/src/main/java/com/example/habitpadapplication/RedeemRewardFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/Android/app/src/main/java/com/example/habitpadapplication/RedeemRewardFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Android/app/src/main/java/com/example/habitpadapplication/SessionManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/Android/app/src/main/java/com/example/habitpadapplication/SessionManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Android/app/src/main/java/com/example/habitpadapplication/SignUp.java" beforeDir="false" afterPath="$PROJECT_DIR$/Android/app/src/main/java/com/example/habitpadapplication/SignUp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Android/app/src/main/java/com/example/habitpadapplication/SignUp2ndClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/Android/app/src/main/java/com/example/habitpadapplication/SignUp2ndClass.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Android/app/src/main/java/com/example/habitpadapplication/SignUp3rdClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/Android/app/src/main/java/com/example/habitpadapplication/SignUp3rdClass.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Android/app/src/main/java/com/example/habitpadapplication/SignUp4ndClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/Android/app/src/main/java/com/example/habitpadapplication/SignUp4ndClass.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Android/app/src/main/java/com/example/habitpadapplication/StepActivity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Android/app/src/main/java/com/example/habitpadapplication/StepCountReporter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Android/app/src/main/java/com/example/habitpadapplication/Urls.java" beforeDir="false" afterPath="$PROJECT_DIR$/Android/app/src/main/java/com/example/habitpadapplication/Urls.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Android/app/src/main/java/com/example/habitpadapplication/UserOptionActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/Android/app/src/main/java/com/example/habitpadapplication/UserOptionActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Android/app/src/main/res/drawable-v24/img.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Android/app/src/main/res/drawable-v24/img_1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Android/app/src/main/res/drawable/avatar.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Android/app/src/main/res/drawable/breakfast_img.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Android/app/src/main/res/drawable/button_round_cancel_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Android/app/src/main/res/drawable/champion.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Android/app/src/main/res/drawable/dinner_img.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Android/app/src/main/res/drawable/drop_notification_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Android/app/src/main/res/drawable/foodpanda_off.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Android/app/src/main/res/drawable/girl.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Android/app/src/main/res/drawable/girl1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Android/app/src/main/res/drawable/glass_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Android/app/src/main/res/drawable/grab_off.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Android/app/src/main/res/drawable/hisotry_appointment.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Android/app/src/main/res/drawable/ic_baseline_arrow_drop_down_24.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Android/app/src/main/res/drawable/ic_baseline_notifications_none_24.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Android/trackstep/src/main/res/drawable/ic_baseline_more_vert_24.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Android/app/src/main/res/drawable/ic_more.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Android/app/src/main/res/drawable/lunch_img.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Android/app/src/main/res/drawable/nike_off.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Android/app/src/main/res/drawable/patient_image.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Android/app/src/main/res/drawable/rectangle_fill_white.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Android/app/src/main/res/drawable/snack_img.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Android/app/src/main/res/drawable/tip_icom.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Android/app/src/main/res/drawable/up_mail.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Android/app/src/main/res/drawable/up_specialization.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Android/app/src/main/res/drawable/watches.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Android/app/src/main/res/drawable/workout_icon.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Android/app/src/main/res/layout/activity_gamification.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Android/app/src/main/res/layout/activity_home.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Android/app/src/main/res/layout/activity_home.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Android/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Android/app/src/main/res/layout/activity_login.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Android/app/src/main/res/layout/activity_step.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Android/app/src/main/res/layout/fragment_redeem_reward.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Android/app/src/main/res/layout/fragment_redeem_reward.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Android/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Android/app/src/main/res/values/strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Android/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/Android/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Android/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/Android/settings.gradle" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[C:\Users\user\.android\avd\Pixel_4_XL_API_24.avd]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[8UE5T17B22007295]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -36,6 +100,9 @@
         <option value="valueResourceFile" />
       </list>
     </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitSEFilterConfiguration">
     <file-type-list>
@@ -52,8 +119,10 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="RunOnceActivity.cidr.known.project.marker" value="true" />
     <property name="android-custom-viewC:/Users/user/AppData/Local/Android/Sdk/sources/android-30/android/view/View.java_SELECTED" value="View" />
     <property name="android-custom-viewC:/Users/user/AppData/Local/Android/Sdk/sources/android-30/android/view/View.java_View_DIMENSIONS" value="1080&#10;1920" />
+    <property name="cidr.known.project.marker" value="true" />
     <property name="last_directory_selection" value="$PROJECT_DIR$/app/src/main/res/drawable" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/Android" />
     <property name="project.structure.last.edited" value="Modules" />
@@ -138,6 +207,7 @@
       <option name="SHOW_LOGCAT_AUTOMATICALLY" value="false" />
       <option name="SKIP_NOOP_APK_INSTALLATIONS" value="true" />
       <option name="FORCE_STOP_RUNNING_APP" value="true" />
+      <option name="INSPECTION_WITHOUT_ACTIVITY_RESTART" value="false" />
       <option name="TARGET_SELECTION_MODE" value="DEVICE_AND_SNAPSHOT_COMBO_BOX" />
       <option name="SELECTED_CLOUD_MATRIX_CONFIGURATION_ID" value="-1" />
       <option name="SELECTED_CLOUD_MATRIX_PROJECT_ID" value="" />

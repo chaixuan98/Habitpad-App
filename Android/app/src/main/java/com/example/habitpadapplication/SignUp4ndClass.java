@@ -6,23 +6,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.RetryPolicy;
 import com.google.android.material.button.MaterialButton;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -75,7 +71,7 @@ public class SignUp4ndClass extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(SignUp4ndClass.this,MainActivity.class));
+                startActivity(new Intent(SignUp4ndClass.this, LoginActivity.class));
 
             }
         });
@@ -193,7 +189,7 @@ public class SignUp4ndClass extends AppCompatActivity {
 
                     if (success.equals("1")) {
                         Toast.makeText(getApplicationContext(),"Sign Up successffully! Please login again",Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(SignUp4ndClass.this,MainActivity.class));
+                        startActivity(new Intent(SignUp4ndClass.this, LoginActivity.class));
                     }
 
                 } catch (JSONException e) {

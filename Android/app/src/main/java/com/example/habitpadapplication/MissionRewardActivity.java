@@ -48,7 +48,7 @@ public class MissionRewardActivity extends AppCompatActivity {
 
     public void onBackPressed() {
         Intent intent = new Intent(MissionRewardActivity.this, HomeActivity.class);
-        //intent.putExtra("intentUserID", intentUserID);
+        intent.putExtra("intentUserID", intentUserID);
         startActivity(intent);
         finish();
     }

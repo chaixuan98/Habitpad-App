@@ -45,7 +45,7 @@ public class SignUp extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(SignUp.this,MainActivity.class));
+                startActivity(new Intent(SignUp.this, LoginActivity.class));
 
             }
         });
@@ -146,7 +146,7 @@ public class SignUp extends AppCompatActivity {
     }
 
     public void backSignupPage(View view) {
-        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
         startActivity(intent);
     }
 }
