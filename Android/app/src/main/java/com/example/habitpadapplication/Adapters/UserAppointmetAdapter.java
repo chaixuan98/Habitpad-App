@@ -190,6 +190,8 @@ public class UserAppointmetAdapter extends RecyclerView.Adapter<UserAppointmetAd
                                 holder.deleteBtn.setVisibility(View.VISIBLE);
                             }
 
+                            //holder.deleteBtn.setVisibility(View.GONE);
+
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

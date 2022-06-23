@@ -70,7 +70,7 @@ public class StepsDistanceService extends Service implements SensorEventListener
                 .setTicker("Step")
                 .setContentTitle("Steps is Running")
                 .setContentText("Tap to go offline.")
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.drawable.habitpadlogo)
                 .setContentIntent(pendingIntent)
                 .setOngoing(true)
                 .setNumber(100)

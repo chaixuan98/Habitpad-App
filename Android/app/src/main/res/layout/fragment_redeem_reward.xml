@@ -47,16 +47,16 @@
                         android:textColor="@color/black"
                         android:textSize="20sp" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginRight="20dp"
-                        android:backgroundTint="@color/white"
-                        android:text="My Rewards"
-                        android:textSize="15sp"
-                        android:textAllCaps="false"
-                        android:textColor="@color/black" />
+<!--                    <com.google.android.material.button.MaterialButton-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_alignParentEnd="true"-->
+<!--                        android:layout_marginRight="20dp"-->
+<!--                        android:backgroundTint="@color/white"-->
+<!--                        android:text="My Rewards"-->
+<!--                        android:textAllCaps="false"-->
+<!--                        android:textColor="@color/black"-->
+<!--                        android:textSize="15sp" />-->
 
                 </RelativeLayout>
 

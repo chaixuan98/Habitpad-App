@@ -13,6 +13,7 @@ import android.provider.SearchRecentSuggestions;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +27,7 @@ import com.example.habitpadapplication.Adapters.FoodAdapter;
 import com.example.habitpadapplication.Adapters.FoodRecentAdapter;
 import com.example.habitpadapplication.Model.Food;
 import com.example.habitpadapplication.Model.FoodRecent;
+import com.example.habitpadapplication.Settings.FoodReminderActivity;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -89,52 +91,6 @@ public class FoodListActivity extends AppCompatActivity {
             }
         });
 
-//        foodRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
-//            @Override
-//            public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-//                int action = e.getAction();
-//                switch (action) {
-//                    case MotionEvent.ACTION_MOVE:
-//                        rv.getParent().requestDisallowInterceptTouchEvent(true);
-//                        break;
-//                }
-//                return false;
-//            }
-//
-//            @Override
-//            public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-//
-//            }
-//
-//            @Override
-//            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-//
-//            }
-//        });
-//
-//        foodRecentRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
-//            @Override
-//            public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-//                int action = e.getAction();
-//                switch (action) {
-//                    case MotionEvent.ACTION_MOVE:
-//                        rv.getParent().requestDisallowInterceptTouchEvent(true);
-//                        break;
-//                }
-//                return false;
-//            }
-//
-//            @Override
-//            public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-//
-//            }
-//
-//            @Override
-//            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-//
-//            }
-//        });
-//
 
     }
 

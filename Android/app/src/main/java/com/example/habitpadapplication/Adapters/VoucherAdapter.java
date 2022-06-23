@@ -236,68 +236,69 @@ public class VoucherAdapter extends RecyclerView.Adapter<VoucherAdapter.MyViewHo
                 DisplayUserTotalPoint(intentUserID,voucherID,voucherPoint);
                 redeemdialog.cancel();
 
+
             }
         });
 
     }
 
-    private void getVoucherList(final String voucherID){
-
-        final ProgressDialog progressDialog = new ProgressDialog(mContext);
-        progressDialog.setMessage("Loading...");
-        progressDialog.show();
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.GET_VOUCHER_DETAILS_URL,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        progressDialog.dismiss();
-                        try {
-                            Log.i("tagconvertstr", "["+response+"]");
-                            //JSONArray array = new JSONArray(response);
-                            JSONObject jsonObject = new JSONObject(response);
-                            JSONArray jsonArray = jsonObject.getJSONArray("voucherDetail");
-                            String success = jsonObject.getString("success");
-
-                            if (success.equals("1")) {
-                                for (int i = 0; i < jsonArray.length(); i++) {
-
-                                    JSONObject object = jsonArray.getJSONObject(i);
-                                    String voucherID = object.getString("voucherID").trim();
-                                    voucherPhoto = object.getString("voucherPhoto").trim();
-                                    voucherPoint = object.getString("voucherPoint").trim();
-                                    voucherTitle = object.getString("voucherTitle").trim();
-                                    voucherDesc = object.getString("voucherDesc").trim();
-
-                                }
-                            }
-
-                        }catch (Exception e){
-                            progressDialog.dismiss();
-                            e.printStackTrace();
-                        }
-
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
-                Toast.makeText(mContext, error.toString(), Toast.LENGTH_LONG).show();
-            }
-        })
-        {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-
-                Map<String, String> params = new HashMap<>();
-                params.put("voucherID", voucherID);
-                return params;
-            }
-        };
-
-        VolleySingleton.getInstance(mContext).addToRequestQueue(stringRequest);
-
-    }
+//    private void getVoucherList(final String voucherID){
+//
+//        final ProgressDialog progressDialog = new ProgressDialog(mContext);
+//        progressDialog.setMessage("Loading...");
+//        progressDialog.show();
+//
+//        StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.GET_VOUCHER_DETAILS_URL,
+//                new Response.Listener<String>() {
+//                    @Override
+//                    public void onResponse(String response) {
+//                        progressDialog.dismiss();
+//                        try {
+//                            Log.i("tagconvertstr", "["+response+"]");
+//                            //JSONArray array = new JSONArray(response);
+//                            JSONObject jsonObject = new JSONObject(response);
+//                            JSONArray jsonArray = jsonObject.getJSONArray("voucherDetail");
+//                            String success = jsonObject.getString("success");
+//
+//                            if (success.equals("1")) {
+//                                for (int i = 0; i < jsonArray.length(); i++) {
+//
+//                                    JSONObject object = jsonArray.getJSONObject(i);
+//                                    String voucherID = object.getString("voucherID").trim();
+//                                    voucherPhoto = object.getString("voucherPhoto").trim();
+//                                    voucherPoint = object.getString("voucherPoint").trim();
+//                                    voucherTitle = object.getString("voucherTitle").trim();
+//                                    voucherDesc = object.getString("voucherDesc").trim();
+//
+//                                }
+//                            }
+//
+//                        }catch (Exception e){
+//                            progressDialog.dismiss();
+//                            e.printStackTrace();
+//                        }
+//
+//                    }
+//                }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                progressDialog.dismiss();
+//                Toast.makeText(mContext, error.toString(), Toast.LENGTH_LONG).show();
+//            }
+//        })
+//        {
+//            @Override
+//            protected Map<String, String> getParams() throws AuthFailureError {
+//
+//                Map<String, String> params = new HashMap<>();
+//                params.put("voucherID", voucherID);
+//                return params;
+//            }
+//        };
+//
+//        VolleySingleton.getInstance(mContext).addToRequestQueue(stringRequest);
+//
+//    }
 
     private void DisplayUserTotalPoint(final String intentUserID, final String voucherID, final String vPoint){
 
@@ -414,14 +415,14 @@ public class VoucherAdapter extends RecyclerView.Adapter<VoucherAdapter.MyViewHo
                             String message = jsonObject.getString("message");
 
                             if (success.equals("1")) {
-                                //Toast.makeText(HomeActivity.this,message,Toast.LENGTH_SHORT).show();
+                                Toast.makeText(mContext,"Redeem Successfully",Toast.LENGTH_SHORT).show();
                                 Log.i("tagtoast", "["+message+"]");
                             }
 
-                            if (success.equals("0")) {
-                                //Toast.makeText(HomeActivity.this,message,Toast.LENGTH_SHORT).show();
-                                Log.i("tagtoast", "["+message+"]");
-                            }
+//                            if (success.equals("0")) {
+////                                Toast.makeText(mContext.this,message,Toast.LENGTH_SHORT).show();
+//                                Log.i("tagtoast", "["+message+"]");
+//                            }
 
                         } catch (JSONException e) {
                             Toast.makeText(mContext,"Insert user voucher Error!" + e.toString(),Toast.LENGTH_LONG).show();

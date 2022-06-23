@@ -128,6 +128,33 @@ public class DateHandler {
         return fmt.format(d);
 
     }
+    public static String monthFormat2(String date) {
+        SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+        Date d = null;
+        try {
+            d = fmt.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        fmt = new SimpleDateFormat("M");
+        return fmt.format(d);
+
+    }
+
+    public static String monthFormat3(String date) {
+        SimpleDateFormat fmt = new SimpleDateFormat("MMM");
+        Date d = null;
+        try {
+            d = fmt.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        fmt = new SimpleDateFormat("M");
+        return fmt.format(d);
+
+    }
     public static String yearFormat(String date) {
         SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
         Date d = null;

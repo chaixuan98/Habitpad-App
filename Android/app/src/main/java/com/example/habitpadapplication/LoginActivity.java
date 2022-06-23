@@ -186,7 +186,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    public void backUserOptionPage(View view) {
-        startActivity(new Intent(LoginActivity.this,UserOptionActivity.class));
-    }
+//    public void backUserOptionPage(View view) {
+//        startActivity(new Intent(LoginActivity.this,UserOptionActivity.class));
+//    }
 }

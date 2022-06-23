@@ -296,6 +296,10 @@ public class UserSettingsActivity extends AppCompatActivity  {
             @Override
             public void onClick(View v) {
 
+                if(!validateUsername() | !validateEmail() | !validatePhone() | !validateAge()){
+                    return;
+                }
+
                 editUserDetails(userID,
                         userPhoto,
                         mUsername.getEditText().getText().toString(),
@@ -630,6 +634,60 @@ public class UserSettingsActivity extends AppCompatActivity  {
 
         VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
     }
+
+    private  boolean validateUsername(){
+        String val = mUsername.getEditText().getText().toString().trim();
+
+        if(val.isEmpty()){
+            mUsername.setError("Field cannot be empty");
+            return false;
+        } else{
+            mUsername.setError(null);
+            // birth.setErrorEnabled(false);
+            return true;
+        }
+    }
+
+    private  boolean validateEmail(){
+        String val = mEmail.getEditText().getText().toString().trim();
+
+        if(val.isEmpty()){
+            mEmail.setError("Field cannot be empty");
+            return false;
+        } else{
+            mEmail.setError(null);
+            // birth.setErrorEnabled(false);
+            return true;
+        }
+    }
+
+    private  boolean validatePhone(){
+        String val = mPhone.getEditText().getText().toString().trim();
+
+        if(val.isEmpty()){
+            mPhone.setError("Field cannot be empty");
+            return false;
+        } else{
+            mPhone.setError(null);
+            // birth.setErrorEnabled(false);
+            return true;
+        }
+    }
+
+    private  boolean validateAge(){
+        String val = mAge.getEditText().getText().toString().trim();
+
+        if(val.isEmpty()){
+            mAge.setError("Field cannot be empty");
+            return false;
+        } else{
+            mAge.setError(null);
+            // birth.setErrorEnabled(false);
+            return true;
+        }
+    }
+
+
 
 }
 

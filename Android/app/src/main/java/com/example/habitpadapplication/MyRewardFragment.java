@@ -1,14 +1,12 @@
 package com.example.habitpadapplication;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -68,6 +66,7 @@ public class MyRewardFragment extends Fragment {
         myVoucherLinearLayoutManager.setStackFromEnd(true);
         myVoucherRecyclerView.setHasFixedSize(true);
         myVoucherRecyclerView.setLayoutManager(myVoucherLinearLayoutManager);
+        myVouchers = new ArrayList<>();
 
         myGiftRecyclerView = (RecyclerView) view.findViewById(R.id.my_gift_rv);
         LinearLayoutManager myGiftLinearLayoutManager = new LinearLayoutManager(getContext());
@@ -75,6 +74,7 @@ public class MyRewardFragment extends Fragment {
         myGiftLinearLayoutManager.setStackFromEnd(true);
         myGiftRecyclerView.setHasFixedSize(true);
         myGiftRecyclerView.setLayoutManager(myGiftLinearLayoutManager);
+        myGifts = new ArrayList<>();
 
         swipMyRewardLayout = view.findViewById(R.id.myreward_swipe_layout);
         swipMyRewardLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -99,19 +99,13 @@ public class MyRewardFragment extends Fragment {
     }
 
     private void getMyVoucherList() {
-
-        final ProgressDialog progressDialog = new ProgressDialog(getContext());
-        progressDialog.setMessage("Loading...");
-        progressDialog.show();
-
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.GET_USER_VOUCHER_URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        progressDialog.dismiss();
                         try {
-                            myVouchers = new ArrayList<>();
-                            Log.i("tagconvertstr", "["+response+"]");
+
+                            //Log.i("tagconvertstr", "["+response+"]");
                             //JSONArray array = new JSONArray(response);
                             JSONObject jsonObject = new JSONObject(response);
                             JSONArray jsonArray = jsonObject.getJSONArray("uservoucher");
@@ -123,6 +117,7 @@ public class MyRewardFragment extends Fragment {
                                 for (int i = 0; i < jsonArray.length(); i++) {
 
                                     JSONObject object = jsonArray.getJSONObject(i);
+
                                     String voucherID = object.getString("voucherID").trim();
                                     String voucherPhoto = object.getString("voucherPhoto").trim();
                                     String voucherTitle = object.getString("voucherTitle").trim();
@@ -137,7 +132,6 @@ public class MyRewardFragment extends Fragment {
                             }
 
                         }catch (Exception e){
-                            progressDialog.dismiss();
                             e.printStackTrace();
                         }
 
@@ -147,7 +141,6 @@ public class MyRewardFragment extends Fragment {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
                 Toast.makeText(getContext(), error.toString(), Toast.LENGTH_LONG).show();
             }
         }){
@@ -160,22 +153,16 @@ public class MyRewardFragment extends Fragment {
         };
 
         VolleySingleton.getInstance(getContext()).addToRequestQueue(stringRequest);
-
     }
 
     private void getMyGiftList() {
-        final ProgressDialog progressDialog = new ProgressDialog(getContext());
-        progressDialog.setMessage("Loading...");
-        progressDialog.show();
-
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.GET_USER_GIFT_URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        progressDialog.dismiss();
                         try {
-                            myGifts = new ArrayList<>();
-                            Log.i("tagconvertstr", "["+response+"]");
+
+                            //Log.i("tagconvertstr", "["+response+"]");
                             //JSONArray array = new JSONArray(response);
                             JSONObject jsonObject = new JSONObject(response);
                             JSONArray jsonArray = jsonObject.getJSONArray("usergift");
@@ -202,7 +189,6 @@ public class MyRewardFragment extends Fragment {
                             }
 
                         }catch (Exception e){
-                            progressDialog.dismiss();
                             e.printStackTrace();
                         }
 
@@ -212,7 +198,6 @@ public class MyRewardFragment extends Fragment {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
                 Toast.makeText(getContext(), error.toString(), Toast.LENGTH_LONG).show();
             }
         }){

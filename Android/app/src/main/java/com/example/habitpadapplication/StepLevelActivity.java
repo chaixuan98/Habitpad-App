@@ -34,7 +34,7 @@ import java.util.Map;
 public class StepLevelActivity extends AppCompatActivity {
 
     private ImageView backarrow,levelimg,three,seven,ten,fourt,twenty,thirty,fourty,sixty;
-    private TextView stepsleft,leveltext,imgtext;
+    private TextView stepsleft,leveltext,imgtext,stepview1;
     private int totalsteps=0,goal=3000;
     public static NumberFormat formatter=NumberFormat.getInstance(Locale.getDefault());
     private ProgressBar progressBar;
@@ -63,6 +63,7 @@ public class StepLevelActivity extends AppCompatActivity {
         thirty=findViewById(R.id.thirty);
         fourty=findViewById(R.id.fourty);
         sixty=findViewById(R.id.sixty);
+        stepview1=findViewById(R.id.step_view1);
 
         loadtotalsteps();
         //loadimages();
@@ -208,6 +209,8 @@ public class StepLevelActivity extends AppCompatActivity {
             seven.setBackgroundColor(Color.BLUE);
             ten.setBackgroundColor(Color.BLUE);
             fourt.setBackgroundColor(Color.BLUE);
+            twenty.setBackgroundColor(Color.BLUE);
+            thirty.setBackgroundColor(Color.BLUE);
             imgtext.setText("Explorer");
         }
         if(totalsteps>=40000 && totalsteps<60000){
@@ -220,18 +223,26 @@ public class StepLevelActivity extends AppCompatActivity {
             seven.setBackgroundColor(Color.BLUE);
             ten.setBackgroundColor(Color.BLUE);
             fourt.setBackgroundColor(Color.BLUE);
+            twenty.setBackgroundColor(Color.BLUE);
+            thirty.setBackgroundColor(Color.BLUE);
+            fourty.setBackgroundColor(Color.BLUE);
             imgtext.setText("Hero");
         }
-        if(totalsteps>=60000 && totalsteps<70000){
+        if(totalsteps>=60000 ){
             levelimg.setBackgroundColor(Color.BLUE);
-            levelimg.setImageResource(R.drawable.editforty);
-            goal=700000;
-            stepsleft.setText(formatter.format(70000-totalsteps));
-            leveltext.setText("9");
+            levelimg.setImageResource(R.drawable.editsixty);
+            //goal=100000;
+            stepsleft.setVisibility(View.GONE);
+            leveltext.setVisibility(View.GONE);
+            stepview1.setText("Congratulation! You have gained all badges for this month");
             three.setBackgroundColor(Color.BLUE);
             seven.setBackgroundColor(Color.BLUE);
             ten.setBackgroundColor(Color.BLUE);
             fourt.setBackgroundColor(Color.BLUE);
+            twenty.setBackgroundColor(Color.BLUE);
+            thirty.setBackgroundColor(Color.BLUE);
+            fourty.setBackgroundColor(Color.BLUE);
+            sixty.setBackgroundColor(Color.BLUE);
             imgtext.setText("Conqueror");
         }
         float set=((totalsteps*100)/goal);
@@ -243,7 +254,7 @@ public class StepLevelActivity extends AppCompatActivity {
     protected void DialogShow(){
         final Dialog stepLevelDialog = new Dialog(StepLevelActivity.this);
         stepLevelDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        stepLevelDialog.setContentView(R.layout.achievements_layout);
+        stepLevelDialog.setContentView(R.layout.step_achievement_layout);
         stepLevelDialog.setTitle("Achievement Window");
         stepLevelDialog.show();
         stepLevelDialog.setCanceledOnTouchOutside(false);
@@ -251,10 +262,6 @@ public class StepLevelActivity extends AppCompatActivity {
         Window window = stepLevelDialog.getWindow();
         window.setLayout(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-//        final Dialog dialog=new Dialog(getApplicationContext());
-//        dialog.setCancelable(true);
-//        View view=getApplicationContext().getLayoutInflater().inflate(com.example.pedometer.R.layout.acheivementdialog,null);
-//        dialog.setContentView(view);
 
         loadtotalsteps();
         ImageView levelimg=stepLevelDialog.findViewById(R.id.imageview);
@@ -313,11 +320,11 @@ public class StepLevelActivity extends AppCompatActivity {
             leveltext.setText("8");
 
         }
-        if(totalsteps>=60000 && totalsteps<70000){
+        if(totalsteps>=60000 ){
             levelimg.setBackgroundColor(Color.BLUE);
-            levelimg.setImageResource(R.drawable.editforty);
+            levelimg.setImageResource(R.drawable.editsixty);
 
-            leveltext.setText("9");
+            leveltext.setVisibility(View.GONE);
         }
         Button close=stepLevelDialog.findViewById(R.id.ok);
         close.setOnClickListener(new View.OnClickListener() {

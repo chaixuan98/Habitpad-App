@@ -2,16 +2,16 @@ package com.example.habitpadapplication.Model;
 
 public class MyVoucher {
 
-    private String voucherID, myVoucherImage,myVoucherReward;
+    private String myVoucherID, myVoucherImage,myVoucherTitle;
 
-    public MyVoucher(String voucherID, String myimage, String myreward){
-        this.voucherID =voucherID;
+    public MyVoucher(String myVoucherID, String myVoucherImage, String myVoucherTitle){
+        this.myVoucherID =myVoucherID;
         this.myVoucherImage = myVoucherImage;
-        this.myVoucherReward = myVoucherReward;
+        this.myVoucherTitle = myVoucherTitle;
     }
 
-    public String getVoucherID() {
-        return voucherID;
+    public String getMyVoucherID() {
+        return myVoucherID;
     }
 
     public String getMyVoucherImage() {
@@ -19,7 +19,7 @@ public class MyVoucher {
     }
 
 
-    public String getMyVoucherReward() {
-        return myVoucherReward;
+    public String getMyVoucherTitle() {
+        return myVoucherTitle;
     }
 }

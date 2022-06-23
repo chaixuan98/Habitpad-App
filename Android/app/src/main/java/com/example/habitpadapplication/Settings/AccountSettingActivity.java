@@ -21,7 +21,6 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.example.habitpadapplication.AppointmentActivity;
 import com.example.habitpadapplication.DateHandler;
 import com.example.habitpadapplication.DoctorListActivity;
 import com.example.habitpadapplication.FeedbackActivity;

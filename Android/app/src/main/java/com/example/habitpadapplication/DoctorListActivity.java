@@ -35,6 +35,7 @@ public class DoctorListActivity extends AppCompatActivity {
     private List<Doctor> doctors;
 
     private Context context;
+    private String intentUserID;
 
 
 
@@ -46,7 +47,7 @@ public class DoctorListActivity extends AppCompatActivity {
         setTitle("Doctor List");
         setContentView(R.layout.activity_doctor_list);
 
-
+        intentUserID = getIntent().getExtras().getString("intentUserID");
         doctorRecyclerView = findViewById(R.id.drCards);
 
         manager = new LinearLayoutManager(DoctorListActivity.this);
@@ -56,6 +57,7 @@ public class DoctorListActivity extends AppCompatActivity {
         Dadapter = new DoctorAdapter(DoctorListActivity.this, doctors);
 
         getDoctorsList();
+
 
     }
 

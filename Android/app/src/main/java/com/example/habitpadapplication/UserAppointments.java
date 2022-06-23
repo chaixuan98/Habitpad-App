@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -21,6 +22,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.example.habitpadapplication.Adapters.AppointmentViewPagerAdapter;
 import com.example.habitpadapplication.Adapters.UserAppointmetAdapter;
 import com.example.habitpadapplication.Model.UserAppointment;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
 import org.json.JSONArray;
@@ -37,6 +39,7 @@ public class UserAppointments extends AppCompatActivity {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    private FloatingActionButton addAppointmentBtn;
 
 
     @Override
@@ -51,6 +54,7 @@ public class UserAppointments extends AppCompatActivity {
 
         tabLayout = findViewById(R.id.appointment_tab_layout);
         viewPager = findViewById(R.id.appointment_view_pager);
+        addAppointmentBtn = findViewById(R.id.add_appointment_button);
 
         tabLayout.setupWithViewPager(viewPager);
 
@@ -58,6 +62,15 @@ public class UserAppointments extends AppCompatActivity {
         appointmentViewPagerAdapter.addFragment(new ActiveAppointmentFragment(), "Active");
         appointmentViewPagerAdapter.addFragment(new PastAppointmentFragment(), "Past");
         viewPager.setAdapter(appointmentViewPagerAdapter);
+
+        addAppointmentBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent appointmentIntent = new Intent(getApplicationContext(), DoctorListActivity.class);
+                appointmentIntent.putExtra("intentUserID", intentUserID);
+                startActivity(appointmentIntent);
+            }
+        });
 
     }
 
@@ -68,7 +81,7 @@ public class UserAppointments extends AppCompatActivity {
     }
 
     public void onBackPressed() {
-        Intent intent = new Intent(UserAppointments.this, AppointmentActivity.class);
+        Intent intent = new Intent(UserAppointments.this, HomeActivity.class);
         intent.putExtra("intentUserID", intentUserID);
         startActivity(intent);
         finish();

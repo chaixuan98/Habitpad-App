@@ -34,7 +34,7 @@ public class ChallengeActivity extends AppCompatActivity {
 
         ChallengeViewPagerAdapter challengeViewPagerAdapter = new ChallengeViewPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         challengeViewPagerAdapter.addFragment(new ChallengeFragment(), "Challenge");
-        challengeViewPagerAdapter.addFragment(new LeaderboardFragment(), "Leaderboard");
+//        challengeViewPagerAdapter.addFragment(new LeaderboardFragment(), "Leaderboard");
         viewPager.setAdapter(challengeViewPagerAdapter);
     }
 

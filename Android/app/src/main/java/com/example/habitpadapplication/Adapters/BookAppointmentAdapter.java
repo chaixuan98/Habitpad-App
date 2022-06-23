@@ -2,7 +2,6 @@ package com.example.habitpadapplication.Adapters;
 
 import android.app.Activity;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,22 +12,10 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.afollestad.sectionedrecyclerview.SectionedRecyclerViewAdapter;
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.example.habitpadapplication.DoctorSchedule;
 import com.example.habitpadapplication.R;
-import com.example.habitpadapplication.Urls;
-import com.example.habitpadapplication.VolleySingleton;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 public class BookAppointmentAdapter extends SectionedRecyclerViewAdapter<BookAppointmentAdapter.ViewHolder> {
 

@@ -245,7 +245,7 @@ public class StepChart extends AppCompatActivity {
                                     gWeek.add(new Entry(Integer.valueOf(userStepGoal),i));
 
                                 }
-                               // getUserWaterConsecutive(drunkWater);
+
                                 ArrayList<ILineDataSet> lineDataSets = new ArrayList<>();
 
                                 LineDataSet set1 = new LineDataSet(yWeek, "Step Count");
@@ -335,8 +335,26 @@ public class StepChart extends AppCompatActivity {
                                     gMonth.add(new Entry(Integer.valueOf(userStepGoal),i));
 
                                 }
+                                if(jsonArray.length()>2) {
+                                    for (int i = jsonArray.length()-3; i < jsonArray.length(); i++) {
+                                        JSONObject object = jsonArray.getJSONObject(i);
 
-                                //getUserWaterConsecutive(drunkWater);
+                                        stepCount = object.getInt("totalStep");
+
+                                        if (stepCount >= Integer.valueOf(userStepGoal)) {
+                                            counter++;
+                                        }
+                                    }
+                                }
+                                consecutiveMonth.setText("Achieve goal " + counter + " days for the last 3 days");
+                                consecutiveWeek.setText("Achieve goal " + counter + " days for the last 3 days");
+
+                                if(counter > 2){
+                                    consecutiveMonth.setText("Achieve goal for the last 3 days (Step count habit is changed)");
+                                    consecutiveWeek.setText("Achieve goal for the last 3 days (Step count habit is changed)");
+
+                                }
+
 
                                 ArrayList<ILineDataSet> lineDataSetsMonth = new ArrayList<>();
 

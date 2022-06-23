@@ -93,7 +93,7 @@ public class SessionManager {
             Intent i = new Intent(context, LoginActivity.class);
             //i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(i);
-            ((HomeActivity) context).finish();
+            //((HomeActivity) context).finish();
         }
 
     }
@@ -104,7 +104,7 @@ public class SessionManager {
         editor.commit();
         Intent i = new Intent(context, LoginActivity.class);
         context.startActivity(i);
-        ((HomeActivity) context).finish();
+        //((HomeActivity) context).finish();
 
     }
 

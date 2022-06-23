@@ -12,9 +12,6 @@ public class Urls {
     public static final String GET_USER_PROFILE_PIC_URL = ROOT_URL+"get_profile_pic.php";
 
     public static final String GET_TIP_URL = ROOT_URL+"get_tip.php";
-    public static final String ADD_TIP_URL = ROOT_URL+"tip_upload.php";
-    public static final String EDIT_TIP_URL = ROOT_URL+"edit_tip.php";
-    public static final String DELETE_TIP_URL = ROOT_URL+"delete_tip.php";
 
 
     public static final String GET_WATER_TIME_URL = ROOT_URL+"get_TimeLogs.php";
@@ -58,39 +55,24 @@ public class Urls {
     public static final String DELETE_FOOD_LOG_URL = ROOT_URL+"delete_food_log.php";
 
 
-//    public static final String GET_USER_BREAKFAST_COUNT_URL = ROOT_URL+"get_user_breakfast_count.php";
-//    public static final String GET_USER_LUNCH_COUNT_URL = ROOT_URL+"get_user_lunch_count.php";
-//    public static final String GET_USER_DINNER_COUNT_URL = ROOT_URL+"get_user_dinner_count.php";
-//    public static final String GET_USER_SNACK_COUNT_URL = ROOT_URL+"get_user_snack_count.php";
-
-
     public static final String GET_TASK_LIST_URL = ROOT_URL+"get_task_list.php";
     public static final String ADD_USER_TASK_DETAIL_URL = ROOT_URL+"add_task_detail.php";
-//    public static final String GET_USER_TOTAL_TASK_POINT_DAILY_URL = ROOT_URL+"get_user_total_task_point_daily.php";
     public static final String GET_USER_TOTAL_POINT_URL = ROOT_URL+"get_user_total_point.php";
-//    public static final String GET_USER_RANK_URL = ROOT_URL+"get_user_rank.php";
+
 
     public static final String GET_USER_RANKING_LIST_URL = ROOT_URL+"get_user_ranking_list.php";
 
     public static final String ADD_USER_OBESE_LEVEL_URL = ROOT_URL+"add_obese_level.php";
-    public static final String GET_OBESE_LEVEL_DAY_GRAPH_URL = ROOT_URL+"get_obese_level_byday.php";
     public static final String GET_OBESE_LEVEL_WEEK_GRAPH_URL = ROOT_URL+"get_obese_level_byweek.php";
-    public static final String GET_OBESE_LEVEL_MONTH_GRAPH_URL = ROOT_URL+"get_obese_level_bymonth.php";
-    public static final String GET_OBESE_LEVEL_YEAR_GRAPH_URL = ROOT_URL+"get_obese_level_byyear.php";
+    //public static final String GET_OBESE_LEVEL_MONTH_GRAPH_URL = ROOT_URL+"get_obese_level_bymonth.php";
     public static final String UPDATE_USER_OBESE_LEVEL_URL = ROOT_URL+"edit_user_obese_level.php";
+    public static final String GET_OBESE_LEVEL_MONTH_GRAPH_URL = ROOT_URL+"get_user_obese_level.php";
 
 
-    public static final String DOCTOR_SIGN_UP_URL = ROOT_URL+"doctor_sign_up.php";
-    public static final String DOCTOR_SIGN_IN_URL = ROOT_URL+"doctor_sign_in.php";
-    public static final String UPLOAD_DOCTOR_PROFILE_PIC_URL = ROOT_URL+"upload_doctor_pic.php";
-    public static final String GET_DOCTOR_PROFILE_PIC_URL = ROOT_URL+"get_doctor_pic.php";
-    public static final String GET_DOCTOR_DETAILS_URL = ROOT_URL+"get_doctor_detail.php";
-    public static final String UPDATE_DOCTOR_DETAILS_URL = ROOT_URL+"edit_doctor_detail.php";
-    public static final String ADD_DOCTOR_SLOT_URL = ROOT_URL+"add_doctor_slot.php";
     public static final String GET_DOCTOR_LIST_URL = ROOT_URL+"get_doctor_list.php";
     public static final String GET_DOCTOR_SLOT_URL = ROOT_URL+"get_doctor_slot.php";
     public static final String UPDATE_DOCTOR_SLOT_URL = ROOT_URL+"update_slot_available.php";
-    public static final String GET_DOCTOR_APPOINTMENT_URL = ROOT_URL+"get_doctor_appointment.php";
+
 
     public static final String ADD_USER_APPOINTMENT_URL = ROOT_URL+"add_user_appointment.php";
     public static final String GET_USER_APPOINTMENT_URL = ROOT_URL+"get_user_appointment.php";
@@ -103,18 +85,6 @@ public class Urls {
     public static final String UPDATE_USER_WEIGHT_ACHIEVEMENT_URL = ROOT_URL+"edit_user_weight_achievement.php";
     public static final String UPDATE_USER_GOAL_WEIGHT_URL = ROOT_URL+"edit_user_goal_weight.php";
 
-    public static final String ADD_USER_WATER_CONSECUTIVE_URL = ROOT_URL+"add_water_consecutive.php";
-//    public static final String GET_USER_WATER_CONSECUTIVE_URL = ROOT_URL+"get_user_water_consecutive.php";
-//    public static final String UPDATE_USER_WATER_CONSECUTIVE_URL = ROOT_URL+"edit_user_water_consecutive.php";
-
-
-    public static final String ADD_USER_WORKOUT_CONSECUTIVE_URL = ROOT_URL+"add_workout_consecutive.php";
-//    public static final String GET_USER_WORKOUT_CONSECUTIVE_URL = ROOT_URL+"get_user_workout_consecutive.php";
-//    public static final String UPDATE_USER_WORKOUT_CONSECUTIVE_URL = ROOT_URL+"edit_user_workout_consecutive.php";
-
-    public static final String ADD_USER_FOOD_CONSECUTIVE_URL = ROOT_URL+"add_food_consecutive.php";
-//    public static final String GET_USER_FOOD_CONSECUTIVE_URL = ROOT_URL+"get_user_food_consecutive.php";
-//    public static final String UPDATE_USER_FOOD_CONSECUTIVE_URL = ROOT_URL+"edit_user_food_consecutive.php";
 
     public static final String ADD_USER_POINT_URL = ROOT_URL+"add_user_point.php";
     public static final String UPDATE_USER_POINT_URL = ROOT_URL+"edit_user_point.php";
@@ -136,7 +106,6 @@ public class Urls {
 
     public static final String ADD_USER_STEP_URL = ROOT_URL+"add_user_step.php";
     public static final String GET_USER_TODAY_STEP_URL = ROOT_URL+"get_user_today_step.php";
-//    public static final String UPDATE_USER_STEP_URL = ROOT_URL+"edit_user_step.php";
     public static final String GET_USER_STEP_COUNT_URL = ROOT_URL+"get_user_step_count.php";
     public static final String UPDATE_USER_STEP_GOAL_URL = ROOT_URL+"edit_user_step_goal.php";
     public static final String GET_STEP_WEEK_GRAPH_URL = ROOT_URL+"get_step_byweek.php";

@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/my_reward_image"
+            android:id="@+id/my_voucher_image"
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:src="@drawable/bags"
@@ -66,7 +66,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/my_reward"
+                    android:id="@+id/my_voucher_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"

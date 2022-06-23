@@ -56,8 +56,7 @@ class StepDetector {
 
     constructor(context : Context){
        this.context =  context;
-//        sharedPreferences = context.getSharedPreferences("userStepLoginSession", Context.MODE_PRIVATE)
-//        editor = sharedPreferences?.edit()
+
 
         sessionManager = SessionManager(context)
         sessionManager!!.checkLogin()
@@ -109,37 +108,15 @@ class StepDetector {
 
 
 
-//            sharedpreferences = context?.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-//
-//            val editor = sharedpreferences!!.edit()
-//
-//            editor.putString("userID", userID)
-//            editor.commit()
-//
-//            var todayStepCount = SharedPref.on(context).readLong(Constant.KEY_STEP_COUNT)
-//            var date = SharedPref.on(context).read(Constant.KEY_DATE)
-
-
             var todayDateString = dateFormat.format(Date(System.currentTimeMillis()))
 
             ReadStepToServer(userID,todayDateString);
 
-//            if (date.equals(todayDateString)) {
-//
-//                todayStepCount = todayStepCount + 1L
-//            } else {
-//                todayStepCount = 1L
-//            }
-//            SharedPref.on(context).write(Constant.KEY_STEP_COUNT, todayStepCount)
-//
-//            SharedPref.on(context).write(Constant.KEY_DATE, todayDateString)
 
             val distance = (todayStepCount * STEP2METERS)/1000 //Distance in meter
 
             val cal = todayStepCount * 0.04
 
-
-//            SharedPref.on(context).write(Constant.KEY_DISTANCE,distance)
 
             WriteStepToServer(userID,todayStepCount, distance, cal, todayDateString)
 
@@ -162,8 +139,6 @@ class StepDetector {
         val parameters: MutableMap<String, String> = HashMap()
         // Add your parameters in HashMap
         parameters.put("userID", userID.toString());
-//        parameters.put("totalStep",step);
-//        parameters.put("stepDistance",distance);
         parameters.put("stepDate",date);
 
         val strReq: StringRequest = object : StringRequest(Method.POST,serverAPIURL,
@@ -173,16 +148,7 @@ class StepDetector {
                     // Handle Server response here
                     try {
                         val responseObj = JSONObject(response)
-////                        val isSuccess = responseObj.getBoolean("isSuccess")
-////                        val code = responseObj.getInt("code")
-//                        //val totalStep = responseObj.getString("totalStep")
-//                        if (responseObj.has("userStep")) {
-//                            todayStepCount = responseObj.getLong("totalStep")
-//
-//                            todayStepCount = todayStepCount + 1L
-//                            // Handle your server response data here
-//                        }
-////                        Toast.makeText(this,message,Toast.LENGTH_LONG).show()
+
                         val success = responseObj.getString("success")
                         val jsonArray: JSONArray = responseObj.getJSONArray("userStep")
 
@@ -257,23 +223,9 @@ class StepDetector {
     fun logoutUserFromStepSession() {
         val prefs = getDefaultSharedPreferences(context)
         prefs.edit().clear().commit()
-////        SharedPreferences.Editor editor = prefs.edit();
-////        editor.clear();
-////        editor.commit();
 
         sessionManager!!.logoutUserFromSession();
 
-//        val sharedpreferences: SharedPreferences = context.getSharedPreferences(StepDetector.MyPREFERENCES, Context.MODE_PRIVATE)
-//        val editor = sharedpreferences.edit()
-//        editor.clear()
-//        editor.commit()
-
     }
-
-//
-//    fun createStepLoginSession(userID: String?) {
-//        editor!!.putString(SessionManager.KEY_USERID, userID)
-//        editor!!.commit()
-//    }
 
 }

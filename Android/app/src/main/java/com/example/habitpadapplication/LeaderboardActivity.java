@@ -1,5 +1,8 @@
 package com.example.habitpadapplication;
 
+import static com.example.habitpadapplication.DateHandler.getCurrentFormedDate;
+import static com.example.habitpadapplication.DateHandler.monthFormat;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -7,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -29,6 +33,7 @@ public class LeaderboardActivity extends AppCompatActivity {
     private RecyclerView leaderboardList;
     private RecyclerView.LayoutManager manager;
     private List<Leaderboard> leaderboards;
+    private TextView leaderboardMonth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +43,8 @@ public class LeaderboardActivity extends AppCompatActivity {
         setTitle("Leaderboards");
         setContentView(R.layout.activity_leaderboard);
 
+        leaderboardMonth = findViewById(R.id.leaderboard_month);
+        leaderboardMonth.setText("Current month:"+ monthFormat(getCurrentFormedDate()));
 
         leaderboardList = findViewById(R.id.leaderboard_list);
         manager = new LinearLayoutManager(LeaderboardActivity.this);

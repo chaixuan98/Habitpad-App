@@ -2,9 +2,16 @@ package com.example.habitpadapplication.Chart;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.NumberPicker;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,23 +43,13 @@ public class ObeseLevelChart extends AppCompatActivity {
     private String intentUserID;
     private int level = 0, todaylevel = 0, level2 = 0;
     private TextView habitChange;
+    private ImageView monthOption;
+    private TextView monthView;
 
-    LineChart dayLineChart;
-    LineChart weekLineChart;
     LineChart monthLineChart;
-    LineChart yearLineChart;
-
-    ArrayList<String> xDay;
-    ArrayList<Entry> yDay;
-
-    ArrayList<String> xWeek;
-    ArrayList<Entry> yWeek;
 
     ArrayList<String> xMonth;
     ArrayList<Entry> yMonth;
-
-    ArrayList<String> xYear;
-    ArrayList<Entry> yYear;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,63 +62,18 @@ public class ObeseLevelChart extends AppCompatActivity {
         Intent intent = getIntent();
         intentUserID = intent.getExtras().getString("intentUserID");
 
-        habitChange = findViewById(R.id.obese_habit_change);
-//
-//        TextView foodInDay=(TextView) findViewById(R.id.textView);
-//        TextView foodInWeek=(TextView) findViewById(R.id.textView2);
-//        TextView foodInMonth=(TextView) findViewById(R.id.textView3);
-//        TextView foodInYear=(TextView) findViewById(R.id.textView4);
-//
-//        //foodInDay.setText("Obese Level for today :"+ DateHandler.getCurrentFormedDate());
-//        foodInWeek.setText("Obese Level for current week:");
-//        foodInMonth.setText("Obese Level for current month:"+DateHandler.monthFormat(DateHandler.getCurrentFormedDate()));
-//        foodInYear.setText("Obese Level for current year:"+DateHandler.yearFormat(DateHandler.getCurrentFormedDate()));
+        monthView = findViewById(R.id.month_view);
+        monthOption = findViewById(R.id.month_option);
 
-//        dayLineChart = (LineChart) findViewById(R.id.day_chart);
-//
-//        dayLineChart.setDrawGridBackground(false);
-//        //dayLineChart.setDescription("");
-//        dayLineChart.setTouchEnabled(true);
-//        dayLineChart.setDragEnabled(true);
-//        dayLineChart.setScaleEnabled(true);
-//        dayLineChart.setPinchZoom(true);
-//
-//        dayLineChart.getXAxis().setTextSize(15f);
-//        dayLineChart.getAxisLeft().setTextSize(15f);
-//        dayLineChart.getXAxis().setDrawGridLines(false);
-//        dayLineChart.getAxisRight().setDrawAxisLine(false);
-//        dayLineChart.getAxisRight().setDrawLimitLinesBehindData(false);
-//        dayLineChart.getAxisRight().setDrawAxisLine(false);
-//        dayLineChart.getAxisRight().setDrawGridLines(false);
-//
-//        dayLineChart.getAxisLeft().setDrawAxisLine(false);
-//        dayLineChart.getAxisLeft().setDrawLimitLinesBehindData(false);
-//        dayLineChart.getAxisLeft().setDrawAxisLine(false);
-//        dayLineChart.getAxisLeft().setDrawGridLines(false);
-//        getODay(intentUserID);
-//
-//        weekLineChart = (LineChart) findViewById(R.id.week_chart);
-//
-//        weekLineChart.setDrawGridBackground(false);
-//        //weekLineChart.setDescription("");
-//        weekLineChart.setTouchEnabled(true);
-//        weekLineChart.setDragEnabled(true);
-//        weekLineChart.setScaleEnabled(true);
-//        weekLineChart.setPinchZoom(true);
-//
-//        weekLineChart.getXAxis().setTextSize(15f);
-//        weekLineChart.getAxisLeft().setTextSize(15f);
-//        weekLineChart.getXAxis().setDrawGridLines(false);
-//        weekLineChart.getAxisRight().setDrawAxisLine(false);
-//        weekLineChart.getAxisRight().setDrawLimitLinesBehindData(false);
-//        weekLineChart.getAxisRight().setDrawAxisLine(false);
-//        weekLineChart.getAxisRight().setDrawGridLines(false);
-//
-//        weekLineChart.getAxisLeft().setDrawAxisLine(false);
-//        weekLineChart.getAxisLeft().setDrawLimitLinesBehindData(false);
-//        weekLineChart.getAxisLeft().setDrawAxisLine(false);
-//        weekLineChart.getAxisLeft().setDrawGridLines(false);
-//        getOWeek(intentUserID);
+        monthView.setText(DateHandler.monthFormat(DateHandler.getCurrentFormedDate()));
+        monthOption.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                OpenMonthOptionDialog();
+            }
+        });
+
+        habitChange = findViewById(R.id.obese_habit_change);
 
         monthLineChart = (LineChart) findViewById(R.id.month_chart);
 
@@ -144,59 +96,8 @@ public class ObeseLevelChart extends AppCompatActivity {
         monthLineChart.getAxisLeft().setDrawLimitLinesBehindData(false);
         monthLineChart.getAxisLeft().setDrawAxisLine(false);
         monthLineChart.getAxisLeft().setDrawGridLines(false);
-        getOMonth(intentUserID);
+        getOMonth(intentUserID, DateHandler.monthFormat2(DateHandler.getCurrentFormedDate()));
 
-//        yearLineChart = (LineChart) findViewById(R.id.year_chart);
-//
-//        yearLineChart.setDrawGridBackground(false);
-//        yearLineChart.setDescription("");
-//        yearLineChart.setTouchEnabled(true);
-//        yearLineChart.setDragEnabled(true);
-//        yearLineChart.setScaleEnabled(true);
-//        yearLineChart.setPinchZoom(true);
-//
-//        yearLineChart.getXAxis().setTextSize(15f);
-//        yearLineChart.getAxisLeft().setTextSize(15f);
-//        yearLineChart.getXAxis().setDrawGridLines(false);
-//        yearLineChart.getAxisRight().setDrawAxisLine(false);
-//        yearLineChart.getAxisRight().setDrawLimitLinesBehindData(false);
-//        yearLineChart.getAxisRight().setDrawAxisLine(false);
-//        yearLineChart.getAxisRight().setDrawGridLines(false);
-//
-//        yearLineChart.getAxisLeft().setDrawAxisLine(false);
-//        yearLineChart.getAxisLeft().setDrawLimitLinesBehindData(false);
-//        yearLineChart.getAxisLeft().setDrawAxisLine(false);
-//        yearLineChart.getAxisLeft().setDrawGridLines(false);
-//        getOYear(intentUserID);
-
-
-
-        TabHost host = (TabHost) findViewById(R.id.tabHost);
-        host.setup();
-
-//        //Tab 1
-        TabHost.TabSpec spec = host.newTabSpec("Today");
-//        spec.setContent(R.id.linearLayout);
-//        spec.setIndicator("Today");
-//        host.addTab(spec);
-//
-//        //Tab 2
-//        spec = host.newTabSpec("week");
-//        spec.setContent(R.id.linearLayout2);
-//        spec.setIndicator(" week");
-//        host.addTab(spec);
-
-        //Tab 3
-        spec = host.newTabSpec("month");
-        spec.setContent(R.id.linearLayout3);
-        spec.setIndicator("month");
-        host.addTab(spec);
-
-//        //Tab 3
-//        spec = host.newTabSpec("year");
-//        spec.setContent(R.id.linearLayout4);
-//        spec.setIndicator("year");
-//        host.addTab(spec);
     }
 
     @Override
@@ -211,202 +112,79 @@ public class ObeseLevelChart extends AppCompatActivity {
         finish();
     }
 
-//    private void getODay(final String userID){
-//
-//        xDay = new ArrayList<String>();
-//        yDay = new ArrayList<Entry>();
-//        // Initializing Request queue
-//
-//        StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.GET_OBESE_LEVEL_DAY_GRAPH_URL,
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        try {
-//
-//                            Log.i("tagconvertstr", "["+response+"]");
-//
-//                            JSONObject jsonObject = new JSONObject(response);
-//                            JSONArray jsonArray = jsonObject.getJSONArray("obeseday");
-//                            String success = jsonObject.getString("success");
-//
-//                            if(success.equals("1")) {
-//
-//                                for (int i = 0; i < jsonArray.length(); i++) {
-//
-//                                    JSONObject object = jsonArray.getJSONObject(i);
-//
-//                                    String obeseLevel = object.getString("obeseLevel");
-//                                    String addObeseTime = object.getString("addObeseTime").trim();
-//
-//                                    switch (obeseLevel) {
-//                                        case "Insufficient_Weight":
-//                                            level = 0;
-//                                            break;
-//                                        case "Normal_Weight":
-//                                            level = 1;
-//                                            break;
-//                                        case "Overweight_Level_I":
-//                                            level = 2;
-//                                            break;
-//                                        case "Overweight_Level_II":
-//                                            level = 3;
-//                                            break;
-//                                        case "Obesity_Type_I":
-//                                            level = 4;
-//                                            break;
-//                                        case "Obesity_Type_II":
-//                                            level = 5;
-//                                            break;
-//                                        case "Obesity_Type_III":
-//                                            level = 6;
-//                                            break;
-//                                    }
-//
-//                                    xDay.add(DateHandler.timeFormat(addObeseTime));
-//                                    yDay.add(new Entry((level),i));
-//
-//                                }
-//                                LineDataSet set1 = new LineDataSet(yDay, "Obesity Level" );
-//                                set1.setLineWidth(1.5f);
-//                                set1.setCircleRadius(4f);
-//                                set1.setDrawFilled(true);
-//                                set1.setDrawValues(false);
-//
-//                                LineData data = new LineData(xDay, set1);
-//                                dayLineChart.setData(data);
-//                                dayLineChart.setDescription("");
-//                                dayLineChart.animateXY(500, 500);
-//                                dayLineChart.invalidate();
-//
-//
-//                            }
-//
-//                        }catch (Exception e){
-//                            e.printStackTrace();
-//                        }
-//
-//                    }
-//                }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                Toast.makeText(ObeseLevelChart.this, error.toString(), Toast.LENGTH_LONG).show();
-//            }
-//        }){
-//            @Override
-//            protected Map<String, String> getParams() throws AuthFailureError {
-//
-//                Map<String, String> params = new HashMap<>();
-//                params.put("userID",userID);
-//
-//                return params;
-//            }
-//        };
-//        VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
-//    }
-//
-//    private void getOWeek(final String userID){
-//
-//        xWeek = new ArrayList<String>();
-//        yWeek = new ArrayList<Entry>();
-//        // Initializing Request queue
-//
-//        StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.GET_OBESE_LEVEL_WEEK_GRAPH_URL,
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        try {
-//
-//                            Log.i("tagconvertstr", "["+response+"]");
-//
-//                            JSONObject jsonObject = new JSONObject(response);
-//                            JSONArray jsonArray = jsonObject.getJSONArray("obeseweek");
-//                            String success = jsonObject.getString("success");
-//
-//                            if(success.equals("1")) {
-//
-//                                for (int i = 0; i < jsonArray.length(); i++) {
-//
-//                                    JSONObject object = jsonArray.getJSONObject(i);
-//
-//                                    String obeseLevel = object.getString("obeseLevel");
-//                                    String addObeseDate = object.getString("addObeseDate").trim();
-//
-//                                    switch (obeseLevel) {
-//                                        case "Insufficient_Weight":
-//                                            level = 0;
-//                                            break;
-//                                        case "Normal_Weight":
-//                                            level = 1;
-//                                            break;
-//                                        case "Overweight_Level_I":
-//                                            level = 2;
-//                                            break;
-//                                        case "Overweight_Level_II":
-//                                            level = 3;
-//                                            break;
-//                                        case "Obesity_Type_I":
-//                                            level = 4;
-//                                            break;
-//                                        case "Obesity_Type_II":
-//                                            level = 5;
-//                                            break;
-//                                        case "Obesity_Type_III":
-//                                            level = 6;
-//                                            break;
-//
-//                                    }
-//
-////                                    level += level;
-////                                    level = level/jsonArray.length();
-////                                    Toast.makeText(ObeseLevelChart.this, level, Toast.LENGTH_LONG).show();
-//
-//                                    xWeek.add(addObeseDate);
-//                                    yWeek.add(new Entry((level),i));
-//
-//                                }
-//                                LineDataSet set1 = new LineDataSet(yWeek, "Obesity Level" );
-//                                set1.setLineWidth(1.5f);
-//                                set1.setCircleRadius(4f);
-//                                set1.setDrawFilled(true);
-//                                set1.setDrawValues(false);
-//
-//                                LineData data = new LineData(xWeek, set1);
-//                                weekLineChart.setData(data);
-//                                weekLineChart.setDescription("");
-//                                weekLineChart.animateXY(500, 500);
-//                                weekLineChart.invalidate();
-//
-//
-//                            }
-//
-//                        }catch (Exception e){
-//                            e.printStackTrace();
-//                        }
-//
-//                    }
-//                }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                Toast.makeText(ObeseLevelChart.this, error.toString(), Toast.LENGTH_LONG).show();
-//            }
-//        }){
-//            @Override
-//            protected Map<String, String> getParams() throws AuthFailureError {
-//
-//                Map<String, String> params = new HashMap<>();
-//                params.put("userID",userID);
-//
-//                return params;
-//            }
-//        };
-//        VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
-//    }
+    private void OpenMonthOptionDialog()
+    {
+        final Dialog monthdialog = new Dialog(ObeseLevelChart.this);
+        monthdialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        monthdialog.setContentView(R.layout.month_select_dialog);
+        monthdialog.setTitle("Select Month");
+        monthdialog.show();
+        Window weightWindow = monthdialog.getWindow();
+        weightWindow.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-    private void getOMonth(final String userID){
+        final NumberPicker monthSelectNumberPicker= (NumberPicker) monthdialog.findViewById(R.id.month_select_numberPicker);
+        TextView monthSelectTV = monthdialog.findViewById(R.id.month_select_tv);
+        final String[] monthSelectValue;
+
+
+        monthSelectValue= getResources().getStringArray(R.array.month_select);
+        monthSelectNumberPicker.setMaxValue(11);
+        monthSelectNumberPicker.setMinValue(0);
+        monthSelectNumberPicker.setWrapSelectorWheel(false);
+        monthSelectNumberPicker.setDisplayedValues(monthSelectValue);
+        monthSelectTV.setText(String.format("Month: %s",monthSelectNumberPicker.getValue()));
+
+
+
+        monthSelectNumberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker numberPicker, int i, int i1) {
+                monthSelectTV.setText(String.format("Month: %s",monthSelectValue[i1]));
+                monthView.setText(monthSelectValue[i1]);
+
+            }
+        });
+
+
+        /* cancel button click action */
+        Button cancelbtn = (Button)monthdialog.findViewById(R.id.months_select_cancel_button);
+        cancelbtn.setEnabled(true);
+        cancelbtn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                monthdialog.cancel();
+            }
+        });
+
+
+        /* ok button click action */
+        Button confirmBtn = (Button)monthdialog.findViewById(R.id.months_select_confirm_button);
+        confirmBtn.setEnabled(true);
+        confirmBtn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+
+                monthdialog.cancel();
+
+                getOMonth(intentUserID,DateHandler.monthFormat3(monthView.getText().toString()));
+
+                Toast.makeText(ObeseLevelChart.this, monthView.getText(), Toast.LENGTH_LONG).show();
+
+            }
+        });
+
+
+    }
+
+
+    private void getOMonth(final String userID, final String month){
 
         xMonth = new ArrayList<String>();
         yMonth = new ArrayList<Entry>();
-        // Initializing Request queue
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.GET_OBESE_LEVEL_MONTH_GRAPH_URL,
                 new Response.Listener<String>() {
@@ -420,6 +198,7 @@ public class ObeseLevelChart extends AppCompatActivity {
                             JSONArray jsonArray = jsonObject.getJSONArray("obesemonth");
                             String success = jsonObject.getString("success");
 
+
                             if(success.equals("1")) {
 
                                 for (int i = 0; i < jsonArray.length(); i++) {
@@ -428,6 +207,8 @@ public class ObeseLevelChart extends AppCompatActivity {
 
                                     String obeseLevel = object.getString("obeseLevel");
                                     String addObeseDate = object.getString("addObeseDate").trim();
+
+                                    habitChange.setVisibility(View.VISIBLE);
 
                                     switch (obeseLevel) {
                                         case "Insufficient_Weight":
@@ -527,25 +308,21 @@ public class ObeseLevelChart extends AppCompatActivity {
 
                                     }
 
-                                    //Toast.makeText(ObeseLevelChart.this, addObeseDate, Toast.LENGTH_LONG).show();
-
-//                                    xMonth.add(DateHandler.dateFormat2(addObeseDate));
-//                                    yMonth.add(new Entry((level),i));
 
                                 }
 
                                 if(todaylevel < level2){
-                                    habitChange.setText("Your Habit have changed (obese level decrease)");
+                                    habitChange.setText("Your Habit have changed compare to two previous record(obese level decrease)");
                                     //Toast.makeText(ObeseLevelChart.this, "Your Habit have changed (obese level decrease )", Toast.LENGTH_LONG).show();
                                 }
 
                                 if(todaylevel > level2){
-                                    habitChange.setText("Your Habit have changed (obese level increase)");
+                                    habitChange.setText("Your Habit have changed compare to two previous record(obese level increase)");
                                     //Toast.makeText(ObeseLevelChart.this, "Your Habit have changed (obese level increase)", Toast.LENGTH_LONG).show();
                                 }
 
                                 if(level2 == todaylevel){
-                                    habitChange.setText("Your Habit no changes");
+                                    habitChange.setText("Your Habit no changes compare to two previous record");
                                     //Toast.makeText(ObeseLevelChart.this, "Your Habit no change", Toast.LENGTH_LONG).show();
                                 }
 
@@ -561,6 +338,15 @@ public class ObeseLevelChart extends AppCompatActivity {
                                 monthLineChart.animateXY(500, 500);
                                 monthLineChart.invalidate();
 
+
+                            }
+
+                            if(success.equals("0")) {
+                                Toast.makeText(ObeseLevelChart.this, "No data for this month", Toast.LENGTH_LONG).show();
+                                habitChange.setVisibility(View.GONE);
+                                monthLineChart.setNoDataText("No data available for this month");
+                                monthLineChart.clear();
+                                monthLineChart.invalidate();
 
                             }
 
@@ -580,105 +366,11 @@ public class ObeseLevelChart extends AppCompatActivity {
 
                 Map<String, String> params = new HashMap<>();
                 params.put("userID",userID);
-
+                params.put("obeseMonth",month);
                 return params;
             }
         };
         VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
     }
 
-//    private void getOYear(final String userID){
-//
-//        xYear = new ArrayList<String>();
-//        yYear = new ArrayList<Entry>();
-//        // Initializing Request queue
-//
-//        StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.GET_OBESE_LEVEL_YEAR_GRAPH_URL,
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        try {
-//
-//                            Log.i("tagconvertstr", "["+response+"]");
-//
-//                            JSONObject jsonObject = new JSONObject(response);
-//                            JSONArray jsonArray = jsonObject.getJSONArray("obeseyear");
-//                            String success = jsonObject.getString("success");
-//
-//                            if(success.equals("1")) {
-//
-//                                for (int i = 0; i < jsonArray.length(); i++) {
-//
-//                                    JSONObject object = jsonArray.getJSONObject(i);
-//
-//                                    String obeseLevel = object.getString("obeseLevel");
-//                                    String addObeseDate = object.getString("addObeseDate").trim();
-//
-//                                    switch (obeseLevel) {
-//                                        case "Insufficient_Weight":
-//                                            level = 0;
-//                                            break;
-//                                        case "Normal_Weight":
-//                                            level = 1;
-//                                            break;
-//                                        case "Overweight_Level_I":
-//                                            level = 2;
-//                                            break;
-//                                        case "Overweight_Level_II":
-//                                            level = 3;
-//                                            break;
-//                                        case "Obesity_Type_I":
-//                                            level = 4;
-//                                            break;
-//                                        case "Obesity_Type_II":
-//                                            level = 5;
-//                                            break;
-//                                        case "Obesity_Type_III":
-//                                            level = 6;
-//                                            break;
-//
-//                                    }
-//
-//
-//                                    xYear.add(addObeseDate);
-//                                    yYear.add(new Entry((level),i));
-//
-//                                }
-//                                LineDataSet set1 = new LineDataSet(yYear, "Obesity Level" );
-//                                set1.setLineWidth(1.5f);
-//                                set1.setCircleRadius(4f);
-//                                set1.setDrawFilled(true);
-//                                set1.setDrawValues(false);
-//
-//                                LineData data = new LineData(xYear, set1);
-//                                yearLineChart.setData(data);
-//                                yearLineChart.setDescription("");
-//                                yearLineChart.animateXY(500, 500);
-//                                yearLineChart.invalidate();
-//
-//
-//                            }
-//
-//                        }catch (Exception e){
-//                            e.printStackTrace();
-//                        }
-//
-//                    }
-//                }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                Toast.makeText(ObeseLevelChart.this, error.toString(), Toast.LENGTH_LONG).show();
-//            }
-//        }){
-//            @Override
-//            protected Map<String, String> getParams() throws AuthFailureError {
-//
-//                Map<String, String> params = new HashMap<>();
-//                params.put("userID",userID);
-//
-//                return params;
-//            }
-//        };
-//        VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
-//    }
 }

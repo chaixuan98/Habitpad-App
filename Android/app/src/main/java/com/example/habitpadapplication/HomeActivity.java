@@ -81,6 +81,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     NavigationView navigationView;
     Toolbar toolbar;
 
+
     private final String urlClassify = "https://obesity-classify-app.herokuapp.com/predict";
 
     private CircleImageView profileView;
@@ -112,7 +113,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private LinearLayout weightCardGoalContainer;
 
     private TextView bmiCardBmi, bmiCardTips;
-    private ImageView bmiCardUnderWeightStatus, bmiCardHealthyWeightStatus, bmiCardOverWeightStatus, bmiCardObesityStatus, stepLevel;
+    private ImageView bmiCardUnderWeightStatus, bmiCardHealthyWeightStatus, bmiCardOverWeightStatus, bmiCardObesityStatus, stepLevel, stepLeaderboard;
 
     private String strUserWaterNeed,strUserWaterIntake="0";
 
@@ -225,6 +226,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         stepGoalBtn = findViewById(R.id.home_step_card_goal_button);
         stepChartBtn = findViewById(R.id.home_step_chart_button);
         stepLevel = findViewById(R.id.home_step_level);
+        stepLeaderboard = findViewById(R.id.home_step_leaderboard);
 
 
         weightCardGoalBtn = (Button) findViewById(R.id.home_weight_card_goal_button);
@@ -281,7 +283,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         strUserSmoked = usersDetails.get(SessionManager.KEY_SMOKED);
 
 
-        textView.setText(username+" "+userID );
+        textView.setText(username);
 
 
 
@@ -290,9 +292,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         AddUserStep(userID, "10000","0","0.00","0.00", DateHandler.getCurrentFormedDate());
         AddUserWeightAchievement(userID,"true","false");
         AddUserWeightAchievement(userID,"true","false");
-        AddUserWaterConsecutive(userID,DateHandler.getCurrentFormedDate(),"0");
-        AddUserWorkoutConsecutive(userID,DateHandler.getCurrentFormedDate(),"0");
-        AddUserFoodConsecutive(userID,DateHandler.getCurrentFormedDate(),"0");
+//        AddUserWaterConsecutive(userID,DateHandler.getCurrentFormedDate(),"0");
+//        AddUserWorkoutConsecutive(userID,DateHandler.getCurrentFormedDate(),"0");
+//        AddUserFoodConsecutive(userID,DateHandler.getCurrentFormedDate(),"0");
 
         updateView();
         registerUIBroadcastReceiver();
@@ -327,7 +329,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                         return true;
 
                     case R.id.bottom_appointment:
-                        Intent appointmentIntent = new Intent(getApplicationContext(), AppointmentActivity.class);
+                        Intent appointmentIntent = new Intent(getApplicationContext(), UserAppointments.class);
                         appointmentIntent.putExtra("intentUserID", userID);
                         startActivity(appointmentIntent);
                         overridePendingTransition(0,0);
@@ -480,6 +482,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
+        stepLeaderboard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UserSendToStepLeaderboardPage();
+            }
+        });
+
         weightCardGoalBtn.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -578,7 +587,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.nav_appointment:
-                Intent appointmentIntent = new Intent(this, AppointmentActivity.class);
+                Intent appointmentIntent = new Intent(this, UserAppointments.class);
                 appointmentIntent.putExtra("intentUserID", userID);
                 startActivity(appointmentIntent);
                 break;
@@ -1153,6 +1162,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         startActivity(stepLevelIntent);
     }
 
+    private void UserSendToStepLeaderboardPage()
+    {
+        Intent stepLeaderboardIntent = new Intent(this, LeaderboardActivity.class);
+        //stepLevelIntent.putExtra("intentUserID", userID);
+        startActivity(stepLeaderboardIntent);
+    }
 
     private void UserSendToObeseLevelChartPage()
     {
@@ -1676,7 +1691,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                                     if(Integer.parseInt(strUserWaterIntake)<1000){
                                         strWater =1;
                                     }
-                                    if(Integer.parseInt(strUserWaterIntake)>=1000 && Integer.parseInt(strUserWaterIntake)<2000){
+                                    if(Integer.parseInt(strUserWaterIntake)>=1000 && Integer.parseInt(strUserWaterIntake)<=2000){
                                         strWater =2;
                                     }
                                     if(Integer.parseInt(strUserWaterIntake)>2000){
@@ -1915,14 +1930,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                             Log.i("tagconvertstr", "["+response+"]");
 
                             JSONObject jsonObject = new JSONObject(response);
-                            String data = jsonObject.getString("NObeyesdad");
+                            String data = jsonObject.getString("ObeseLevel");
 
                             summaryCardObesity.setText(data);
                             //Toast.makeText(HomeActivity.this,data,Toast.LENGTH_LONG).show();
 
                             AddObeseLevel(userID,data, DateHandler.getCurrentTime(),DateHandler.getCurrentFormedDate());
                             UpdateUserObeseLevel(userID,data, DateHandler.getCurrentTime(),DateHandler.getCurrentFormedDate());
-                            GetObeseLevelChange(userID);
+                            GetObeseLevelChange(userID,DateHandler.monthFormat2(DateHandler.getCurrentFormedDate()));
 
                         } catch (JSONException e) {
                             Toast.makeText(HomeActivity.this,"shown obese Error!" + e.toString(),Toast.LENGTH_LONG).show();
@@ -1945,11 +1960,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 params.put("Height", String.valueOf(Double.parseDouble(strUserHeight)/100));
                 params.put("Weight", strUserCurrentWeight);
                 params.put("Family", String.valueOf(strFamily));
-                params.put("FAVC", String.valueOf(strCalories));
-                params.put("Smoke", String.valueOf(strSmoked));
-                params.put("CH2O", String.valueOf(strWater));
-                params.put("FAF", String.valueOf(strActivity));
-                params.put("CALC", String.valueOf(strAlcohol));
+                params.put("TDEE", String.valueOf(strCalories));
+                params.put("Smoker", String.valueOf(strSmoked));
+                params.put("Water", String.valueOf(strWater));
+                params.put("ActivityLevel", String.valueOf(strActivity));
+                params.put("Alcohol", String.valueOf(strAlcohol));
                 Log.i("tagstr", "["+params+"]");
 
                 return params;
@@ -2263,158 +2278,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-    private void AddUserWaterConsecutive(final String intentUserID,final String launchDate, final String counter)
-    {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.ADD_USER_WATER_CONSECUTIVE_URL,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            Log.i("tagconvertstr", "["+response+"]");
-                            JSONObject jsonObject = new JSONObject(response);
-
-                            String success = jsonObject.getString("success");
-                            String message = jsonObject.getString("message");
-
-                            if (success.equals("1")) {
-                                //Toast.makeText(HomeActivity.this,message,Toast.LENGTH_SHORT).show();
-                                Log.i("tagtoast", "["+message+"]");
-                            }
-
-                            if (success.equals("0")) {
-                                //Toast.makeText(HomeActivity.this,message,Toast.LENGTH_SHORT).show();
-                                Log.i("tagtoast", "["+message+"]");
-                            }
-
-                        } catch (JSONException e) {
-                            Toast.makeText(HomeActivity.this,"Insert water consecutive Error!" + e.toString(),Toast.LENGTH_LONG).show();
-                        }
-
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.i("tagerror", "["+error+"]");
-                        //Toast.makeText(HomeActivity.this,error.toString(),Toast.LENGTH_LONG).show();
-                    }
-                }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                params.put("userID", intentUserID);
-                params.put("lastLaunchDate",launchDate);
-                params.put("counterDay", counter);
-
-                return params;
-            }
-        };
-
-        VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
-
-    }
-
-    private void AddUserWorkoutConsecutive(final String intentUserID,final String launchDate, final String counter)
-    {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.ADD_USER_WORKOUT_CONSECUTIVE_URL,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            Log.i("tagconvertstr", "["+response+"]");
-                            JSONObject jsonObject = new JSONObject(response);
-
-                            String success = jsonObject.getString("success");
-                            String message = jsonObject.getString("message");
-
-                            if (success.equals("1")) {
-                                //Toast.makeText(HomeActivity.this,message,Toast.LENGTH_SHORT).show();
-                                Log.i("tagtoast", "["+message+"]");
-                            }
-
-                            if (success.equals("0")) {
-                                //Toast.makeText(HomeActivity.this,message,Toast.LENGTH_SHORT).show();
-                                Log.i("tagtoast", "["+message+"]");
-                            }
-
-                        } catch (JSONException e) {
-                            Toast.makeText(HomeActivity.this,"Insert water consecutive Error!" + e.toString(),Toast.LENGTH_LONG).show();
-                        }
-
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.i("tagerror", "["+error+"]");
-                        //Toast.makeText(HomeActivity.this,error.toString(),Toast.LENGTH_LONG).show();
-                    }
-                }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                params.put("userID", intentUserID);
-                params.put("workoutLastLaunchDate",launchDate);
-                params.put("workoutCounterDay", counter);
-
-                return params;
-            }
-        };
-
-        VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
-
-    }
-
-    private void AddUserFoodConsecutive(final String intentUserID,final String launchDate, final String counter)
-    {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.ADD_USER_FOOD_CONSECUTIVE_URL,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            Log.i("tagconvertstr", "["+response+"]");
-                            JSONObject jsonObject = new JSONObject(response);
-
-                            String success = jsonObject.getString("success");
-                            String message = jsonObject.getString("message");
-
-                            if (success.equals("1")) {
-                                //Toast.makeText(HomeActivity.this,message,Toast.LENGTH_SHORT).show();
-                                Log.i("tagtoast", "["+message+"]");
-                            }
-
-                            if (success.equals("0")) {
-                                //Toast.makeText(HomeActivity.this,message,Toast.LENGTH_SHORT).show();
-                                Log.i("tagtoast", "["+message+"]");
-                            }
-
-                        } catch (JSONException e) {
-                            Toast.makeText(HomeActivity.this,"Insert water consecutive Error!" + e.toString(),Toast.LENGTH_LONG).show();
-                        }
-
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.i("tagerror", "["+error+"]");
-                        //Toast.makeText(HomeActivity.this,error.toString(),Toast.LENGTH_LONG).show();
-                    }
-                }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                params.put("userID", intentUserID);
-                params.put("foodLastLaunchDate",launchDate);
-                params.put("foodCounterDay", counter);
-
-                return params;
-            }
-        };
-
-        VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
-
-    }
 
     private void getTaskPoint(final int taskID) {
 
@@ -2760,7 +2623,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
     }
 
-    private void GetObeseLevelChange(final String userID){
+    private void GetObeseLevelChange(final String userID, final String month){
 
         // Initializing Request queue
 
@@ -2882,7 +2745,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
                 Map<String, String> params = new HashMap<>();
                 params.put("userID",userID);
-
+                params.put("obeseMonth",month);
                 return params;
             }
         };
@@ -2949,10 +2812,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                                         stepLevel.setImageResource(R.drawable.editforty);
                                         goalreach=60000;
                                     }
-                                    if(totalsteps>=60000 && totalsteps<70000){
+                                    if(totalsteps>=60000){
                                         stepLevel.setBackgroundColor(Color.BLUE);
-                                        stepLevel.setImageResource(R.drawable.editforty);
-                                        goalreach=700000;
+                                        stepLevel.setImageResource(R.drawable.editsixty);
+                                        //goalreach=700000;
                                     }
                                 }
                             }

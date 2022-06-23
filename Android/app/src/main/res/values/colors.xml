@@ -42,6 +42,4 @@
     <color name="ButtonTextColor">#FFFFFFFF</color>
     <!-- Light UI Colors-->
 
-    <color name="header">#2f477a</color>
-
 </resources>

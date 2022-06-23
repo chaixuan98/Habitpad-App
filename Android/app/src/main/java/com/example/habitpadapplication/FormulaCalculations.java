@@ -217,7 +217,7 @@ public class FormulaCalculations
 
         NumberFormat nf = DecimalFormat.getInstance();
         nf.setMaximumFractionDigits(0);
-        result = nf.format(foodGoal);
+        result = nf.format(foodGoal80);
         result = result.replace(",", "");
 
         return result;

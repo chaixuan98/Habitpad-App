@@ -218,7 +218,7 @@ public class BookAppointment extends AppCompatActivity {
                                 slotCards.setVisibility(View.GONE);
                                 noSlotTV.setVisibility(View.VISIBLE);
 
-                                //Toast.makeText(BookAppointment.this, message, Toast.LENGTH_LONG).show();
+                                //oast.makeText(BookAppointment.this, "Please select available slot", Toast.LENGTH_LONG).show();
                             }
 
                         }catch (Exception e){
@@ -382,9 +382,9 @@ public class BookAppointment extends AppCompatActivity {
         return true;
     }
 
-    public void onBackPressed() {
-        Intent intent = new Intent(BookAppointment.this, DoctorListActivity.class);
-        startActivity(intent);
-        finish();
-    }
+//    public void onBackPressed() {
+//        Intent intent = new Intent(BookAppointment.this, UserAppointments.class);
+//        startActivity(intent);
+//        finish();
+//    }
 }

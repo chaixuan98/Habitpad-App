@@ -347,14 +347,14 @@ public class GiftAdapter extends RecyclerView.Adapter<GiftAdapter.MyViewHolder> 
                             String message = jsonObject.getString("message");
 
                             if (success.equals("1")) {
-                                //Toast.makeText(HomeActivity.this,message,Toast.LENGTH_SHORT).show();
+                                Toast.makeText(mContext,"Redeem Successfully",Toast.LENGTH_SHORT).show();
                                 Log.i("tagtoast", "["+message+"]");
                             }
 
-                            if (success.equals("0")) {
-                                //Toast.makeText(HomeActivity.this,message,Toast.LENGTH_SHORT).show();
-                                Log.i("tagtoast", "["+message+"]");
-                            }
+//                            if (success.equals("0")) {
+//                                //Toast.makeText(HomeActivity.this,message,Toast.LENGTH_SHORT).show();
+//                                Log.i("tagtoast", "["+message+"]");
+//                            }
 
                         } catch (JSONException e) {
                             Toast.makeText(mContext,"Insert user gift Error!" + e.toString(),Toast.LENGTH_LONG).show();

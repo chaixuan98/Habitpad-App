@@ -48,8 +48,8 @@ import java.util.Map;
 public class WorkoutChart extends AppCompatActivity {
 
     private String intentUserID, workoutGoal, lastLaunchDate;
-    private int counter, workoutDateCal;
-//    private TextView consecutiveDay, consecutiveWeek, consecutiveMonth;
+    private int counter =0, workoutDateCal;
+    private TextView consecutiveDay, consecutiveWeek, consecutiveMonth;
 
     LineChart dayLineChart;
     LineChart weekLineChart;
@@ -88,9 +88,9 @@ public class WorkoutChart extends AppCompatActivity {
         TextView drinkInMonth=(TextView) findViewById(R.id.textView3);
         TextView drinkInYear=(TextView) findViewById(R.id.textView4);
 
-//        consecutiveDay = (TextView) findViewById(R.id.consecutive_day_tv);
-//        consecutiveWeek = (TextView) findViewById(R.id.consecutive_week_tv);
-//        consecutiveMonth = (TextView) findViewById(R.id.consecutive_month_tv);
+        //consecutiveDay = (TextView) findViewById(R.id.consecutive_day_tv);
+        consecutiveWeek = (TextView) findViewById(R.id.consecutive_week_tv);
+        consecutiveMonth = (TextView) findViewById(R.id.consecutive_month_tv);
 
         // Get calendar set to current date and time
         Calendar c = Calendar.getInstance();
@@ -274,7 +274,6 @@ public class WorkoutChart extends AppCompatActivity {
 
                                 }
 
-//                                getUserWorkoutConsecutive(workoutDateCal);
 
                                 LineDataSet set1 = new LineDataSet(yDay, "Calories burned (kcal)");
                                 set1.setLineWidth(1.3f);
@@ -289,7 +288,6 @@ public class WorkoutChart extends AppCompatActivity {
                                 dayLineChart.setDescription("");
                                 data.setValueTextColor(Color.BLUE);
                                 data.setValueTextSize(12f);
-//                                dayLineChart.animateXY(2000, 2000);
                                 dayLineChart.invalidate();
 
 
@@ -440,8 +438,27 @@ public class WorkoutChart extends AppCompatActivity {
                                     gMonth.add(new Entry(Integer.valueOf(workoutGoal),i));
 
                                 }
+                                if(jsonArray.length()>2) {
+                                    for (int i = jsonArray.length() - 3; i < jsonArray.length(); i++) {
+                                        JSONObject object = jsonArray.getJSONObject(i);
 
-//                                getUserWorkoutConsecutive(workoutDateCal);
+                                        workoutDateCal = object.getInt("workoutDateCal");
+
+                                        if (workoutDateCal >= Integer.valueOf(workoutGoal)) {
+                                            counter++;
+                                        }
+
+                                    }
+                                }
+                                consecutiveMonth.setText("Achieve goal " + counter + " days for the last 3 days");
+                                consecutiveWeek.setText("Achieve goal " + counter + " days for the last 3 days");
+
+                                if(counter > 2){
+                                    consecutiveMonth.setText("Achieve goal for the last 3 days (Workout habit is changed)");
+                                    consecutiveWeek.setText("Achieve goal for the last 3 days (Workout habit is changed)");
+
+                                }
+
 
                                 ArrayList<ILineDataSet> lineDataSetsMonth = new ArrayList<>();
 
@@ -570,167 +587,5 @@ public class WorkoutChart extends AppCompatActivity {
         };
         VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
     }
-//
-//    private void getUserWorkoutConsecutive(final int work)
-//    {
-//
-//        StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.GET_USER_WORKOUT_CONSECUTIVE_URL, new Response.Listener<String>() {
-//            @Override
-//            public void onResponse(String response) {
-//
-//                try {
-//                    Log.i("tagconvertstr", "[" + response + "]");
-//                    JSONObject jsonObject = new JSONObject(response);
-//
-//                    String success = jsonObject.getString("success");
-//                    JSONArray jsonArray = jsonObject.getJSONArray("workoutcon");
-//
-//                    if (success.equals("1")) {
-//                        for (int i = 0; i < jsonArray.length(); i++) {
-//                            JSONObject object = jsonArray.getJSONObject(i);
-//
-//                            lastLaunchDate = object.getString("workoutLastLaunchDate").trim();
-//                            counter = object.getInt("workoutCounterDay");
-//                        }
-//
-//                        try {
-//                            Date date1;
-//                            Date date2;
-//                            SimpleDateFormat dates = new SimpleDateFormat("yyyy-MM-dd");
-//                            date1 = dates.parse(DateHandler.getCurrentFormedDate());
-//                            date2 = dates.parse(lastLaunchDate);
-//                            long difference = Math.abs(date1.getTime() - date2.getTime());
-//                            long differenceDates = difference / (24 * 60 * 60 * 1000);
-//                            String dayDifference = Long.toString(differenceDates);
-//                            Log.i("tagdiff", "[" + dayDifference + "]");
-//
-//                            if (work >= Integer.parseInt(workoutGoal)) {
-//
-//                                if (Integer.parseInt(dayDifference) == 1) {
-//                                    counter = counter + 1;
-//                                }
-//
-//                                if (Integer.parseInt(dayDifference) > 1){
-//                                    counter = 1;
-//                                }
-//                                UpdateUserWorkoutConsecutive(DateHandler.getCurrentFormedDate(), counter);
-//                            }
-//
-//                            consecutiveDay.setText("Achieve goal " + counter + " day in a row");
-//                            consecutiveWeek.setText("Achieve goal " + counter + " day in a row");
-//                            consecutiveMonth.setText("Achieve goal " + counter + " day in a row");
-//
-//                            if (counter >=3){
-//                                PopupAchievementDialog();
-//                            }
-//                        } catch (Exception e) {
-//                            Toast.makeText(WorkoutChart.this, "Unable to find difference", Toast.LENGTH_SHORT).show();
-//                            e.printStackTrace();
-//                        }
-//                    }
-//
-//
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                    Toast.makeText(WorkoutChart.this, "Get user water consecutive error" + e.toString(), Toast.LENGTH_SHORT).show();
-//                }
-//
-//
-//
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                Toast.makeText(WorkoutChart.this, error.toString(), Toast.LENGTH_SHORT).show();
-//            }
-//        }) {
-//            @Override
-//            protected Map<String, String> getParams() throws AuthFailureError {
-//
-//                Map<String, String> params = new HashMap<>();
-//                params.put("userID", intentUserID);
-//
-//                return params;
-//            }
-//        };
-//
-//        VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
-//    }
-//
-//    private void UpdateUserWorkoutConsecutive(final String date, final int counter){
-//
-//        StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.UPDATE_USER_WORKOUT_CONSECUTIVE_URL,
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        try {
-//                            Log.i("tagconvertstr", "["+response+"]");
-//                            JSONObject jsonObject = new JSONObject(response);
-//
-//                            String success = jsonObject.getString("success");
-//                            String message = jsonObject.getString("message");
-//
-//                            if (success.equals("1")) {
-//                                //Toast.makeText(getApplicationContext(),message,Toast.LENGTH_SHORT).show();
-//                                Log.i("tagtoast", "["+message+"]");
-//                            }
-//
-//                        }catch (Exception e){
-//                            e.printStackTrace();
-//                            Toast.makeText(WorkoutChart.this, "update user workout consecutive error" + e.toString(), Toast.LENGTH_SHORT).show();
-//                        }
-//
-//                    }
-//                }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                //Log.i("tagerror", "["+error+"]");
-//                Toast.makeText(WorkoutChart.this, error.toString(), Toast.LENGTH_LONG).show();
-//            }
-//        }){
-//            @Override
-//            protected Map<String, String> getParams() throws AuthFailureError {
-//
-//                Map<String, String> params = new HashMap<>();
-//                params.put("userID",intentUserID);
-//                params.put("workoutLastLaunchDate", date);
-//                params.put("workoutCounterDay",String.valueOf(counter));
-//                return params;
-//            }
-//        };
-//
-//        VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
-//
-//
-//
-//    }
-//
-//    private void PopupAchievementDialog() {
-//
-//        final Dialog achievementDialog = new Dialog(WorkoutChart.this);
-//        achievementDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        achievementDialog.setContentView(R.layout.achievements_layout);
-//        achievementDialog.setTitle("Calories Burned Habit Change");
-//        achievementDialog.show();
-//        achievementDialog.setCanceledOnTouchOutside(false);
-//        achievementDialog.setCancelable(false);
-//        Window window = achievementDialog.getWindow();
-//        window.setLayout(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-//
-//        TextView dialogDescription = achievementDialog.findViewById(R.id.achievement_dialog_description);
-//        dialogDescription.setText("Congratulations, You have achieved your calories burned goal 3 days in a row.");
-//
-////        TextView dialogPoints = achievementDialog.findViewById(R.id.achievement_dialog_points);
-////        dialogPoints.setText("+5 Points");
-//
-//        ImageView cancelBtn = achievementDialog.findViewById(R.id.achievement_dialog_close_button);
-//        cancelBtn.setOnClickListener(new View.OnClickListener()
-//        {
-//            @Override
-//            public void onClick(View v)
-//            {
-//                achievementDialog.dismiss();
-//            }
-//        });
-//    }
+
 }

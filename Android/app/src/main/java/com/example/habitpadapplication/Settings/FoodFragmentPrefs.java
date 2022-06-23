@@ -5,7 +5,6 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,9 +13,7 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.widget.TimePicker;
 
-import com.example.habitpadapplication.HomeActivity;
 import com.example.habitpadapplication.R;
-import com.example.habitpadapplication.UserOptionActivity;
 
 import java.util.Calendar;
 

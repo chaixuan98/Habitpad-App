@@ -59,15 +59,15 @@ public class MyVoucherAdapter extends RecyclerView.Adapter<MyVoucherAdapter.MyVi
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView myVoucherPhoto;
-        private TextView myRewardTitle;
+        private TextView myVoucherTitle;
         private ConstraintLayout voucherLayout;
 
         public MyViewHolder (View view){
             super(view);
 
             voucherLayout = view.findViewById(R.id.voucher_layout);
-            myVoucherPhoto = view.findViewById(R.id.my_reward_image);
-            myRewardTitle = view.findViewById(R.id.my_reward);
+            myVoucherPhoto = view.findViewById(R.id.my_voucher_image);
+            myVoucherTitle = view.findViewById(R.id.my_voucher_title);
 
         }
     }
@@ -87,7 +87,7 @@ public class MyVoucherAdapter extends RecyclerView.Adapter<MyVoucherAdapter.MyVi
 
         final MyVoucher myVoucher = myVouchers.get(position);
 
-        final String voucherID = myVoucher.getVoucherID();
+        final String voucherID = myVoucher.getMyVoucherID();
         
         Glide.with(mContext).asBitmap().load(myVoucher.getMyVoucherImage())
                 .fitCenter()
@@ -96,7 +96,7 @@ public class MyVoucherAdapter extends RecyclerView.Adapter<MyVoucherAdapter.MyVi
                 .fallback(R.drawable.ic_baseline_image_not_supported_24)
                 .dontAnimate().into(holder.myVoucherPhoto);
 
-        holder.myRewardTitle.setText(myVoucher.getMyVoucherReward());
+        holder.myVoucherTitle.setText(myVoucher.getMyVoucherTitle());
 
         holder.voucherLayout.setOnClickListener(new View.OnClickListener()
         {

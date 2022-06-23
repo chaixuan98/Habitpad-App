@@ -25,6 +25,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.example.habitpadapplication.DateHandler;
+import com.example.habitpadapplication.FormulaCalculations;
 import com.example.habitpadapplication.HomeActivity;
 import com.example.habitpadapplication.R;
 import com.example.habitpadapplication.Urls;
@@ -49,9 +50,9 @@ import java.util.Map;
 
 public class FoodChart extends AppCompatActivity {
 
-    private String intentUserID, foodGoal, lastLaunchDate;
-    private int counter, totalCalories;
-//    private TextView consecutiveDay,consecutiveWeek, consecutiveMonth;
+    private String intentUserID, foodGoal, strUserFoodGoal80;
+    private int counter =0, totalCalories,totalCalories2 ;
+    private TextView consecutiveDay,consecutiveWeek, consecutiveMonth;
 
     LineChart dayLineChart;
     LineChart weekLineChart;
@@ -72,6 +73,8 @@ public class FoodChart extends AppCompatActivity {
     ArrayList<String> xYear;
     ArrayList<Entry> yYear;
 
+    FormulaCalculations fc = new FormulaCalculations();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,8 +94,8 @@ public class FoodChart extends AppCompatActivity {
         TextView foodInYear=(TextView) findViewById(R.id.textView4);
 
 //        consecutiveDay = (TextView) findViewById(R.id.consecutive_day_tv);
-//        consecutiveWeek = (TextView) findViewById(R.id.consecutive_week_tv);
-//        consecutiveMonth = (TextView) findViewById(R.id.consecutive_month_tv);
+        consecutiveWeek = (TextView) findViewById(R.id.consecutive_week_tv);
+        consecutiveMonth = (TextView) findViewById(R.id.consecutive_month_tv);
 
         // Get calendar set to current date and time
         Calendar c = Calendar.getInstance();
@@ -443,7 +446,27 @@ public class FoodChart extends AppCompatActivity {
                                     gMonth.add(new Entry(Integer.valueOf(foodGoal),i));
                                 }
 
-                                //getUserFoodConsecutive(totalCalories);
+
+                                if(jsonArray.length()>2) {
+                                    for (int i = jsonArray.length() - 3; i < jsonArray.length(); i++) {
+                                        JSONObject object = jsonArray.getJSONObject(i);
+
+                                        totalCalories2 = object.getInt("totalCalories");
+
+                                        if (totalCalories2 >= Integer.valueOf(fc.FoodCaloriesGoal80(foodGoal)) && totalCalories2 <= Integer.valueOf(foodGoal)) {
+                                            counter++;
+                                        }
+
+                                    }
+                                }
+                                consecutiveMonth.setText("Achieve goal " + counter + " days for the last 3 days");
+                                consecutiveWeek.setText("Achieve goal " + counter + " days for the last 3 days");
+
+                                if(counter > 2){
+                                    consecutiveMonth.setText("Achieve goal for the last 3 days (Food consumed habit is changed)");
+                                    consecutiveWeek.setText("Achieve goal for the last 3 days (Food consumed habit is changed)");
+
+                                }
 
                                 ArrayList<ILineDataSet> lineDataSetsMonth = new ArrayList<>();
 
@@ -472,7 +495,6 @@ public class FoodChart extends AppCompatActivity {
                                 data.setValueTextColor(Color.BLUE);
                                 data.setValueTextSize(10f);
                                 monthLineChart.invalidate();
-
 
                             }
 
@@ -572,167 +594,4 @@ public class FoodChart extends AppCompatActivity {
         VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
     }
 
-//    private void getUserFoodConsecutive(final int food)
-//    {
-//
-//        StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.GET_USER_FOOD_CONSECUTIVE_URL, new Response.Listener<String>() {
-//            @Override
-//            public void onResponse(String response) {
-//
-//                try {
-//                    Log.i("tagconvertstr", "[" + response + "]");
-//                    JSONObject jsonObject = new JSONObject(response);
-//
-//                    String success = jsonObject.getString("success");
-//                    JSONArray jsonArray = jsonObject.getJSONArray("foodcon");
-//
-//                    if (success.equals("1")) {
-//                        for (int i = 0; i < jsonArray.length(); i++) {
-//                            JSONObject object = jsonArray.getJSONObject(i);
-//
-//                            lastLaunchDate = object.getString("foodLastLaunchDate").trim();
-//                            counter = object.getInt("foodCounterDay");
-//                        }
-//
-//                        try {
-//                            Date date1;
-//                            Date date2;
-//                            SimpleDateFormat dates = new SimpleDateFormat("yyyy-MM-dd");
-//                            date1 = dates.parse(DateHandler.getCurrentFormedDate());
-//                            date2 = dates.parse(lastLaunchDate);
-//                            long difference = Math.abs(date1.getTime() - date2.getTime());
-//                            long differenceDates = difference / (24 * 60 * 60 * 1000);
-//                            String dayDifference = Long.toString(differenceDates);
-//                            Log.i("tagdiff", "[" + dayDifference + "]");
-//
-//                            if (food >= 500 && food <= Integer.parseInt(foodGoal)) {
-//
-//                                if (Integer.parseInt(dayDifference) == 1) {
-//                                    counter = counter + 1;
-//                                }
-//
-//                                if (Integer.parseInt(dayDifference) > 1){
-//                                    counter = 1;
-//                                }
-//                                UpdateUserFoodConsecutive(DateHandler.getCurrentFormedDate(), counter);
-//                            }
-//
-//                            consecutiveDay.setText("Achieve goal " + counter + " day in a row");
-//                            consecutiveWeek.setText("Achieve goal " + counter + " day in a row");
-//                            consecutiveMonth.setText("Achieve goal " + counter + " day in a row");
-//
-//                            if (counter >=3){
-//                                PopupAchievementDialog();
-//                            }
-//                        } catch (Exception e) {
-//                            Toast.makeText(FoodChart.this, "Unable to find difference", Toast.LENGTH_SHORT).show();
-//                            e.printStackTrace();
-//                        }
-//                    }
-//
-//
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                    Toast.makeText(FoodChart.this, "Get user water consecutive error" + e.toString(), Toast.LENGTH_SHORT).show();
-//                }
-//
-//
-//
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                Toast.makeText(FoodChart.this, error.toString(), Toast.LENGTH_SHORT).show();
-//            }
-//        }) {
-//            @Override
-//            protected Map<String, String> getParams() throws AuthFailureError {
-//
-//                Map<String, String> params = new HashMap<>();
-//                params.put("userID", intentUserID);
-//
-//                return params;
-//            }
-//        };
-//
-//        VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
-//    }
-//
-//    private void UpdateUserFoodConsecutive(final String date, final int counter){
-//
-//        StringRequest stringRequest = new StringRequest(Request.Method.POST, Urls.UPDATE_USER_FOOD_CONSECUTIVE_URL,
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        try {
-//                            Log.i("tagconvertstr", "["+response+"]");
-//                            JSONObject jsonObject = new JSONObject(response);
-//
-//                            String success = jsonObject.getString("success");
-//                            String message = jsonObject.getString("message");
-//
-//                            if (success.equals("1")) {
-//                                //Toast.makeText(getApplicationContext(),message,Toast.LENGTH_SHORT).show();
-//                                Log.i("tagtoast", "["+message+"]");
-//                            }
-//
-//                        }catch (Exception e){
-//                            e.printStackTrace();
-//                            Toast.makeText(FoodChart.this, "update user food consecutive error" + e.toString(), Toast.LENGTH_SHORT).show();
-//                        }
-//
-//                    }
-//                }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                //Log.i("tagerror", "["+error+"]");
-//                Toast.makeText(FoodChart.this, error.toString(), Toast.LENGTH_LONG).show();
-//            }
-//        }){
-//            @Override
-//            protected Map<String, String> getParams() throws AuthFailureError {
-//
-//                Map<String, String> params = new HashMap<>();
-//                params.put("userID",intentUserID);
-//                params.put("foodLastLaunchDate", date);
-//                params.put("foodCounterDay",String.valueOf(counter));
-//                return params;
-//            }
-//        };
-//
-//        VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
-//
-//
-//
-//    }
-//
-//    private void PopupAchievementDialog()
-//    {
-//
-//        final Dialog achievementDialog = new Dialog(FoodChart.this);
-//        achievementDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        achievementDialog.setContentView(R.layout.achievements_layout);
-//        achievementDialog.setTitle("Calories Intake Habit Change");
-//        achievementDialog.show();
-//        achievementDialog.setCanceledOnTouchOutside(false);
-//        achievementDialog.setCancelable(false);
-//        Window window = achievementDialog.getWindow();
-//        window.setLayout(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-//
-//        TextView dialogDescription = achievementDialog.findViewById(R.id.achievement_dialog_description);
-//        dialogDescription.setText("Congratulations, You have achieved your calories intake goal 3 days in a row.");
-//
-////        TextView dialogPoints = achievementDialog.findViewById(R.id.achievement_dialog_points);
-////        dialogPoints.setText("+5 Points");
-//
-//        ImageView cancelBtn = achievementDialog.findViewById(R.id.achievement_dialog_close_button);
-//        cancelBtn.setOnClickListener(new View.OnClickListener()
-//        {
-//            @Override
-//            public void onClick(View v)
-//            {
-//                achievementDialog.dismiss();
-//            }
-//        });
-//    }
 }
