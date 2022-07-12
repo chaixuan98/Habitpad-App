@@ -84,12 +84,12 @@ public class OtherSizeDialog extends Dialog implements View.OnClickListener,Numb
         NumberPicker.Formatter formatter = new NumberPicker.Formatter() {
             @Override
             public String format(int value) {
-                value =value*5;
+                value =value*50;
                 return  value+" ml";
             }
         };
         numberPicker.setFormatter(formatter);
-        numberPicker.setMaxValue(300);
+        numberPicker.setMaxValue(400);
         numberPicker.setMinValue(0);
         numberPicker.setWrapSelectorWheel(false);
         numberPicker.setOnValueChangedListener(this);
@@ -174,7 +174,7 @@ public class OtherSizeDialog extends Dialog implements View.OnClickListener,Numb
 
     @Override
     public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-        this.NumberPickerValue= picker.getValue()*5;
+        this.NumberPickerValue= picker.getValue()*50;
     }
 
 

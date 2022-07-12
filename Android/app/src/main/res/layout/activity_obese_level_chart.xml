@@ -67,7 +67,7 @@
                 android:layout_marginTop="5dp"
                 android:paddingLeft="10dp"
                 android:lineSpacingMultiplier="1"
-                android:text="0 - Insufficient_Weight   1 - Normal_Weight   2 - Overweight_Level_I\n\n3 - Overweight_Level_II   4 - Obesity_Type_I  5 - Obesity_Type_II\n\n6 - Obesity_Type_III"
+                android:text="0 - Insufficient_Weight   1 - Normal_Weight\n\n2 - Overweight_Level_I  3 - Overweight_Level_II\n\n4 - Obesity_Type_I   5 - Obesity_Type_II\n\n6 - Obesity_Type_III"
                 android:textColor="@color/black" />
 
 

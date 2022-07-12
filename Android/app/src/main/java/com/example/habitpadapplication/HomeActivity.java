@@ -875,7 +875,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
             strFamily = strFamilySuffered == "No" ? 0 : 1;
 
-            strSmoked = strUserSmoked == "No" ? 0 : 1;
+            strSmoked = strUserSmoked == "Yes" ? 1 : 0;
 
             switch (strUserActivityLevel) {
                 case "No Active":
@@ -2152,6 +2152,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                                     {
                                         PopupAchievementDialog();
 
+
                                     }
                                 }
                             }
@@ -2227,8 +2228,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View v)
             {
                 achievementDialog.dismiss();
+                updateView();
             }
         });
+
+
     }
 
     private void UpdateUserWeightAchievement(final String intentUserID){
