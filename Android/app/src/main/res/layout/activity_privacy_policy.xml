@@ -9,31 +9,25 @@
 
     <WebView
         android:id="@+id/privacy_policy"
-        android:layout_above="@+id/button"
         android:layout_width="match_parent"
         android:layout_height="fill_parent" />
 
-    <LinearLayout
-        android:id="@+id/button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_horizontal"
-        android:layout_alignParentBottom="true">
+<!--    <LinearLayout-->
+<!--        android:id="@+id/button"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:gravity="center_horizontal"-->
+<!--        android:layout_alignParentBottom="true">-->
+<!--        -->
 
-        <com.google.android.material.button.MaterialButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
-            android:text="Agree"/>
+<!--        <com.google.android.material.button.MaterialButton-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginLeft="50dp"-->
+<!--            android:text="Cancel"/>-->
 
-        <com.google.android.material.button.MaterialButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="50dp"
-            android:text="Decline"/>
-
-    </LinearLayout>
+<!--    </LinearLayout>-->
 
 
 </RelativeLayout>

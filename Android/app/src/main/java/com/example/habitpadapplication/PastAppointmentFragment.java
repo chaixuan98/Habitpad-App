@@ -22,6 +22,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.example.habitpadapplication.Adapters.UserAppointmetAdapter;
+import com.example.habitpadapplication.Adapters.UserPastAppointmentAdapter;
 import com.example.habitpadapplication.Model.UserAppointment;
 
 import org.json.JSONArray;
@@ -39,7 +40,7 @@ public class PastAppointmentFragment extends Fragment {
 
     private RecyclerView pastAppointmentRecyclerView;
     private RecyclerView.LayoutManager manager;
-    private UserAppointmetAdapter userAppAdapter;
+    private UserPastAppointmentAdapter userPastAppointmentAdapter;
     private List<UserAppointment> userAppointments;
 
     private String intentUserID;
@@ -66,7 +67,7 @@ public class PastAppointmentFragment extends Fragment {
         pastAppointmentRecyclerView.setLayoutManager(manager);
         pastAppointmentRecyclerView.setHasFixedSize(true);
         userAppointments = new ArrayList<>();
-        userAppAdapter = new UserAppointmetAdapter(getContext(), userAppointments);
+        userPastAppointmentAdapter = new UserPastAppointmentAdapter(getContext(), userAppointments);
 
         getUserAppointment();
 
@@ -117,15 +118,13 @@ public class PastAppointmentFragment extends Fragment {
 
                                         UserAppointment userAppointment = new UserAppointment(appointmentID,doctorID,doctorPhoto, doctorName, appointmentDate, appointmentTime, appointmentRemark);
                                         userAppointments.add(userAppointment);
-                                        pastAppointmentRecyclerView.setAdapter(userAppAdapter);
+                                        pastAppointmentRecyclerView.setAdapter(userPastAppointmentAdapter);
                                     }
 
-                                    if (userAppAdapter.getItemCount() == 0)
+                                    if (userPastAppointmentAdapter.getItemCount() == 0)
                                     {
                                         noAppTV.setVisibility(View.VISIBLE);
                                     }
-
-
 
                                 }
                             }

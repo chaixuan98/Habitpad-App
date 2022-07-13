@@ -39,6 +39,7 @@
         <entry key="..\:/Users/chaix/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/activity_goals.xml" value="0.25" />
         <entry key="..\:/Users/chaix/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/activity_home.xml" value="0.25" />
         <entry key="..\:/Users/chaix/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/activity_leaderboard.xml" value="0.20521590423257802" />
+        <entry key="..\:/Users/chaix/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/activity_login.xml" value="0.20521590423257802" />
         <entry key="..\:/Users/chaix/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/Users/chaix/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/activity_main2.xml" value="0.25" />
         <entry key="..\:/Users/chaix/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/activity_mission_reward.xml" value="0.25" />
@@ -97,6 +98,7 @@
         <entry key="..\:/Users/chaix/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/step_achievement_layout.xml" value="0.20521590423257802" />
         <entry key="..\:/Users/chaix/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/step_goal_edit_layout.xml" value="0.25" />
         <entry key="..\:/Users/chaix/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/user_appointment_raw.xml" value="0.25" />
+        <entry key="..\:/Users/chaix/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/user_past_appointment_raw.xml" value="0.20521590423257802" />
         <entry key="..\:/Users/chaix/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/voucher_desc_raw.xml" value="0.25" />
         <entry key="..\:/Users/chaix/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/water_achievement_layout.xml" value="0.25" />
         <entry key="..\:/Users/chaix/AndroidStudioProjects/HabitpadApplication/Android/app/src/main/res/layout/water_chart.xml" value="0.25" />
